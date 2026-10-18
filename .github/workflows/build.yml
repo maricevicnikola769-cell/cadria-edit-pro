@@ -1,0 +1,33 @@
+name: Napravi CADRIA EDIT
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instaliraj Electron
+        run: npm install --no-audit --no-fund
+
+      - name: Napravi program i instalaciju
+        run: npx electron-builder --win --publish never -c.extraMetadata.version=1.0.${{ github.run_number }}
+
+      - name: Objavi u Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: CADRIA EDIT 1.0.${{ github.run_number }}
+          files: |
+            dist/CadriaEdit-Setup.exe
+            dist/CadriaEdit-prenosna.zip
