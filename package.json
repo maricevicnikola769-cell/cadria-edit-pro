@@ -30,6 +30,7 @@
       "node_modules/@ffmpeg/ffmpeg/dist/esm/**/*",
       "node_modules/@ffmpeg/util/dist/esm/**/*",
       "node_modules/@ffmpeg/core/dist/esm/**/*",
+      "node_modules/@mediapipe/selfie_segmentation/**/*",
       "node_modules/@ffmpeg/*/package.json",
       "!node_modules/@ffmpeg/*/dist/umd/**",
       "!node_modules/@ffmpeg/*/dist/cjs/**",
@@ -67,6 +68,7 @@
   "dependencies": {
     "@ffmpeg/core": "0.12.6",
     "@ffmpeg/ffmpeg": "0.12.10",
-    "@ffmpeg/util": "0.12.1"
+    "@ffmpeg/util": "0.12.1",
+    "@mediapipe/selfie_segmentation": "0.1.1675465747"
   }
 }

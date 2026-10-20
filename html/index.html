@@ -666,6 +666,74 @@ body.cx-dragging-tool{ user-select:none; cursor:ew-resize !important; }
 .cx-prog-t{ font-size:12px; margin-bottom:4px; }
 .cx-prog-bar{ height:8px; border-radius:4px; background:rgba(255,255,255,.08); overflow:hidden; }
 .cx-prog-bar i{ display:block; height:100%; width:0; background:var(--accent, #3b82f6); transition:width .2s; }
+
+#cx-ramp-preset{ width:100%; }
+#cx-ramp{ width:100%; height:auto; aspect-ratio:260/120; border-radius:8px; border:1px solid rgba(255,255,255,.1); margin-top:6px; cursor:crosshair; touch-action:none; display:block; }
+.cx-ramp-info{ display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:11px; color:var(--muted, #8a94a6); margin-top:4px; }
+.cx-ramp-info button{ padding:3px 8px; font-size:11px; }
+.cx-badge{ font-size:11px; line-height:1.45; padding:6px 8px; border-radius:8px; background:rgba(120,190,255,.12); color:#bfe0ff; }
+#tracks-inner .clip.cx-freeze{ background-image:repeating-linear-gradient(135deg, rgba(160,215,255,.22) 0 6px, rgba(160,215,255,.08) 6px 12px) !important; }
+#tracks-inner .clip[data-cx-motion]::after{ content:attr(data-cx-motion); position:absolute; left:6px; bottom:2px; font-size:10px; line-height:1; opacity:.9; pointer-events:none; letter-spacing:2px; }
+.cx-auto{ display:flex; flex-direction:column; gap:8px; }
+.cx-auto-tip{ font-size:12px; line-height:1.5; color:var(--muted, #8a94a6); }
+.cx-auto-row{ display:grid; grid-template-columns:118px 1fr 84px; align-items:center; gap:8px; font-size:12px; }
+.cx-auto-row b{ font-weight:600; text-align:right; font-variant-numeric:tabular-nums; }
+.cx-auto-row select{ grid-column:2 / 4; }
+.cx-auto-res{ font-size:12px; line-height:1.5; min-height:18px; }
+.cx-auto-main{ padding:9px 10px; font-weight:600; }
+#cx-s-wave{ width:100%; height:70px; border-radius:8px; border:1px solid rgba(255,255,255,.1); }
+.cx-auto-btns{ display:grid; grid-template-columns:repeat(auto-fit, minmax(90px, 1fr)); gap:6px; }
+.cx-auto-btns button{ font-size:12px; padding:7px 6px; }
+#cx-auto-tb{ position:relative; display:inline-flex; margin:0 4px; }
+#cx-auto-tb > button{ padding:4px 8px; font-size:12px; }
+.cx-auto-menu{ display:none; position:absolute; bottom:calc(100% + 6px); left:0; z-index:50; min-width:190px; flex-direction:column; gap:2px; padding:6px; border-radius:10px; background:var(--panel, #121a2b); border:1px solid rgba(255,255,255,.12); box-shadow:0 12px 30px rgba(0,0,0,.45); }
+.cx-auto-menu.open{ display:flex; }
+.cx-auto-menu button{ text-align:left; font-size:12.5px; padding:7px 9px; }
+#tracks-inner .clip .cx-beats{ position:absolute; inset:0; pointer-events:none; }
+#tracks-inner .clip .cx-beats i{ position:absolute; top:0; bottom:0; width:1px; background:rgba(255,230,120,.45); }
+#tracks-inner .clip .cx-beats i.b4{ background:rgba(255,230,120,.9); width:2px; }
+.cx-fx-grid{ display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.cx-fx-grid button{ display:flex; align-items:center; gap:6px; font-size:12px; padding:7px 8px; text-align:left; }
+.cx-fx-grid button span{ font-size:15px; }
+.cx-fx-grid button.on{ outline:2px solid var(--accent, #3b82f6); outline-offset:-2px; background:rgba(59,130,246,.18); }
+.cx-split-grid{ display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.cx-split-grid button{ display:flex; flex-direction:column; align-items:center; gap:4px; padding:8px 4px; font-size:11px; line-height:1.25; }
+.cx-tpl-grid{ display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.cx-tpl-grid button{ height:54px; font-size:12px; border-radius:8px; background:#0c1424; color:#fff; overflow:hidden; }
+.cx-tpl-grid .cx-tpl-big b{ font-size:16px; font-weight:900; letter-spacing:.04em; text-shadow:0 3px 8px #000; }
+.cx-tpl-grid .cx-tpl-lower b{ background:#3d6bf5; padding:3px 7px; border-radius:4px; }
+.cx-tpl-grid .cx-tpl-neon b{ color:#7dfcff; text-shadow:0 0 8px #00e5ff, 0 0 16px #00e5ff; }
+.cx-tpl-grid .cx-tpl-outline b{ color:#fff; -webkit-text-stroke:1px #000; font-weight:900; font-size:15px; text-shadow:2px 2px 0 #000; }
+.cx-tpl-grid .cx-tpl-type b{ font-family:'Courier New', monospace; font-weight:400; }
+.cx-tpl-grid .cx-tpl-glitch b{ color:#ff3df5; text-shadow:3px 0 0 #00fff0; font-weight:900; }
+.cx-tpl-grid .cx-tpl-end b{ font-style:italic; }
+.cx-tpl-grid .cx-tpl-words b{ background:linear-gradient(transparent 55%, #ffcc00 55%); color:#fff; }
+.cx-badge-grid{ display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.cx-badge-grid button{ font-size:11.5px; font-weight:700; padding:7px 4px; color:#fff; background:var(--bc); border-color:transparent; }
+.cx-stk-grid{ display:grid; grid-template-columns:repeat(6, 1fr); gap:4px; }
+.cx-stk-grid button{ font-size:20px; padding:4px 0; line-height:1.3; }
+#cx-split-clear{ margin-top:6px; width:100%; }
+.cx-voice-grid{ display:grid; grid-template-columns:1fr 1fr; gap:5px; }
+.cx-voice-grid button{ font-size:11.5px; padding:6px 6px; text-align:left; }
+.cx-voice-grid button.on{ outline:2px solid var(--accent, #3b82f6); outline-offset:-2px; background:rgba(59,130,246,.18); }
+.cx-rec{ display:flex; flex-direction:column; gap:9px; }
+.cx-rec-modes{ display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; }
+.cx-rec-modes button{ display:flex; flex-direction:column; align-items:center; gap:3px; padding:9px 4px; font-size:20px; }
+.cx-rec-modes button b{ font-size:11px; font-weight:600; }
+.cx-rec-modes button.on, .cx-rec-srcs button.on{ outline:2px solid var(--accent, #3b82f6); outline-offset:-2px; background:rgba(59,130,246,.16); }
+.cx-rec-srcs{ display:grid; grid-template-columns:1fr 1fr; gap:6px; max-height:230px; overflow:auto; }
+.cx-rec-srcs button{ display:flex; flex-direction:column; gap:4px; padding:5px; font-size:11px; text-align:left; }
+.cx-rec-srcs img, .cx-rec-noimg{ width:100%; aspect-ratio:16/9; object-fit:contain; background:#000; border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:22px; }
+.cx-rec-srcs span{ overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+#cx-rec-bar{ position:fixed; top:12px; left:50%; transform:translateX(-50%); z-index:10050; display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:999px; background:rgba(15,20,32,.95); color:#fff; border:1px solid rgba(255,255,255,.15); box-shadow:0 10px 30px rgba(0,0,0,.5); font-size:13px; }
+#cx-rec-bar button{ padding:5px 10px; font-size:12px; border-radius:999px; }
+#cx-rec-bar #cx-rec-stop{ background:#e11d48; color:#fff; border-color:transparent; }
+#cx-rec-bar b{ font-variant-numeric:tabular-nums; min-width:44px; }
+.cx-rec-dot{ width:10px; height:10px; border-radius:50%; background:#ef4444; animation:cxRecBlink 1s infinite; }
+#cx-rec-bar.paused .cx-rec-dot{ animation:none; background:#f59e0b; }
+.cx-rec-count{ font-size:20px; font-weight:800; color:#ef4444; min-width:18px; text-align:center; }
+@keyframes cxRecBlink{ 50%{ opacity:.25; } }
+#cx-rec-open{ margin-top:6px; }
 </style>
 </head>
 <body>
@@ -698,6 +766,14 @@ body.cx-dragging-tool{ user-select:none; cursor:ew-resize !important; }
       <feFuncR id="colorgrade-r" type="gamma" amplitude="1" exponent="1" offset="0"/>
       <feFuncG id="colorgrade-g" type="gamma" amplitude="1" exponent="1" offset="0"/>
       <feFuncB id="colorgrade-b" type="gamma" amplitude="1" exponent="1" offset="0"/>
+    </feComponentTransfer>
+  </filter>
+  <filter id="cx-range-filter" color-interpolation-filters="sRGB">
+    <feColorMatrix type="saturate" values="1.0228"/>
+    <feComponentTransfer>
+      <feFuncR type="linear" slope="0.858824" intercept="0.062745"/>
+      <feFuncG type="linear" slope="0.858824" intercept="0.062745"/>
+      <feFuncB type="linear" slope="0.858824" intercept="0.062745"/>
     </feComponentTransfer>
   </filter>
   <filter id="cx-color-filter" color-interpolation-filters="sRGB">
@@ -5225,6 +5301,7 @@ function renderProps(){
         <div class="field"><label>Izlaz (s)</label><input type="number" id="p-anim-out" value="${anim.outDur}" min="0.1" max="3" step="0.1"></div>
       </div>
       <div style="font-size:10.5px;color:var(--muted);line-height:1.5;margin-top:-4px;">"Ulaz" i "izlaz" su koliko sekundi na POČETKU/KRAJU trajanja klipa animacija traje - ostatak vremena tekst stoji na svom konačnom mestu (osim kod "Kucanje", gde ulaz određuje brzinu otkucavanja).</div>
+      ${cxLoopHtml(c)}
       <hr class="divider">
       ${trackingSectionHtml(c)}
       <hr class="divider">
@@ -5287,6 +5364,7 @@ function renderProps(){
     $('#p-content').addEventListener('change', ()=> renderProps());
     $('#p-text-preset').addEventListener('change', (e)=>{ applyTextPreset(c, e.target.value); renderProps(); draw(); });
     $('#p-anim-preset').onchange = e=>{ c.text.animation.preset = e.target.value; previewClipPlayback(c); };
+    cxLoopBind(c);
     $('#p-anim-play').onclick = ()=> previewClipPlayback(c);
     $('#p-anim-in').oninput = e=>{ const v=+e.target.value; if(!isNaN(v)) c.text.animation.inDur = clamp(v, 0.1, 3); draw(); };
     $('#p-anim-out').oninput = e=>{ const v=+e.target.value; if(!isNaN(v)) c.text.animation.outDur = clamp(v, 0.1, 3); draw(); };
@@ -5415,6 +5493,7 @@ function renderProps(){
     </div>
     <div style="font-size:10.5px;color:var(--muted);line-height:1.5;margin-top:-4px;">Postepeno pojačavanje/utišavanje zvuka na početku/kraju OVOG klipa (nezavisno od jačine iznad) - koristi se da se izbegne "seckanje"/nagli prekid zvuka, čest slučaj za muziku i za početak/kraj govora.</div>
     ${cxAfxHtml(c, media)}
+    ${cxVoiceHtml(c, media)}
     ${!isVideo ? `
     <label class="checkbox-row" style="margin-top:6px;"><input type="checkbox" id="p-loop" ${c.loop ? 'checked' : ''}> 🔁 Ponavljaj u krug (loop) dok traje klip</label>
     <div style="font-size:10.5px;color:var(--muted);line-height:1.5;margin-top:-4px;">Korisno za pozadinsku muziku - produži "Trajanje" ispod duže od same pesme (npr. preko celog videa), i ona će se sama ponavljati od početka umesto da stane.</div>
@@ -5430,6 +5509,10 @@ function renderProps(){
     ${sliderRow('p-speed','Brzina (x)', Math.round((c.speed ?? 1)*100), 25, 400)}
     <label class="checkbox-row"><input type="checkbox" id="p-reverse" ${c.reverse ? 'checked' : ''}> ⏪ Reverse (pusti unazad)</label>
     <div style="font-size:10.5px;color:var(--muted);line-height:1.5;margin-top:-4px;">Promena brzine AUTOMATSKI menja i "Trajanje" klipa na tajmlajnu (2x = duplo kraće na tajmlajnu za isti sadržaj). Reverse radi ručnim vraćanjem unazad kroz snimak - može biti manje glatko od običnog puštanja, pogotovo na dužim/težim snimcima (browser mora da dekoduje unazad od prethodnog keyframe-a pri svakom koraku).</div>
+    ${cxMotionHtml(c, isVideo)}
+    ${cxAutoHtml(c, isVideo)}
+    ${cxFxHtml(c, isVideo)}
+    ${cxBgHtml(c, isVideo)}
     <hr class="divider">
     ${isVideo ? `
     <button type="button" id="p-ai-enhance" style="width:100%;">🤖 AI analiziraj i popravi kvalitet</button>
@@ -5548,6 +5631,7 @@ function renderProps(){
         <option value="slide-down" ${c.transitionType==='slide-down'?'selected':''}>Uklizavanje odozgo</option>
         <option value="zoom" ${c.transitionType==='zoom'?'selected':''}>Zumiranje + iščezavanje (uvećava se)</option>
         <option value="zoom-out" ${c.transitionType==='zoom-out'?'selected':''}>Zumiranje + iščezavanje (smanjuje se)</option>
+        ${cxTrOptions(c)}
       </select>
       <button type="button" class="tr-choose" title="Izaberi prelaz iz biblioteke"></button>
     </div>
@@ -5616,6 +5700,10 @@ function renderProps(){
     });
   });
   $('#p-reverse').onchange = e=>{ c.reverse = e.target.checked; draw(); };
+  cxMotionBind(c, isVideo);
+  cxAutoBind();
+  cxFxBind(c);
+  cxBgBind(c);
   $('#p-audio-fadein').oninput = e=>{ c.audioFadeIn = +e.target.value; syncValLabel(e); applyAllClipGains(activeClipsForTime(state.playhead)); };
   $('#p-audio-fadeout').oninput = e=>{ c.audioFadeOut = +e.target.value; syncValLabel(e); applyAllClipGains(activeClipsForTime(state.playhead)); };
   if(isVideo){
@@ -5761,6 +5849,7 @@ function renderProps(){
   $('#p-opacity').oninput = e=>{ c.opacity = +e.target.value/100; syncValLabel(e); draw(); };
   cxBlendBind(c);
   cxAfxBind(c);
+  cxVoiceBind(c);
   $('#p-in').onchange = e=>{
     const v = clamp(+e.target.value, 0, c.outTrim-0.2);
     const delta = v - c.inTrim;
@@ -5870,7 +5959,7 @@ function tick(now){
     if(active.includes(c)){
       let target = getSourceTimeForClip(c, t - c.start);
       if(c.loop && m.duration > 0) target = ((target % m.duration) + m.duration) % m.duration;
-      if(c.reverse){
+      if(c.reverse || cxManualSeek(c, t - c.start)){
         // Nema native "reverse play" u browserima - ručno pomeramo currentTime
         // UNAZAD svaki tik (nikad ne zovemo .play()). Može biti manje glatko od
         // običnog puštanja (browser mora da dekoduje od prethodnog keyframe-a
@@ -5878,7 +5967,7 @@ function tick(now){
         if(!el.paused) el.pause();
         if(Math.abs(el.currentTime - target) > 0.03) el.currentTime = clamp(target, 0, m.duration||target);
       } else {
-        if(el.playbackRate !== (c.speed||1)) el.playbackRate = c.speed||1;
+        { const __r = clamp(cxClipRate(c, t - c.start), 0.0625, 16); if(Math.abs(el.playbackRate - __r) > 0.01) el.playbackRate = __r; }
         if(el.paused) { el.currentTime = target; el.play().catch(()=>{}); }
         else if(Math.abs(el.currentTime - target) > 0.25) el.currentTime = target;
       }
@@ -7789,7 +7878,7 @@ function draw(){
     clips.forEach((c, i)=>{
       const m = mediaById(c.mediaId);
       if(!m) return;
-      const el = getPlaybackEl(c);
+      const el = cxFrameSource(c, getPlaybackEl(c), t - c.start);
       if(!el) return;
       const kf = getInterpolatedTransform(c, t - c.start);
       let alpha = kf.opacity;
@@ -7831,6 +7920,8 @@ function draw(){
       ctx.save();
       ctx.globalAlpha = clamp(alpha,0,1);
       if(cxBlendOk(c.blendMode)) ctx.globalCompositeOperation = c.blendMode;
+      cxCellClip(c, ctx, W, H);
+      if(outProgress !== null && CX_TR_SET[nextTransition]) ctx.globalAlpha *= cxTrOut(nextTransition, ctx, outProgress, W, H);
       let filterStr = `brightness(${c.filters.brightness}%) contrast(${c.filters.contrast}%) saturate(${c.filters.saturation}%)`;
       // Zamućenje: px vrednost skaliramo srazmerno trenutnoj (proxy) rezoluciji platna
       // u odnosu na ciljnu rezoluciju - bez ovoga bi isti broj piksela zamućenja
@@ -7976,6 +8067,8 @@ function draw(){
           ctx.scale(s, s);
           ctx.translate(-zcx, -zcy);
           ctx.globalAlpha = clamp(alpha,0,1) * inProgress;
+        } else if(CX_TR_SET[activeTransitionType]){
+          ctx.globalAlpha *= cxTrIn(activeTransitionType, ctx, inProgress, W, H);
         }
       }
       const transitionAlphaMult = (activeTransitionType === 'zoom' || activeTransitionType === 'zoom-out') ? inProgress : 1;
@@ -8110,6 +8203,7 @@ function draw(){
         }
       }catch(e){}
       if(transitionWrapped) ctx.restore();
+      if(activeTransitionType && CX_TR_SET[activeTransitionType]) cxTrOverlay(activeTransitionType, ctx, inProgress, W, H);
       ctx.restore();
     });
   });
@@ -8172,6 +8266,7 @@ function draw(){
       if(anim.alpha <= 0.004) return; // potpuno providno u ovom trenutku - ništa ne crtaj
       ctx.save();
       ctx.globalAlpha = c.opacity * anim.alpha;
+      cxTitleLoop(c, localTime, W, H);
       ctx.fillStyle = c.text.color;
       const size = c.text.size * textUiScale;
       ctx.font = `600 ${size}px "${c.text.font}", sans-serif`;
@@ -9531,7 +9626,7 @@ $('#btn-play-overlay').addEventListener('click', mainPlayToggle);
 $('#btn-back').addEventListener('click', ()=>{ pause(); seekTo(0); });
 $('#btn-fwd').addEventListener('click', ()=>{ pause(); seekTo(state.contentEnd); });
 
-$('#btn-split').addEventListener('click', splitAtPlayhead);
+$('#btn-split').addEventListener('click', ()=> splitAtPlayhead());
 $('#btn-delete').addEventListener('click', deleteSelected);
 $('#btn-undo').addEventListener('click', performUndo);
 $('#btn-redo').addEventListener('click', performRedo);
@@ -10726,6 +10821,7 @@ async function exportVideo(opts = {}){
       latencyMode: 'quality', // export nije uživo, pa enkoder sme da radi sporije radi boljeg kvaliteta
       colorSpace: exportColorSpace,
     });
+    const __cxRange = await cxRangeDecision({ codec: videoCodec.codec, width: W, height: H, framerate: fps, bitrate: computeExportBitrate(W, H), latencyMode: 'quality', colorSpace: exportColorSpace });
 
     if(audioSupported){
       audioEncoder = new AudioEncoder({
@@ -10828,6 +10924,7 @@ async function exportVideo(opts = {}){
         }
         cxConnectOffline(offlineCtx, c, gainNode, fadeGain);
         fadeGain.connect(outroGainNode);
+        if(cxRampAudio(offlineCtx, c, buf, gainNode, reversedBufferCache, m)) continue;
         const clipSpeed = c.speed || 1;
         if(c.reverse){
           // Reverse: napravi (i keširaj) OBRNUT bafer jednom po fajlu, pa iz
@@ -11024,6 +11121,7 @@ async function exportVideo(opts = {}){
         seeks.push(seekMediaEl(el, clamp(target, 0, m.duration||target)));
       });
       if(seeks.length) await Promise.all(seeks);
+      await cxPrepareBg(active);
       if(aiOn){
         for(const c of aiTargets()){
           const m = mediaById(c.mediaId);
@@ -11036,7 +11134,7 @@ async function exportVideo(opts = {}){
 
       draw();
 
-      const frame = new VideoFrame(canvas, { timestamp: Math.round(t*1e6), colorSpace: exportColorSpace });
+      const frame = new VideoFrame(__cxRange ? cxRangeCanvas(canvas) : canvas, { timestamp: Math.round(t*1e6), colorSpace: exportColorSpace });
       // Math.round: kod 29.97/23.976/59.94 fps bi i % 59.94 skoro nikad bio 0, pa bi
       // ceo video imao samo JEDAN ključni kadar - premotavanje u plejeru tada koči.
       videoEncoder.encode(frame, { keyFrame: i % Math.max(1, Math.round(fps*2)) === 0 });
@@ -13713,6 +13811,7 @@ async function cxRenderFrameAt(t){
     waits.push(Promise.race([seekMediaElAndWait(el, clamp(target, 0, m.duration || target)), new Promise(r=> setTimeout(r, 1500))]));
   });
   if(waits.length) await Promise.all(waits);
+  if(typeof cxPrepareBg === 'function') await cxPrepareBg(active);
   draw();
 }
 
@@ -14423,6 +14522,26 @@ async function cxLongAudioEncoder(audioClips, sr, audioEncoder, say){
       cxEnvApply(g.gain, p.volEnv, W0, W1, 1); cxEnvApply(fg.gain, p.fadeEnv, W0, W1, 1);
       cxConnectOffline(octx, c, g, fg); // g -> (EQ/mikser) -> fg
       fg.connect(outroG);
+      if(c.freezeAt != null) continue; // zamrznut kadar je nem
+      if(cxHasRamp(c)){
+        // kriva brzine: jedan komad izvora + automatika brzine (tačno kao u običnom exportu)
+        const sa = getSourceTimeForClip(c, a - c.start), sb = getSourceTimeForClip(c, b - c.start);
+        const lo = Math.max(0, Math.min(sa, sb)), hi = Math.min(m.duration || Infinity, Math.max(sa, sb));
+        if(hi - lo > 0.001){
+          const seg = await src.get(m, lo, hi - lo);
+          if(seg){
+            if(c.reverse){ seg[0].reverse(); seg[1].reverse(); }
+            const ab = octx.createBuffer(2, seg[0].length, sr);
+            ab.copyToChannel(seg[0], 0); ab.copyToChannel(seg[1], 1);
+            const bs = octx.createBufferSource(); bs.buffer = ab;
+            const D = c.duration, knots = [a, ...c.ramp.p.map(q=> c.start + q[0]*D).filter(T=> T > a && T < b), b];
+            knots.forEach((T, i)=>{ const r = Math.max(0.01, cxClipRate(c, T - c.start)); i ? bs.playbackRate.linearRampToValueAtTime(r, T - W0) : bs.playbackRate.setValueAtTime(r, T - W0); });
+            bs.connect(g);
+            try{ bs.start(a - W0, 0, hi - lo); bs.stop(b - W0); }catch(e){}
+          }
+        }
+        continue;
+      }
       const sp = c.speed || 1;
       // delovi izvora koje treba pustiti: [timeline_a, timeline_b, src_start, reverse]
       const pieces = [];
@@ -14537,6 +14656,2149 @@ function cxInitLong(tries){
 (function(){
   const go = ()=> setTimeout(()=> cxInitLong(0), 200);
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
+})();
+
+
+/* ============================================================
+   ISPRAVKA CRNE I BELE (opseg boja) PRI EXPORTU
+   Neki hardverski enkoderi (najčešće na Windows-u) pretvaraju sliku u
+   "pun" opseg 0–255, a fajl označe kao "video" opseg 16–235. Plejer onda
+   crne senke pretvori u čistu crnu, a svetle delove u čistu belu (gubi se
+   detalj). Pre exporta se enkoder proba na jednom kadru: ako tako radi,
+   slika se pre enkodovanja sabije u 16–235 i rezultat je ispravan.
+   Ručno: localStorage 'cx-range' = 'on' | 'off' (podrazumevano: automatski).
+   ============================================================ */
+async function cxProbeEncoderRange(cfg){
+  try{
+    const W = cfg.width, H = cfg.height;
+    const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    const g = cv.getContext('2d');
+    g.fillStyle = '#000'; g.fillRect(0, 0, W/2, H); g.fillStyle = '#fff'; g.fillRect(W/2, 0, W - W/2, H);
+    const chunks = []; let dcfg = null;
+    const enc = new VideoEncoder({ output: (c, m)=>{ chunks.push(c); if(m && m.decoderConfig) dcfg = m.decoderConfig; }, error: ()=>{} });
+    enc.configure(cfg);
+    const f = new VideoFrame(cv, { timestamp: 0, colorSpace: cfg.colorSpace });
+    enc.encode(f, { keyFrame: true }); f.close();
+    await enc.flush(); try{ enc.close(); }catch(_){}
+    if(!chunks.length || !dcfg) return null;
+    let res = null;
+    const read = async (fr)=>{
+      try{
+        const size = fr.allocationSize();
+        const buf = new Uint8Array(size);
+        const layout = await fr.copyTo(buf);
+        const y0 = layout[0], fw = fr.codedWidth, fh = fr.codedHeight;
+        const at = (x, y)=> buf[y0.offset + Math.floor(y) * y0.stride + Math.floor(x)];
+        res = { black: at(fw*0.25, fh*0.5), white: at(fw*0.75, fh*0.5), format: fr.format };
+      }catch(e){ res = null; }
+      fr.close();
+    };
+    for(const hw of ['prefer-software', 'no-preference']){
+      const pending = [];
+      const dec = new VideoDecoder({ output: fr=> pending.push(read(fr)), error: ()=>{} });
+      try{
+        dec.configure({ ...dcfg, hardwareAcceleration: hw });
+        dec.decode(chunks[0]); await dec.flush();
+        await Promise.all(pending);
+      }catch(e){}
+      try{ dec.close(); }catch(_){}
+      if(res) break;
+    }
+    return res;
+  }catch(e){ return null; }
+}
+async function cxRangeDecision(cfg){
+  let mode = 'auto'; try{ mode = localStorage.getItem('cx-range') || 'auto'; }catch(_){}
+  if(mode === 'on') return true;
+  if(mode === 'off') return false;
+  const r = await cxProbeEncoderRange(cfg);
+  window.__cxRangeProbe = r;
+  if(!r) return false;
+  return r.black < 10 && r.white > 245; // pun opseg, a fajl je označen kao video opseg
+}
+var __cxRangeCv = null;
+function cxRangeCanvas(src){
+  if(!__cxRangeCv) __cxRangeCv = document.createElement('canvas');
+  const cv = __cxRangeCv;
+  if(cv.width !== src.width || cv.height !== src.height){ cv.width = src.width; cv.height = src.height; }
+  const g = cv.getContext('2d');
+  g.filter = 'url(#cx-range-filter)';
+  g.drawImage(src, 0, 0);
+  g.filter = 'none';
+  return cv;
+}
+
+
+/* ============================================================
+   PAKET 1: BRZINA I POKRET
+   - kriva brzine (speed ramp) sa šablonima i ručnim uređivanjem
+   - zamrznuti kadar (freeze frame)
+   - stabilizacija drhtave slike (analiza pokreta + glatka putanja)
+   - zamućenje pokreta (motion blur, mešanje kadrova)
+   ============================================================ */
+var CX_RAMPS = {
+  montaza: { n:'Montaža',            p:[[0,2.5],[0.35,2.5],[0.45,0.5],[0.55,0.5],[0.65,2.5],[1,2.5]] },
+  heroj:   { n:'Herojski trenutak',  p:[[0,1],[0.3,1],[0.4,0.25],[0.6,0.25],[0.7,1],[1,1]] },
+  metak:   { n:'Metak (bullet time)',p:[[0,4],[0.25,4],[0.35,0.2],[0.65,0.2],[0.75,4],[1,4]] },
+  skok:    { n:'Skok',               p:[[0,1],[0.4,1],[0.45,4],[0.55,4],[0.6,1],[1,1]] },
+  ulaz:    { n:'Brz ulaz',           p:[[0,5],[0.3,5],[0.5,1],[1,1]] },
+  izlaz:   { n:'Brz izlaz',          p:[[0,1],[0.5,1],[0.7,5],[1,5]] },
+};
+var CX_RAMP_MIN = 0.1, CX_RAMP_MAX = 10;
+
+function cxHasRamp(c){ return !!(c && c.ramp && Array.isArray(c.ramp.p) && c.ramp.p.length > 1); }
+function cxRampV(p, u){
+  if(u <= p[0][0]) return p[0][1];
+  for(let i=1; i<p.length; i++){
+    if(u <= p[i][0]){ const a = p[i-1], b = p[i], s = b[0] - a[0]; return s > 1e-9 ? a[1] + (b[1]-a[1])*(u-a[0])/s : b[1]; }
+  }
+  return p[p.length-1][1];
+}
+/* integral krive od 0 do u (koliko "izvora" prođe do tačke u, za trajanje 1) */
+function cxRampF(p, u){
+  let acc = 0;
+  for(let i=1; i<p.length; i++){
+    const a = p[i-1], b = p[i];
+    if(u <= a[0]) break;
+    const e = Math.min(u, b[0]), s = b[0] - a[0];
+    if(s <= 1e-9) continue;
+    const ve = a[1] + (b[1]-a[1])*(e-a[0])/s;
+    acc += (a[1] + ve)/2 * (e - a[0]);
+  }
+  return acc;
+}
+function cxRampK(c){ // množilac tako da kriva tačno pokrije izabrani deo izvora
+  const S = Math.max(1e-6, c.outTrim - c.inTrim), D = Math.max(1e-6, c.duration);
+  return S / (D * Math.max(1e-6, cxRampF(c.ramp.p, 1)));
+}
+function cxRampOffset(c, lt){
+  const S = Math.max(0, c.outTrim - c.inTrim), D = Math.max(1e-6, c.duration);
+  const u = clamp(lt / D, 0, 1);
+  return S * cxRampF(c.ramp.p, u) / Math.max(1e-6, cxRampF(c.ramp.p, 1));
+}
+/* trenutna brzina reprodukcije klipa u lokalnom vremenu lt */
+function cxClipRate(c, lt){
+  if(c.freezeAt != null) return 0;
+  if(cxHasRamp(c)) return cxRampK(c) * cxRampV(c.ramp.p, clamp(lt / Math.max(1e-6, c.duration), 0, 1));
+  return c.speed || 1;
+}
+/* video element ne može ispod 0.0625x - tada (i za zamrznut kadar) ručno pomeramo kadar */
+function cxManualSeek(c, lt){
+  if(c.freezeAt != null) return true;
+  return cxHasRamp(c) && cxClipRate(c, lt) < 0.0625;
+}
+function cxRampSlice(p, a, b){
+  const out = [[0, cxRampV(p, a)]];
+  p.forEach(([u, v])=>{ if(u > a + 1e-6 && u < b - 1e-6) out.push([(u - a)/(b - a), v]); });
+  out.push([1, cxRampV(p, b)]);
+  return out;
+}
+function cxRampApplyDuration(c){
+  const S = Math.max(0.01, c.outTrim - c.inTrim), sp = c.speed || 1;
+  c.duration = Math.max(0.1, cxHasRamp(c) ? S / (sp * cxRampF(c.ramp.p, 1)) : S / sp);
+}
+
+/* ---- centralno mapiranje vremena: tajmlajn -> izvor (koriste ga pregled, skrol i export) ---- */
+var __cxGSTC = getSourceTimeForClip;
+getSourceTimeForClip = function(c, lt){
+  if(c && c.freezeAt != null) return c.freezeAt;
+  if(cxHasRamp(c)){
+    const off = cxRampOffset(c, lt);
+    return c.reverse ? clamp(c.outTrim - off, c.inTrim, c.outTrim) : c.inTrim + off;
+  }
+  return __cxGSTC(c, lt);
+};
+
+/* ---- zvuk u exportu za klip sa krivom brzine / zamrznut kadar ---- */
+function cxRampAudio(octx, c, buf, gainNode, revCache, m){
+  if(c.freezeAt != null) return true; // zamrznut kadar je nem
+  if(!cxHasRamp(c)) return false;
+  let b = buf, offset = c.inTrim;
+  if(c.reverse){
+    b = revCache.get(m.id);
+    if(!b){ b = getReversedAudioBuffer(octx, buf); revCache.set(m.id, b); }
+    offset = buf.duration - c.outTrim;
+  }
+  offset = clamp(offset, 0, buf.duration);
+  const S = Math.min(c.outTrim - c.inTrim, buf.duration - offset);
+  if(S <= 0.001) return true;
+  const src = octx.createBufferSource();
+  src.buffer = b;
+  const k = cxRampK(c), p = c.ramp.p, D = c.duration;
+  src.playbackRate.setValueAtTime(Math.max(0.01, k*p[0][1]), c.start);
+  for(let i=1; i<p.length; i++) src.playbackRate.linearRampToValueAtTime(Math.max(0.01, k*p[i][1]), c.start + p[i][0]*D);
+  src.connect(gainNode);
+  try{ src.start(c.start, offset, S); src.stop(c.start + D); }catch(e){}
+  return true;
+}
+
+/* ---- deljenje klipa: tačno vreme izvora za ubrzane / unazad / klipove sa krivom ---- */
+function cxFixSplitPair(first, second, o){
+  const needs = cxHasRamp(first) || first.freezeAt != null || (first.speed || 1) !== 1 || first.reverse;
+  if(!needs) return;
+  const lt = first.duration;
+  const orig = Object.assign({}, first, { inTrim:o.inTrim, outTrim:o.outTrim, duration:o.duration });
+  if(first.freezeAt != null){
+    first.inTrim = second.inTrim = o.inTrim; first.outTrim = second.outTrim = o.outTrim; return;
+  }
+  const sT = getSourceTimeForClip(orig, lt);
+  if(first.reverse){ first.inTrim = sT; first.outTrim = o.outTrim; second.inTrim = o.inTrim; second.outTrim = sT; }
+  else { first.inTrim = o.inTrim; first.outTrim = sT; second.inTrim = sT; second.outTrim = o.outTrim; }
+  if(cxHasRamp(first)){
+    const U = clamp(lt / o.duration, 0.0001, 0.9999), p = first.ramp.p;
+    first.ramp = { preset:'custom', p: cxRampSlice(p, 0, U) };
+    second.ramp = { preset:'custom', p: cxRampSlice(p, U, 1) };
+  }
+}
+var __cxSplit = splitAtPlayhead;
+splitAtPlayhead = function(){
+  const before = new Map(state.clips.map(c=> [c.id, { inTrim:c.inTrim, outTrim:c.outTrim, duration:c.duration, start:c.start }]));
+  const r = __cxSplit.apply(this, arguments);
+  state.clips.filter(c=> !before.has(c.id)).forEach(second=>{
+    const first = state.clips.find(c=> before.has(c.id) && c.trackId === second.trackId && c.mediaId === second.mediaId && before.get(c.id).duration !== c.duration);
+    if(first){ cxFixSplitPair(first, second, before.get(first.id)); }
+  });
+  return r;
+};
+
+/* ---- zamrznut kadar ---- */
+function cxCloneClip(c){ const { el, ...rest } = c; const n = JSON.parse(JSON.stringify(rest)); n.id = uid('c'); return n; }
+function cxFreezeFrame(c, secs){
+  const m = mediaById(c.mediaId);
+  if(!m || m.kind !== 'video'){ alert('Zamrznut kadar radi samo na video klipu.'); return; }
+  secs = clamp(+secs || 2, 0.2, 30);
+  const t = state.playhead, lt = t - c.start;
+  if(!(lt > 0.04 && lt < c.duration - 0.04)){ alert('Postavi plejhed (crvenu liniju) unutar izabranog klipa, na kadar koji želiš da zamrzneš.'); return; }
+  pause();
+  pushUndoSnapshot();
+  let srcT = getSourceTimeForClip(c, lt);
+  if(c.loop && m.duration > 0) srcT = ((srcT % m.duration) + m.duration) % m.duration;
+  srcT = clamp(srcT, 0, Math.max(0, (m.duration || srcT) - 0.02));
+  const kf = getInterpolatedTransform(c, lt);
+  const o = { inTrim:c.inTrim, outTrim:c.outTrim, duration:c.duration, start:c.start };
+  const second = cxCloneClip(c);
+  second.start = t; second.duration = c.duration - lt;
+  second.inTrim = c.inTrim + lt*(c.speed||1); second.outTrim = second.inTrim + second.duration*(c.speed||1);
+  c.duration = lt; c.outTrim = c.inTrim + lt*(c.speed||1);
+  cxFixSplitPair(c, second, o);
+  if(Array.isArray(second.keyframes)) second.keyframes = second.keyframes.map(k=> Object.assign({}, k, { time: k.time - lt })).filter(k=> k.time >= 0);
+  if(Array.isArray(c.keyframes)) c.keyframes = c.keyframes.filter(k=> k.time <= lt + 1e-6);
+  c.filters.fadeOut = 0; c.audioFadeOut = 0;
+  second.filters.fadeIn = 0; second.audioFadeIn = 0;
+  const fr = cxCloneClip(c);
+  Object.assign(fr, { start:t, duration:secs, freezeAt:srcT, inTrim:srcT, outTrim:srcT + 0.04, ramp:null, speed:1, reverse:false, loop:false, muted:true,
+    keyframesEnabled:false, keyframes:[], audioFadeIn:0, audioFadeOut:0 });
+  fr.transform = Object.assign({}, c.transform, { x:kf.x, y:kf.y, scale:kf.scale });
+  fr.opacity = kf.opacity;
+  fr.filters.fadeIn = 0; fr.filters.fadeOut = 0;
+  state.clips.forEach(x=>{ if(x !== c && x.trackId === c.trackId && x.start >= t - 1e-6) x.start += secs; });
+  second.start = t + secs;
+  fr.el = createClipMediaElement(m);
+  second.el = createClipMediaElement(m);
+  state.clips.push(fr, second);
+  recalcDuration();
+  renderTimeline();
+  selectClip(fr.id);
+  seekTo(t + 0.001);
+}
+
+/* ============================================================
+   STABILIZACIJA
+   Analiza: video se pusti u pozadini (bez zvuka), svaki kadar se umanji
+   na ~192 px, pa se blokovima traži pomeraj i rotacija u odnosu na
+   prethodni kadar. Putanja kamere se izgladi (Gauss), a razlika između
+   glatke i stvarne putanje je korekcija koja se primenjuje pri crtanju.
+   ============================================================ */
+var CX_STAB_W = 192;
+function cxGrayFrom(g, w, h){
+  const d = g.getImageData(0, 0, w, h).data, out = new Float32Array(w*h);
+  for(let i=0, j=0; i<out.length; i++, j+=4) out[i] = 0.299*d[j] + 0.587*d[j+1] + 0.114*d[j+2];
+  return out;
+}
+function cxHalf(a, w, h){
+  const w2 = w>>1, h2 = h>>1, o = new Float32Array(w2*h2);
+  for(let y=0; y<h2; y++) for(let x=0; x<w2; x++){
+    const i = (2*y)*w + 2*x; o[y*w2 + x] = (a[i] + a[i+1] + a[i+w] + a[i+w+1]) * 0.25;
+  }
+  return o;
+}
+function cxSad(A, B, w, x0, y0, dx, dy, bs){
+  let s = 0;
+  for(let y=0; y<bs; y++){
+    let ia = (y0+y)*w + x0, ib = (y0+y+dy)*w + x0 + dx;
+    for(let x=0; x<bs; x++) s += Math.abs(A[ia++] - B[ib++]);
+  }
+  return s;
+}
+/* pomeraj sadržaja iz kadra A u kadar B: {dx, dy, da} (pikseli analize, radijani) ili null */
+function cxEstimateMotion(A, B, w, h){
+  const A2 = cxHalf(A, w, h), B2 = cxHalf(B, w, h), w2 = w>>1, h2 = h>>1;
+  const R2 = 7, bs2 = 8, gx = 9, gy = 6, vecs = [];
+  for(let j=0; j<gy; j++) for(let i=0; i<gx; i++){
+    const x0 = Math.round(R2 + 1 + (w2 - bs2 - 2*R2 - 2) * i/(gx-1));
+    const y0 = Math.round(R2 + 1 + (h2 - bs2 - 2*R2 - 2) * j/(gy-1));
+    // tekstura bloka (ravna površina = nepouzdan blok)
+    let mu = 0; for(let y=0; y<bs2; y++) for(let x=0; x<bs2; x++) mu += A2[(y0+y)*w2 + x0 + x];
+    mu /= bs2*bs2;
+    let vr = 0; for(let y=0; y<bs2; y++) for(let x=0; x<bs2; x++){ const d = A2[(y0+y)*w2 + x0 + x] - mu; vr += d*d; }
+    if(vr / (bs2*bs2) < 25) continue;
+    let best = Infinity, bx = 0, by = 0;
+    for(let dy=-R2; dy<=R2; dy++) for(let dx=-R2; dx<=R2; dx++){
+      const s = cxSad(A2, B2, w2, x0, y0, dx, dy, bs2);
+      if(s < best){ best = s; bx = dx; by = dy; }
+    }
+    // dorada na punoj rezoluciji analize, ±2 px oko grube procene + podpiksel
+    const X0 = x0*2, Y0 = y0*2, bs = 16;
+    let fb = Infinity, fx = 2*bx, fy = 2*by;
+    const cx0 = 2*bx, cy0 = 2*by, grid = {};
+    for(let dy=cy0-2; dy<=cy0+2; dy++) for(let dx=cx0-2; dx<=cx0+2; dx++){
+      if(X0+dx < 0 || Y0+dy < 0 || X0+dx+bs > w || Y0+dy+bs > h) continue;
+      const s = cxSad(A, B, w, X0, Y0, dx, dy, bs);
+      grid[dx+','+dy] = s;
+      if(s < fb){ fb = s; fx = dx; fy = dy; }
+    }
+    const sub = (m, c0, p)=> (m !== undefined && p !== undefined) ? (m - p) / (2*(m - 2*c0 + p) || 1) : 0;
+    const sx = clamp(sub(grid[(fx-1)+','+fy], fb, grid[(fx+1)+','+fy]), -0.5, 0.5);
+    const sy = clamp(sub(grid[fx+','+(fy-1)], fb, grid[fx+','+(fy+1)]), -0.5, 0.5);
+    vecs.push({ px: X0 + bs/2 - w/2, py: Y0 + bs/2 - h/2, mx: fx + sx, my: fy + sy });
+  }
+  if(vecs.length < 4) return null;
+  // RANSAC: par blokova određuje pomeraj + rotaciju; pobeđuje model sa najviše saglasnih blokova
+  const fitRes = (v, tx, ty, th)=> Math.hypot(v.mx - (tx - th*v.py), v.my - (ty + th*v.px));
+  let best = null, bestN = -1, bestE = Infinity;
+  for(let i=0; i<vecs.length; i++) for(let j=i+1; j<vecs.length; j++){
+    const a = vecs[i], b = vecs[j], dpx = b.px - a.px, dpy = b.py - a.py, L2 = dpx*dpx + dpy*dpy;
+    if(L2 < 900) continue;
+    const th = (dpx*(b.my - a.my) - dpy*(b.mx - a.mx)) / L2;
+    if(Math.abs(th) > 0.08) continue;
+    const tx = (a.mx + th*a.py + b.mx + th*b.py)/2, ty = (a.my - th*a.px + b.my - th*b.px)/2;
+    let n = 0, e = 0;
+    for(const v of vecs){ const r = fitRes(v, tx, ty, th); if(r < 0.6){ n++; e += r; } }
+    if(n > bestN || (n === bestN && e < bestE)){ bestN = n; bestE = e; best = [tx, ty, th]; }
+  }
+  if(!best) return null;
+  let [tx, ty, th] = best;
+  for(let it=0; it<2; it++){
+    const inl = vecs.filter(v=> fitRes(v, tx, ty, th) < 0.6);
+    if(inl.length < 3) break;
+    const mx = inl.reduce((s, v)=> s + v.mx, 0)/inl.length, my = inl.reduce((s, v)=> s + v.my, 0)/inl.length;
+    const px = inl.reduce((s, v)=> s + v.px, 0)/inl.length, py = inl.reduce((s, v)=> s + v.py, 0)/inl.length;
+    let num = 0, den = 0;
+    inl.forEach(v=>{ const qx = v.px - px, qy = v.py - py, rx = v.mx - mx, ry = v.my - my; num += qx*ry - qy*rx; den += qx*qx + qy*qy; });
+    th = den > 0 ? num/den : 0;
+    tx = mx + th*py; ty = my - th*px;
+  }
+  // fino podešavanje celom slikom (Lucas-Kanade, otporno na pokretne objekte) - tačan podpiksel i rotacija
+  [tx, ty, th] = cxRefineLK(A, B, w, h, tx, ty, th);
+  return { dx: tx, dy: ty, da: th };
+}
+function cxRefineLK(A, B, w, h, tx, ty, th){
+  const Gx = new Float32Array(w*h), Gy = new Float32Array(w*h);
+  for(let y=1; y<h-1; y++) for(let x=1; x<w-1; x++){ const i = y*w + x; Gx[i] = (B[i+1] - B[i-1]) * 0.5; Gy[i] = (B[i+w] - B[i-w]) * 0.5; }
+  const bil = (I, x, y)=>{ const x0 = x|0, y0 = y|0, fx = x - x0, fy = y - y0, i = y0*w + x0; return (I[i]*(1-fx) + I[i+1]*fx)*(1-fy) + (I[i+w]*(1-fx) + I[i+w+1]*fx)*fy; };
+  const cx = w/2, cy = h/2, M = 6;
+  for(let it=0; it<5; it++){
+    let h00=0,h01=0,h02=0,h11=0,h12=0,h22=0,g0=0,g1=0,g2=0, n = 0;
+    for(let y=M; y<h-M; y+=1) for(let x=M; x<w-M; x+=1){
+      const rx = x - cx + 0.5, ry = y - cy + 0.5;
+      const qx = x + tx - th*ry, qy = y + ty + th*rx;
+      if(qx < 1 || qy < 1 || qx >= w-2 || qy >= h-2) continue;
+      const e = bil(B, qx, qy) - A[y*w + x];
+      const bx = bil(Gx, qx, qy), by = bil(Gy, qx, qy), j2 = -bx*ry + by*rx;
+      const ae = Math.abs(e), wt = ae < 8 ? 1 : 8/ae;
+      h00 += wt*bx*bx; h01 += wt*bx*by; h02 += wt*bx*j2; h11 += wt*by*by; h12 += wt*by*j2; h22 += wt*j2*j2;
+      g0 += wt*bx*e; g1 += wt*by*e; g2 += wt*j2*e; n++;
+    }
+    if(n < 100) break;
+    // 3x3 sistem (simetričan) - Kramerovo pravilo
+    const det = h00*(h11*h22 - h12*h12) - h01*(h01*h22 - h12*h02) + h02*(h01*h12 - h11*h02);
+    if(!isFinite(det) || Math.abs(det) < 1e-9) break;
+    const d0 = -( g0*(h11*h22 - h12*h12) - h01*(g1*h22 - h12*g2) + h02*(g1*h12 - h11*g2) ) / det;
+    const d1 = -( h00*(g1*h22 - g2*h12) - g0*(h01*h22 - h12*h02) + h02*(h01*g2 - g1*h02) ) / det;
+    const d2 = -( h00*(h11*g2 - h12*g1) - h01*(h01*g2 - g1*h02) + g0*(h01*h12 - h11*h02) ) / det;
+    if(!isFinite(d0+d1+d2) || Math.abs(d0) > 3 || Math.abs(d1) > 3 || Math.abs(d2) > 0.05) break;
+    tx += d0; ty += d1; th += d2;
+    if(Math.abs(d0) + Math.abs(d1) < 0.01 && Math.abs(d2) < 1e-4) break;
+  }
+  return [tx, ty, th];
+}
+
+async function cxStabAnalyze(c, onProgress){
+  const m = mediaById(c.mediaId);
+  if(!m || m.kind !== 'video') throw new Error('Stabilizacija radi samo na video klipu.');
+  const v = document.createElement('video');
+  v.muted = true; v.playsInline = true; v.preload = 'auto'; v.crossOrigin = 'anonymous';
+  v.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:2px;height:2px;opacity:0;';
+  v.src = m.url;
+  document.body.appendChild(v);
+  try{
+    await new Promise((res, rej)=>{ if(v.readyState >= 1) return res(); v.onloadedmetadata = ()=>res(); v.onerror = ()=>rej(new Error('Video ne može da se učita.')); });
+    const vw = v.videoWidth || 16, vh = v.videoHeight || 9;
+    const aw = vw >= vh ? CX_STAB_W : Math.round(CX_STAB_W * vw / vh) & ~1;
+    const ah = vw >= vh ? (Math.round(CX_STAB_W * vh / vw) & ~1) : CX_STAB_W;
+    const cv = document.createElement('canvas'); cv.width = aw; cv.height = ah;
+    const g = cv.getContext('2d', { willReadFrequently:true });
+    const a = Math.max(0, Math.min(c.inTrim, c.outTrim) - 0.5), b = Math.min(m.duration || Infinity, Math.max(c.inTrim, c.outTrim) + 0.5);
+    const samples = [];
+    let prev = null, X = 0, Y = 0, A = 0, lastT = -1;
+    const take = (t)=>{
+      if(t <= lastT + 1e-4) return;
+      g.drawImage(v, 0, 0, aw, ah);
+      const cur = cxGrayFrom(g, aw, ah);
+      if(prev){
+        const mo = cxEstimateMotion(prev, cur, aw, ah);
+        if(mo){ X += mo.dx; Y += mo.dy; A += mo.da; }
+      }
+      samples.push([t, X, Y, A]);
+      prev = cur; lastT = t;
+      if(onProgress) onProgress(clamp((t - a) / Math.max(0.01, b - a), 0, 1));
+    };
+    const seekWait = (t)=> new Promise(res=>{ const done = ()=>{ v.removeEventListener('seeked', done); res(); }; v.addEventListener('seeked', done); v.currentTime = t; setTimeout(done, 3000); });
+    if(typeof v.requestVideoFrameCallback === 'function'){
+      await seekWait(a);
+      take(v.currentTime);
+      await new Promise(res=>{
+        let finished = false;
+        const fin = ()=>{ if(!finished){ finished = true; try{ v.pause(); }catch(e){} res(); } };
+        const cb = (now, meta)=>{
+          if(finished) return;
+          const t = meta.mediaTime;
+          take(t);
+          if(t >= b - 0.02 || v.ended) return fin();
+          v.requestVideoFrameCallback(cb);
+        };
+        v.requestVideoFrameCallback(cb);
+        v.addEventListener('ended', fin);
+        v.playbackRate = 1;
+        v.play().catch(()=> fin());
+        // sigurnosni izlaz ako se reprodukcija zaglavi
+        let lastSeen = -1, stuck = 0;
+        const iv = setInterval(()=>{
+          if(finished){ clearInterval(iv); return; }
+          if(lastT === lastSeen){ if(++stuck > 8){ clearInterval(iv); fin(); } } else { stuck = 0; lastSeen = lastT; }
+        }, 500);
+      });
+    }
+    if(samples.length < 3 || samples[samples.length-1][0] < b - 0.3){
+      // rezerva: kadar po kadar (sporije), 15 kadrova u sekundi
+      for(let t = Math.max(a, lastT + 1/15); t < b; t += 1/15){ await seekWait(t); take(v.currentTime); }
+    }
+    if(samples.length < 3) throw new Error('Nije bilo dovoljno kadrova za analizu.');
+    return { aw, ah, s: samples.map(r=> [+r[0].toFixed(4), +r[1].toFixed(3), +r[2].toFixed(3), +r[3].toFixed(6)]) };
+  } finally {
+    try{ v.pause(); v.removeAttribute('src'); v.load(); }catch(e){}
+    v.remove();
+  }
+}
+
+/* izglađena putanja -> korekcije {t, x, y, a} (x,y kao deo širine/visine) + potrebno uvećanje */
+function cxStabCompute(st){
+  const s = st.s, n = s.length, strength = clamp(st.strength ?? 60, 0, 100) / 100;
+  const sigma = 0.08 + 2.2 * Math.pow(strength, 1.6); // sekunde
+  const out = new Array(n);
+  let j0 = 0;
+  for(let i=0; i<n; i++){
+    const t = s[i][0];
+    while(j0 < n && s[j0][0] < t - 3*sigma) j0++;
+    let w = 0, X = 0, Y = 0, A = 0;
+    for(let j=j0; j<n && s[j][0] <= t + 3*sigma; j++){
+      const d = (s[j][0] - t) / sigma, k = Math.exp(-0.5*d*d);
+      w += k; X += k*s[j][1]; Y += k*s[j][2]; A += k*s[j][3];
+    }
+    out[i] = [t, (X/w - s[i][1]) / st.aw, (Y/w - s[i][2]) / st.ah, A/w - s[i][3]];
+  }
+  const ar = Math.max(st.aw/st.ah, st.ah/st.aw);
+  const need = out.map(r=> Math.abs(Math.cos(r[3])) + Math.abs(Math.sin(r[3]))*ar + 2*Math.max(Math.abs(r[1]), Math.abs(r[2]))).sort((a,b)=>a-b);
+  const z = clamp(need[Math.min(n-1, Math.floor(n*0.98))] || 1, 1, 1.35);
+  return { corr: out, zoom: z };
+}
+var __cxStabCache = new WeakMap();
+function cxStabOf(c){
+  const st = c.stab;
+  if(!st || !st.on || !st.s || st.s.length < 3) return null;
+  let e = __cxStabCache.get(st);
+  const key = st.strength + '|' + st.s.length;
+  if(!e || e.key !== key){ e = Object.assign(cxStabCompute(st), { key }); __cxStabCache.set(st, e); }
+  return e;
+}
+function cxStabAt(e, t){
+  const r = e.corr, n = r.length;
+  if(t <= r[0][0]) return r[0];
+  if(t >= r[n-1][0]) return r[n-1];
+  let lo = 0, hi = n-1;
+  while(hi - lo > 1){ const mid = (lo+hi)>>1; if(r[mid][0] <= t) lo = mid; else hi = mid; }
+  const a = r[lo], b = r[hi], f = (t - a[0]) / Math.max(1e-6, b[0] - a[0]);
+  return [t, a[1] + (b[1]-a[1])*f, a[2] + (b[2]-a[2])*f, a[3] + (b[3]-a[3])*f];
+}
+
+/* ---- izvor kadra za crtanje: stabilizacija + zamućenje pokreta ---- */
+var __cxFS = new WeakMap();
+function cxFrameSource(c, el, lt){
+  if(!el || !c || c.type !== 'video') return el;
+  const stab = cxStabOf(c);
+  const mb = clamp(+(c.filters && c.filters.motionBlur) || 0, 0, 100);
+  const fxOn = typeof cxFxActive === 'function' ? cxFxActive(c) : null;
+  const bgOn = typeof cxBgOn === 'function' && cxBgOn(c);
+  if(!stab && !mb && !fxOn && !bgOn) return el;
+  const sw = el.videoWidth || el.naturalWidth || el.width, sh = el.videoHeight || el.naturalHeight || el.height;
+  if(!sw || !sh) return el;
+  if(el.tagName === 'VIDEO' && el.readyState < 2) return el;
+  let fs = __cxFS.get(c);
+  if(!fs){ fs = { a: document.createElement('canvas'), b: document.createElement('canvas'), last: null, sig: '' }; __cxFS.set(c, fs); }
+  const lim = Math.max(canvas.width, canvas.height) * 1.15;
+  const f = Math.min(1, lim / Math.max(sw, sh));
+  const cw = Math.max(2, Math.round(sw*f)), ch = Math.max(2, Math.round(sh*f));
+  const t = el.tagName === 'VIDEO' ? el.currentTime : getSourceTimeForClip(c, lt);
+  const sig = [cw, ch, stab ? stab.key : '-', mb, el.__ai ? 1 : 0].join('|');
+  for(const cv of [fs.a, fs.b]){ if(cv.width !== cw || cv.height !== ch){ cv.width = cw; cv.height = ch; fs.last = null; } }
+  if(fs.last !== null && Math.abs(fs.last - t) < 1e-4 && fs.sig === sig && (!fxOn || (fs.lt === lt && fs.fxk === JSON.stringify(c.fx))) && (!bgOn || (fs.bgk === JSON.stringify(c.bg) && fs.bgm === (__cxBgMask.get(c) || {}).mask))) return fs.out;
+  // 1) stabilizovan kadar (ili sirov) u platno a
+  let frame = el;
+  if(stab){
+    const g = fs.a.getContext('2d');
+    const r = cxStabAt(stab, t);
+    g.setTransform(1,0,0,1,0,0);
+    g.clearRect(0, 0, cw, ch);
+    g.translate(cw/2, ch/2);
+    g.scale(stab.zoom, stab.zoom);
+    g.translate(r[1]*cw, r[2]*ch);
+    g.rotate(r[3]);
+    g.drawImage(el, -cw/2, -ch/2, cw, ch);
+    g.setTransform(1,0,0,1,0,0);
+    frame = fs.a;
+  }
+  // 1b) uklanjanje pozadine (AI maska osobe)
+  if(bgOn) frame = cxBgApply(c, frame, cw, ch, fs, el, t);
+  // 2) zamućenje pokreta: novi kadar se meša sa prethodnim rezultatom
+  let out = frame;
+  if(mb){
+    const g = fs.b.getContext('2d');
+    const cont = fs.last !== null && Math.abs(t - fs.last) < 0.35 && fs.sig === sig;
+    g.globalAlpha = cont ? 1 - (mb/100)*0.85 : 1;
+    g.drawImage(frame, 0, 0, cw, ch);
+    g.globalAlpha = 1;
+    out = fs.b;
+  }
+  if(fxOn){ if(out === el){ const b0 = cxCanvas2(fs, 'src0', cw, ch); b0.getContext('2d').drawImage(el, 0, 0, cw, ch); out = b0; } out = cxApplyFx(c, out, cw, ch, lt, fs); }
+  if(out === el) return el; // ništa još nije primenjeno (npr. AI maska se tek računa)
+  out.videoWidth = sw; out.videoHeight = sh;
+  out.__ai = el.__ai;
+  fs.last = t; fs.sig = sig; fs.out = out; fs.lt = lt; fs.fxk = fxOn ? JSON.stringify(c.fx) : '';
+  if(bgOn){ fs.bgk = JSON.stringify(c.bg); fs.bgm = (__cxBgMask.get(c) || {}).mask; }
+  return out;
+}
+
+/* ============================================================
+   PANEL (svojstva klipa, ispod BRZINE)
+   ============================================================ */
+function cxMotionHtml(c, isVideo){
+  const r = cxHasRamp(c) ? (c.ramp.preset || 'custom') : '';
+  const st = c.stab;
+  const stabState = !st || !st.s ? '' : (st.on ? 'on' : 'off');
+  return `
+    <div class="cx-sub2">Kriva brzine (speed ramp)</div>
+    <select id="cx-ramp-preset" data-no-undo>
+      <option value="">Bez krive (stalna brzina)</option>
+      ${Object.entries(CX_RAMPS).map(([k, v])=> `<option value="${k}" ${r===k?'selected':''}>${v.n}</option>`).join('')}
+      <option value="custom" ${r==='custom'?'selected':''}>Prilagođeno (crtam sam)</option>
+    </select>
+    <div id="cx-ramp-wrap" style="${r ? '' : 'display:none;'}">
+      <canvas id="cx-ramp" width="260" height="120" title="Prevuci tačku gore (brže) ili dole (sporije). Klik na prazno = nova tačka, dupli klik na tačku = brisanje."></canvas>
+      <div class="cx-ramp-info"><span id="cx-ramp-dur"></span><button type="button" id="cx-ramp-flat" data-no-undo>Poravnaj</button></div>
+    </div>
+    <div style="font-size:10.5px;color:var(--muted);line-height:1.5;">Kriva menja brzinu UNUTAR klipa (npr. sporo usred skoka, brzo pre i posle). Gore = brže, dole = sporije. Klizač „Brzina (x)“ iznad ubrzava ili usporava celu krivu.</div>
+    ${isVideo ? `
+    <div class="cx-sub2">Zamrznut kadar</div>
+    <div class="field-row" style="align-items:center;">
+      <button type="button" id="cx-freeze" style="flex:1;">❄ Zamrzni kadar na plejhedu</button>
+      <input type="number" id="cx-freeze-s" value="2" min="0.2" max="30" step="0.5" style="width:62px;" title="Koliko sekundi traje zamrznut kadar" data-no-undo>
+      <span style="font-size:11px;color:var(--muted);">s</span>
+    </div>
+    ${c.freezeAt != null ? `<div class="cx-badge">❄ Ovo je zamrznut kadar (${c.freezeAt.toFixed(2)} s izvora). Dužinu menjaš povlačenjem kraja klipa.</div>` : ''}
+    <div class="cx-sub2">Stabilizacija</div>
+    <div id="cx-stab">
+      ${!stabState ? `<button type="button" id="cx-stab-go" style="width:100%;">✋ Stabilizuj drhtav snimak</button>` : `
+      <label class="checkbox-row"><input type="checkbox" id="cx-stab-on" ${st.on?'checked':''}> Stabilizacija uključena</label>
+      ${sliderRow('cx-stab-str', 'Jačina smirivanja', st.strength ?? 60, 0, 100)}
+      <div class="cx-ramp-info"><span id="cx-stab-zoom"></span><button type="button" id="cx-stab-redo" data-no-undo>Analiziraj ponovo</button></div>`}
+      <div id="cx-stab-msg" style="font-size:10.5px;color:var(--muted);line-height:1.5;">Program prati pomeranje kamere i poravnava sliku. Ivice se blago uvećaju da se ne vide crne trake (veća jačina = veće uvećanje).</div>
+    </div>
+    <div class="cx-sub2">Zamućenje pokreta (motion blur)</div>
+    ${sliderRow('cx-mblur', 'Jačina', (c.filters && c.filters.motionBlur) || 0, 0, 100)}
+    <div style="font-size:10.5px;color:var(--muted);line-height:1.5;">Meša susedne kadrove pa brzi pokreti dobiju filmski trag. Lepo uz ubrzane delove krive brzine. 0 = isključeno.</div>
+    ` : ''}`;
+}
+
+function cxDrawRamp(cv, c){
+  const g = cv.getContext('2d'), W = cv.width, H = cv.height, P = 10;
+  const css = getComputedStyle(document.documentElement);
+  const acc = (css.getPropertyValue('--accent') || '').trim() || '#ff8a3d';
+  g.clearRect(0, 0, W, H);
+  g.fillStyle = 'rgba(255,255,255,0.04)'; g.fillRect(0, 0, W, H);
+  const yOf = v=> H/2 - Math.log10(clamp(v, CX_RAMP_MIN, CX_RAMP_MAX)) * (H/2 - P);
+  g.font = '10px sans-serif'; g.textBaseline = 'middle';
+  [[10,'10x'],[3,'3x'],[1,'1x'],[0.3,'0.3x'],[0.1,'0.1x']].forEach(([v, l])=>{
+    const y = yOf(v);
+    g.strokeStyle = v === 1 ? 'rgba(255,255,255,0.28)' : 'rgba(255,255,255,0.08)';
+    g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke();
+    g.fillStyle = 'rgba(255,255,255,0.4)'; g.fillText(l, 3, y + (v === 10 ? 6 : v === 0.1 ? -6 : -6));
+  });
+  if(!cxHasRamp(c)) return;
+  const p = c.ramp.p, xOf = u=> P + u*(W - 2*P);
+  g.beginPath();
+  p.forEach(([u, v], i)=>{ const x = xOf(u), y = yOf(v); i ? g.lineTo(x, y) : g.moveTo(x, y); });
+  g.lineTo(xOf(1), H); g.lineTo(xOf(0), H); g.closePath();
+  g.fillStyle = 'rgba(255,138,61,0.14)'; g.fill();
+  g.beginPath();
+  p.forEach(([u, v], i)=>{ const x = xOf(u), y = yOf(v); i ? g.lineTo(x, y) : g.moveTo(x, y); });
+  g.strokeStyle = acc; g.lineWidth = 2; g.stroke(); g.lineWidth = 1;
+  p.forEach(([u, v])=>{ g.beginPath(); g.arc(xOf(u), yOf(v), 4.5, 0, Math.PI*2); g.fillStyle = '#fff'; g.fill(); g.strokeStyle = acc; g.stroke(); });
+  const lt = state.playhead - c.start;
+  if(lt >= 0 && lt <= c.duration){
+    const x = xOf(lt / c.duration);
+    g.strokeStyle = '#ff3b3b'; g.beginPath(); g.moveTo(x, 0); g.lineTo(x, H); g.stroke();
+  }
+}
+
+function cxMotionBind(c, isVideo){
+  const sel = document.getElementById('cx-ramp-preset');
+  if(!sel) return;
+  const cv = document.getElementById('cx-ramp');
+  const wrap = document.getElementById('cx-ramp-wrap');
+  const durEl = document.getElementById('cx-ramp-dur');
+  const info = ()=>{ if(durEl) durEl.textContent = cxHasRamp(c) ? `Trajanje na tajmlajnu: ${c.duration.toFixed(2)} s` : ''; };
+  const changed = ()=>{
+    cxRampApplyDuration(c);
+    recalcDuration(); renderTimeline(); seekTo(state.playhead);
+    if(cv) cxDrawRamp(cv, c);
+    info();
+  };
+  sel.addEventListener('change', ()=>{
+    pushUndoSnapshot();
+    const k = sel.value;
+    if(!k) c.ramp = null;
+    else if(k === 'custom') c.ramp = { preset:'custom', p: cxHasRamp(c) ? c.ramp.p.map(x=>x.slice()) : [[0,1],[0.5,1],[1,1]] };
+    else c.ramp = { preset:k, p: CX_RAMPS[k].p.map(x=>x.slice()) };
+    wrap.style.display = c.ramp ? '' : 'none';
+    changed();
+  });
+  // klizač brzine i dugmad 0.5x..2x: zadrži krivu (originalni kod računa trajanje bez nje)
+  const sp = document.getElementById('p-speed');
+  if(sp) sp.addEventListener('input', ()=>{ if(cxHasRamp(c)) changed(); });
+  document.querySelectorAll('.p-speed-preset').forEach(b=> b.addEventListener('click', ()=>{ if(cxHasRamp(c)){ cxRampApplyDuration(c); recalcDuration(); renderTimeline(); } }));
+  const flat = document.getElementById('cx-ramp-flat');
+  if(flat) flat.addEventListener('click', ()=>{ if(!cxHasRamp(c)) return; pushUndoSnapshot(); c.ramp = { preset:'custom', p:[[0,1],[1,1]] }; sel.value = 'custom'; changed(); });
+  if(cv){
+    const P = 10;
+    const toUV = e=>{
+      const r = cv.getBoundingClientRect();
+      const x = (e.clientX - r.left) * cv.width / r.width, y = (e.clientY - r.top) * cv.height / r.height;
+      const u = clamp((x - P) / (cv.width - 2*P), 0, 1);
+      const v = Math.pow(10, clamp((cv.height/2 - y) / (cv.height/2 - P), -1, 1));
+      return { u, v, x, y };
+    };
+    const hit = (q)=>{
+      if(!cxHasRamp(c)) return -1;
+      let bi = -1, bd = 10;
+      c.ramp.p.forEach(([u, v], i)=>{
+        const x = P + u*(cv.width - 2*P), y = cv.height/2 - Math.log10(v) * (cv.height/2 - P);
+        const d = Math.hypot(x - q.x, y - q.y); if(d < bd){ bd = d; bi = i; }
+      });
+      return bi;
+    };
+    let drag = -1;
+    cv.addEventListener('pointerdown', e=>{
+      if(!cxHasRamp(c)) return;
+      const q = toUV(e);
+      let i = hit(q);
+      pushUndoSnapshot();
+      if(i < 0){
+        const p = c.ramp.p;
+        let k = p.findIndex(pt=> pt[0] > q.u);
+        if(k <= 0) k = p.length - 1;
+        p.splice(k, 0, [q.u, q.v]);
+        i = k;
+      }
+      c.ramp.preset = 'custom'; sel.value = 'custom';
+      drag = i; cv.setPointerCapture(e.pointerId);
+      changed();
+    });
+    cv.addEventListener('pointermove', e=>{
+      if(drag < 0) return;
+      const q = toUV(e), p = c.ramp.p;
+      const v = Math.abs(Math.log10(q.v)) < 0.04 ? 1 : q.v; // lepi se na 1x
+      if(drag === 0) p[0] = [0, v];
+      else if(drag === p.length - 1) p[drag] = [1, v];
+      else p[drag] = [clamp(q.u, p[drag-1][0] + 0.01, p[drag+1][0] - 0.01), v];
+      changed();
+    });
+    const end = ()=>{ drag = -1; };
+    cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
+    cv.addEventListener('dblclick', e=>{
+      if(!cxHasRamp(c)) return;
+      const i = hit(toUV(e)), p = c.ramp.p;
+      if(i > 0 && i < p.length - 1){ pushUndoSnapshot(); p.splice(i, 1); changed(); }
+    });
+    cxDrawRamp(cv, c); info();
+  }
+  if(!isVideo) return;
+  const fz = document.getElementById('cx-freeze');
+  if(fz) fz.addEventListener('click', ()=> cxFreezeFrame(c, +document.getElementById('cx-freeze-s').value));
+  const msg = document.getElementById('cx-stab-msg');
+  const zoomInfo = ()=>{ const z = document.getElementById('cx-stab-zoom'); const e = cxStabOf(c); if(z) z.textContent = e ? `Uvećanje ivica: ${Math.round((e.zoom-1)*100)}%` : ''; };
+  const run = async (btn)=>{
+    btn.disabled = true;
+    const txt = btn.textContent;
+    try{
+      const res = await cxStabAnalyze(c, f=>{ btn.textContent = `Analiziram pokret... ${Math.round(f*100)}%`; });
+      pushUndoSnapshot();
+      c.stab = Object.assign({ on:true, strength: (c.stab && c.stab.strength) ?? 60 }, res);
+      renderProps(); renderTimeline(); draw();
+    }catch(e){
+      console.error(e);
+      btn.textContent = txt; btn.disabled = false;
+      if(msg) msg.textContent = 'Analiza nije uspela: ' + (e && e.message || e);
+    }
+  };
+  const go = document.getElementById('cx-stab-go'); if(go) go.addEventListener('click', ()=> run(go));
+  const redo = document.getElementById('cx-stab-redo'); if(redo) redo.addEventListener('click', ()=> run(redo));
+  const on = document.getElementById('cx-stab-on'); if(on) on.addEventListener('change', ()=>{ c.stab.on = on.checked; zoomInfo(); cxMotionMark(); draw(); });
+  const str = document.getElementById('cx-stab-str');
+  if(str) str.addEventListener('input', e=>{ c.stab.strength = +str.value; syncValLabel(e); zoomInfo(); draw(); });
+  zoomInfo();
+  const mbr = document.getElementById('cx-mblur');
+  if(mbr) mbr.addEventListener('input', e=>{ c.filters.motionBlur = +mbr.value; syncValLabel(e); cxMotionMark(); draw(); });
+}
+
+/* oznake na tajmlajnu: ❄ zamrznut kadar, ⤳ kriva brzine, ✋ stabilizovano */
+function cxMotionMark(){
+  document.querySelectorAll('#tracks-inner .clip').forEach(el=>{
+    const c = clipById(el.dataset.clipId); if(!c) return;
+    el.classList.toggle('cx-freeze', c.freezeAt != null);
+    const tags = (c.freezeAt != null ? '❄' : '') + (cxHasRamp(c) ? '⤳' : '') + (c.stab && c.stab.on && c.stab.s ? '✋' : '') + ((c.filters && c.filters.motionBlur) ? '≋' : '') + ((typeof cxFxActive === 'function' && cxFxActive(c)) ? '🎨' : '') + (c.cell ? '⊞' : '') + ((c.bg && c.bg.on) ? '👤' : '') + ((c.voice && c.voice.preset) ? '🗣' : '');
+    if(tags) el.setAttribute('data-cx-motion', tags); else el.removeAttribute('data-cx-motion');
+  });
+}
+if(typeof cxMarkTimeline === 'function'){
+  var __cxMT = cxMarkTimeline;
+  cxMarkTimeline = function(){ __cxMT.apply(this, arguments); cxMotionMark(); };
+}
+
+
+/* ============================================================
+   PAKET 2: AUTOMATSKA MONTAŽA
+   - sečenje tišine (govor bez pauza)
+   - prepoznavanje promene scene (deli klip na kadrove)
+   - udarci muzike (tempo, oznake na klipu, rezovi u ritam)
+   ============================================================ */
+
+/* ---- deljenje klipa na lokalnom vremenu lt (vraća drugi deo) ---- */
+function cxSplitClipAt(c, lt){
+  const m = mediaById(c.mediaId);
+  const o = { inTrim:c.inTrim, outTrim:c.outTrim, duration:c.duration, start:c.start };
+  const sp = c.speed || 1;
+  const second = cxCloneClip(c);
+  second.start = c.start + lt; second.duration = c.duration - lt;
+  second.inTrim = c.inTrim + lt*sp; second.outTrim = c.outTrim;
+  c.duration = lt; c.outTrim = c.inTrim + lt*sp;
+  cxFixSplitPair(c, second, o);
+  if(Array.isArray(second.keyframes)) second.keyframes = second.keyframes.map(k=> Object.assign({}, k, { time: k.time - lt })).filter(k=> k.time >= 0);
+  if(Array.isArray(c.keyframes)) c.keyframes = c.keyframes.filter(k=> k.time <= lt + 1e-6);
+  if(c.filters){ c.filters.fadeOut = 0; second.filters.fadeIn = 0; }
+  c.audioFadeOut = 0; second.audioFadeIn = 0;
+  if(m && m.kind !== 'image' && c.type !== 'text' && c.type !== 'title' && c.type !== 'blur') second.el = createClipMediaElement(m);
+  state.clips.push(second);
+  return second;
+}
+function cxRemoveClip(c){
+  if(c.el){ try{ c.el.pause(); }catch(e){} if(c.el.parentNode) c.el.parentNode.removeChild(c.el); }
+  state.clips = state.clips.filter(x=> x !== c);
+}
+function cxSimpleTiming(c){ return !cxHasRamp(c) && !c.reverse && c.freezeAt == null && !c.loop; }
+
+/* ---- dekodiranje zvuka (mono, mala frekvencija = malo memorije) ---- */
+var __cxPcmCache = new Map();
+async function cxDecodeMono(m, sr){
+  const key = m.id + '@' + sr;
+  if(__cxPcmCache.has(key)) return __cxPcmCache.get(key);
+  const res = await fetch(m.url);
+  const arr = await res.arrayBuffer();
+  const ac = new OfflineAudioContext(1, 1, sr);
+  const buf = await ac.decodeAudioData(arr);
+  const n = buf.length, out = new Float32Array(n), chs = buf.numberOfChannels;
+  for(let ch=0; ch<chs; ch++){ const d = buf.getChannelData(ch); for(let i=0; i<n; i++) out[i] += d[i] / chs; }
+  if(__cxPcmCache.size > 3) __cxPcmCache.delete(__cxPcmCache.keys().next().value);
+  __cxPcmCache.set(key, out);
+  return out;
+}
+
+/* ============ TIŠINA ============ */
+/* vraća { db:Float32Array (po 20 ms), hop, floor, auto } za deo izvora klipa */
+async function cxLoudnessProfile(c){
+  const m = mediaById(c.mediaId);
+  const SR = 16000, hop = 0.02, N = Math.round(SR*hop);
+  const pcm = await cxDecodeMono(m, SR);
+  const a = Math.max(0, Math.floor(c.inTrim*SR)), b = Math.min(pcm.length, Math.ceil(c.outTrim*SR));
+  const n = Math.max(0, Math.floor((b - a) / N)), db = new Float32Array(n);
+  for(let k=0; k<n; k++){
+    let s = 0; const o = a + k*N;
+    for(let i=0; i<N; i++){ const v = pcm[o+i]; s += v*v; }
+    db[k] = 10*Math.log10(s/N + 1e-12);
+  }
+  const sorted = Array.from(db).sort((x, y)=> x - y);
+  const q = p=> sorted.length ? sorted[Math.min(sorted.length-1, Math.floor(sorted.length*p))] : -90;
+  const floor = q(0.1), loud = q(0.9);
+  // automatski prag: između šuma u pozadini i glasnog dela, bliže šumu
+  const auto = clamp(floor + Math.max(6, (loud - floor)*0.3), -60, -18);
+  return { db, hop, floor, loud, auto };
+}
+/* delovi izvora (sekunde) koje treba ZADRŽATI */
+function cxKeepRanges(c, prof, thr, minSil, pad){
+  const { db, hop } = prof, n = db.length, sil = [];
+  let k = 0;
+  while(k < n){
+    if(db[k] < thr){ let e = k; while(e < n && db[e] < thr) e++; if((e - k)*hop >= minSil) sil.push([k*hop, e*hop]); k = e; }
+    else k++;
+  }
+  const total = n*hop, keep = [];
+  let cur = 0;
+  sil.forEach(([s, e])=>{
+    const a = s === 0 ? 0 : s + pad, b = e >= total - 1e-6 ? total : e - pad;
+    if(b - a <= 0.02) return; // posle "ostavi" ne ostaje ništa za brisanje
+    if(a - cur > 0.04) keep.push([cur, a]);
+    cur = b;
+  });
+  if(total - cur > 0.04) keep.push([cur, total]);
+  return { keep: keep.map(([a, b])=> [c.inTrim + a, c.inTrim + b]), silences: sil.length, removed: total - keep.reduce((s, [a, b])=> s + b - a, 0) };
+}
+/* zameni klip delovima koji ostaju, sve složeno jedno do drugog; ostatak trake se pomera ulevo */
+function cxApplyKeepRanges(c, keep){
+  const sp = c.speed || 1, end0 = c.start + c.duration, tr = c.trackId;
+  const kf0 = Array.isArray(c.keyframes) ? c.keyframes.map(k=> Object.assign({}, k)) : null;
+  const f0 = { fi: c.filters ? c.filters.fadeIn : 0, fo: c.filters ? c.filters.fadeOut : 0, ai: c.audioFadeIn || 0, ao: c.audioFadeOut || 0 };
+  const in0 = c.inTrim, last = keep.length - 1;
+  const pieces = [];
+  let cursor = c.start;
+  keep.forEach(([a, b], i)=>{
+    const p = i === 0 ? c : cxCloneClip(c);
+    p.start = cursor; p.inTrim = a; p.outTrim = b; p.duration = (b - a) / sp;
+    if(kf0){ const off = (a - in0) / sp; p.keyframes = kf0.map(k=> Object.assign({}, k, { time: k.time - off })).filter(k=> k.time >= -1e-6 && k.time <= p.duration + 1e-6); }
+    if(p.filters){ p.filters.fadeIn = i === 0 ? f0.fi : 0; p.filters.fadeOut = i === last ? f0.fo : 0; }
+    p.audioFadeIn = i === 0 ? f0.ai : 0; p.audioFadeOut = i === last ? f0.ao : 0;
+    pieces.push(p);
+    cursor += p.duration;
+  });
+  pieces.slice(1).forEach(p=>{ const m = mediaById(c.mediaId); if(m && m.kind !== 'image') p.el = createClipMediaElement(m); state.clips.push(p); });
+  const shift = end0 - cursor;
+  if(shift > 1e-6) state.clips.forEach(x=>{ if(x.trackId === tr && !pieces.includes(x) && x.start >= end0 - 1e-3) x.start -= shift; });
+  return pieces;
+}
+
+/* ============ SCENE ============ */
+async function cxDetectScenes(c, sens, onProgress){
+  const m = mediaById(c.mediaId);
+  const v = document.createElement('video');
+  v.muted = true; v.playsInline = true; v.preload = 'auto';
+  v.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:2px;height:2px;opacity:0;';
+  v.src = m.url; document.body.appendChild(v);
+  const W = 64, H = 36, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  const g = cv.getContext('2d', { willReadFrequently:true });
+  const feat = ()=>{
+    g.drawImage(v, 0, 0, W, H);
+    const d = g.getImageData(0, 0, W, H).data, hist = new Float32Array(48), lum = new Float32Array(W*H);
+    for(let i=0, j=0; j<d.length; i++, j+=4){
+      hist[d[j]>>4]++; hist[16 + (d[j+1]>>4)]++; hist[32 + (d[j+2]>>4)]++;
+      lum[i] = 0.299*d[j] + 0.587*d[j+1] + 0.114*d[j+2];
+    }
+    return { hist, lum };
+  };
+  const dist = (A, B)=>{
+    let h = 0; for(let i=0; i<48; i++) h += Math.abs(A.hist[i] - B.hist[i]);
+    h /= (3*2*W*H);                       // 0..1
+    let p = 0; for(let i=0; i<A.lum.length; i++) p += Math.abs(A.lum[i] - B.lum[i]);
+    p /= (A.lum.length*255);              // 0..1
+    return 0.5*h + 0.5*Math.min(1, p*2.5);
+  };
+  const seekWait = (t)=> new Promise(res=>{ const done = ()=>{ v.removeEventListener('seeked', done); res(); }; v.addEventListener('seeked', done); v.currentTime = t; setTimeout(done, 3000); });
+  try{
+    await new Promise((res, rej)=>{ if(v.readyState >= 1) return res(); v.onloadedmetadata = ()=>res(); v.onerror = ()=>rej(new Error('Video ne može da se učita.')); });
+    const a = c.inTrim, b = Math.min(c.outTrim, m.duration || c.outTrim);
+    const S = []; // [t, feature]
+    let minStep = Infinity;
+    await seekWait(a);
+    S.push([v.currentTime, feat()]);
+    if(typeof v.requestVideoFrameCallback === 'function'){
+      await new Promise(res=>{
+        let fin = false; const done = ()=>{ if(!fin){ fin = true; try{ v.pause(); }catch(e){} res(); } };
+        const cb = (now, meta)=>{
+          if(fin) return;
+          const t = meta.mediaTime, last = S[S.length-1][0];
+          if(t > last + 1e-4){ minStep = Math.min(minStep, t - last); S.push([t, feat()]); }
+          if(onProgress) onProgress(clamp((t - a)/Math.max(0.01, b - a), 0, 1) * 0.9);
+          if(t >= b - 0.02) return done();
+          v.requestVideoFrameCallback(cb);
+        };
+        v.requestVideoFrameCallback(cb);
+        v.addEventListener('ended', done);
+        v.playbackRate = 2;
+        v.play().catch(()=> done());
+        let lastN = 0, stuck = 0;
+        const iv = setInterval(()=>{ if(fin){ clearInterval(iv); return; } if(S.length === lastN){ if(++stuck > 8){ clearInterval(iv); done(); } } else { stuck = 0; lastN = S.length; } }, 500);
+      });
+    }
+    if(S[S.length-1][0] < b - 0.5){
+      for(let t = S[S.length-1][0] + 0.2; t < b; t += 0.2){ await seekWait(t); S.push([v.currentTime, feat()]); if(onProgress) onProgress((t - a)/(b - a) * 0.9); }
+      minStep = Math.min(minStep, 0.2);
+    }
+    // razlike susednih uzoraka; prag = apsolutni + lokalni (da brz pokret kamere ne bude "rez")
+    const D = [];
+    for(let i=1; i<S.length; i++) D.push(dist(S[i-1][1], S[i][1]));
+    if(window.__cx) window.__cxSD = { D, T: S.map(x=> x[0]) };
+    const base = clamp(0.42 - (sens/100)*0.3, 0.1, 0.42);
+    const cuts = [];
+    for(let i=0; i<D.length; i++){
+      const lo = Math.max(0, i-6), hi = Math.min(D.length, i+7);
+      const nb = D.slice(lo, hi).filter((_, k)=> lo + k !== i).sort((x, y)=> x - y);
+      const local = nb.length ? nb[Math.floor(nb.length/2)] : 0;
+      if(D[i] > base && D[i] > local*3 + 0.05 && D[i] >= (D[i-1]||0) && D[i] >= (D[i+1]||0)){
+        const t = S[i+1][0];
+        if(t - a > 0.3 && b - t > 0.3 && (!cuts.length || t - cuts[cuts.length-1].t > 0.3)) cuts.push({ t, i });
+      }
+    }
+    // dorada: ako je između uzoraka preskočeno više kadrova, nađi tačan prvi kadar nove scene
+    const fstep = isFinite(minStep) ? Math.max(1/120, minStep) : 1/30;
+    for(const cut of cuts){
+      let t0 = S[cut.i][0], t1 = S[cut.i+1][0];
+      const A = S[cut.i][1], B = S[cut.i+1][1];
+      for(let it=0; it<6 && t1 - t0 > fstep*1.5; it++){
+        const tm = (t0 + t1)/2;
+        await seekWait(tm);
+        const F = feat();
+        if(dist(A, F) < dist(F, B)) t0 = v.currentTime > t0 ? v.currentTime : tm; else t1 = v.currentTime < t1 ? v.currentTime : tm;
+      }
+      cut.t = t1;
+    }
+    if(onProgress) onProgress(1);
+    return cuts.map(x=> x.t);
+  } finally {
+    try{ v.pause(); v.removeAttribute('src'); v.load(); }catch(e){}
+    v.remove();
+  }
+}
+
+/* ============ UDARCI MUZIKE ============ */
+function cxFFT(re, im){
+  const n = re.length;
+  for(let i=1, j=0; i<n; i++){
+    let bit = n >> 1; for(; j & bit; bit >>= 1) j ^= bit; j ^= bit;
+    if(i < j){ let t = re[i]; re[i] = re[j]; re[j] = t; t = im[i]; im[i] = im[j]; im[j] = t; }
+  }
+  for(let len=2; len<=n; len<<=1){
+    const ang = -2*Math.PI/len, wr = Math.cos(ang), wi = Math.sin(ang);
+    for(let i=0; i<n; i+=len){
+      let cr = 1, ci = 0;
+      for(let k=0; k<len/2; k++){
+        const a = i+k, b = a+len/2;
+        const xr = re[b]*cr - im[b]*ci, xi = re[b]*ci + im[b]*cr;
+        re[b] = re[a] - xr; im[b] = im[a] - xi; re[a] += xr; im[a] += xi;
+        const t = cr*wr - ci*wi; ci = cr*wi + ci*wr; cr = t;
+      }
+    }
+  }
+}
+/* vraća { bpm, beats:[sekunde izvora] } */
+async function cxDetectBeats(c, onProgress){
+  const m = mediaById(c.mediaId);
+  const SR = 22050, NF = 1024, HOP = 256;
+  const pcm = await cxDecodeMono(m, SR);
+  const a = Math.max(0, Math.floor(c.inTrim*SR)), b = Math.min(pcm.length, Math.ceil(c.outTrim*SR));
+  const nFr = Math.max(0, Math.floor((b - a - NF) / HOP));
+  if(nFr < 50) throw new Error('Klip je prekratak za prepoznavanje ritma.');
+  const win = new Float32Array(NF); for(let i=0; i<NF; i++) win[i] = 0.5 - 0.5*Math.cos(2*Math.PI*i/NF);
+  const re = new Float32Array(NF), im = new Float32Array(NF);
+  let prev = new Float32Array(NF/2), cur = new Float32Array(NF/2);
+  const env = new Float32Array(nFr);
+  const kHi = Math.round(4000 / (SR/NF)); // do 4 kHz (bubanj, bas, ritam)
+  for(let f=0; f<nFr; f++){
+    const o = a + f*HOP;
+    for(let i=0; i<NF; i++){ re[i] = pcm[o+i]*win[i]; im[i] = 0; }
+    cxFFT(re, im);
+    let flux = 0;
+    for(let k=1; k<kHi; k++){
+      const mag = Math.log1p(100*Math.hypot(re[k], im[k]));
+      cur[k] = mag;
+      const d = mag - prev[k];
+      if(d > 0) flux += d * (k < 12 ? 1.5 : 1); // niski tonovi malo jače
+    }
+    env[f] = flux;
+    const t = prev; prev = cur; cur = t;
+    if(onProgress && f % 2000 === 0){ onProgress(f/nFr*0.7); await new Promise(r=> setTimeout(r, 0)); }
+  }
+  // izglađivanje i oduzimanje lokalnog proseka (ostaju samo udarci)
+  const fps = SR/HOP, O = new Float32Array(nFr);
+  const w = Math.round(fps*0.25);
+  let acc = 0; const pre = new Float64Array(nFr+1);
+  for(let i=0; i<nFr; i++){ acc += env[i]; pre[i+1] = acc; }
+  for(let i=0; i<nFr; i++){ const lo = Math.max(0, i-w), hi = Math.min(nFr, i+w+1); O[i] = Math.max(0, env[i] - (pre[hi]-pre[lo])/(hi-lo)); }
+  let sd = 0; for(let i=0; i<nFr; i++) sd += O[i]*O[i]; sd = Math.sqrt(sd/nFr) || 1;
+  for(let i=0; i<nFr; i++) O[i] /= sd;
+  // tempo: autokorelacija u opsegu 60-190 BPM, blaga prednost oko 120 BPM
+  const lagMin = Math.floor(fps*60/190), lagMax = Math.ceil(fps*60/60);
+  let bestLag = lagMin, bestScore = -Infinity;
+  const ac = new Float32Array(lagMax+2);
+  for(let L=lagMin; L<=lagMax+1; L++){ let s = 0; for(let i=L; i<nFr; i++) s += O[i]*O[i-L]; ac[L] = s/(nFr-L); }
+  for(let L=lagMin; L<=lagMax; L++){
+    const bpm = 60*fps/L, prior = Math.exp(-0.5*Math.pow(Math.log2(bpm/120)/0.9, 2));
+    const s = (ac[L] + 0.5*(ac[2*L] || 0)) * prior;
+    if(s > bestScore){ bestScore = s; bestLag = L; }
+  }
+  // podpikselna tačnost tempa
+  const y0 = ac[bestLag-1] || 0, y1 = ac[bestLag], y2 = ac[bestLag+1] || 0;
+  const P = bestLag + clamp((y0 - y2) / (2*(y0 - 2*y1 + y2) || 1), -0.5, 0.5);
+  if(onProgress) onProgress(0.8);
+  // praćenje udaraca (dinamičko programiranje): udarci na jakim mestima, razmak blizu tempa
+  const score = new Float32Array(nFr), from = new Int32Array(nFr).fill(-1), alpha = 120;
+  for(let i=0; i<nFr; i++){
+    let best = 0, bi = -1;
+    const lo = Math.max(0, Math.round(i - 2*P)), hi = Math.max(0, Math.round(i - P/2));
+    for(let j=lo; j<=hi && j<i; j++){
+      const r = Math.log((i - j)/P), s = score[j] - alpha*r*r;
+      if(s > best){ best = s; bi = j; }
+    }
+    score[i] = O[i] + best; from[i] = bi;
+  }
+  let end = 0, mx = -Infinity;
+  for(let i=Math.max(0, nFr - Math.round(P*2)); i<nFr; i++) if(score[i] > mx){ mx = score[i]; end = i; }
+  const idx = [];
+  for(let i=end; i>=0; i=from[i]){ idx.push(i); if(from[i] < 0) break; }
+  idx.reverse();
+  const beats = idx.map(i=> (a + i*HOP + NF/2) / SR);
+  if(onProgress) onProgress(1);
+  return { bpm: 60*fps/P, beats };
+}
+/* udarci kao vreme na tajmlajnu */
+function cxBeatsOnTimeline(c){
+  if(!c || !c.beats || !c.beats.t) return [];
+  const sp = c.speed || 1;
+  return c.beats.t.map(s=> c.start + (s - c.inTrim)/sp).filter(t=> t >= c.start - 1e-6 && t <= c.start + c.duration + 1e-6);
+}
+/* skrati klipove na video traci tako da svaki rez padne tačno na udarac */
+function cxSnapCutsToBeats(trackId, beats, every, minLen){
+  const list = clipsOnTrack(trackId).filter(x=> x.type === 'video');
+  if(!list.length) return 0;
+  const B = beats.filter((_, i)=> i % every === 0);
+  let cursor = list[0].start, changed = 0;
+  for(const c of list){
+    const sp = c.speed || 1;
+    c.start = cursor;
+    const maxEnd = cursor + c.duration;
+    const cand = B.filter(t=> t > cursor + minLen - 1e-6 && t <= maxEnd + 1e-6);
+    if(cand.length && cxSimpleTiming(c)){
+      const e = cand[cand.length-1];
+      if(Math.abs(e - maxEnd) > 1e-3){ c.duration = e - cursor; c.outTrim = c.inTrim + c.duration*sp; changed++; }
+    }
+    cursor = c.start + c.duration;
+  }
+  return changed;
+}
+
+/* ============ PROZOR "AUTOMATSKA MONTAŽA" ============ */
+function cxAutoOpen(tool){
+  const c = clipById(state.selectedClipId);
+  const titles = { silence:'✂ Seci tišinu', scenes:'🎬 Pronađi scene', beats:'🥁 Udarci muzike' };
+  if(!c || c.type === 'text' || c.type === 'title' || c.type === 'blur'){
+    alert('Prvo klikni na klip na tajmlajnu.\n\n• Seci tišinu: video ili audio sa govorom\n• Pronađi scene: video sastavljen od više snimaka\n• Udarci muzike: pesma na audio traci');
+    return;
+  }
+  const m = mediaById(c.mediaId);
+  if(!m || m.kind === 'image'){ alert('Ovo radi samo na video i audio klipovima.'); return; }
+  if(tool === 'scenes' && m.kind !== 'video'){ alert('Prepoznavanje scena radi na video klipu.'); return; }
+  if(tool !== 'beats' && !cxSimpleTiming(c)){ alert('Ovaj klip ima krivu brzine, reverse ili zamrznut kadar. Ukloni to pa probaj ponovo.'); return; }
+  const md = cxModal(titles[tool], '<div class="cx-auto"></div>');
+  const box = md.body.querySelector('.cx-auto');
+  const busy = (on)=>{ md.ov.__busy = on; box.querySelectorAll('button,input,select').forEach(x=> x.disabled = on); };
+  const done = ()=>{ recalcDuration(); renderTimeline(); renderProps(); seekTo(state.playhead); };
+
+  if(tool === 'silence'){
+    box.innerHTML = `
+      <div class="cx-auto-tip">Pronalazi pauze u govoru i izbacuje ih. Ostatak trake se pomera da ne ostanu rupe.</div>
+      <label class="checkbox-row"><input type="checkbox" id="cx-s-auto" checked> Prag tišine automatski</label>
+      <div class="cx-auto-row"><span>Prag tišine</span><input type="range" id="cx-s-thr" min="-60" max="-15" value="-40" disabled><b id="cx-s-thr-v">auto</b></div>
+      <div class="cx-auto-row"><span>Najkraća pauza</span><input type="range" id="cx-s-min" min="2" max="30" value="6"><b id="cx-s-min-v">0.6 s</b></div>
+      <div class="cx-auto-row"><span>Ostavi pre/posle</span><input type="range" id="cx-s-pad" min="0" max="50" value="12"><b id="cx-s-pad-v">0.12 s</b></div>
+      <canvas id="cx-s-wave" width="400" height="70"></canvas>
+      <div id="cx-s-res" class="cx-auto-res">Analiziram zvuk...</div>
+      <button type="button" id="cx-s-go" class="cx-auto-main" disabled>✂ Iseci tišinu</button>`;
+    let prof = null, plan = null;
+    const $i = id=> box.querySelector('#' + id);
+    const recompute = ()=>{
+      if(!prof) return;
+      const au = $i('cx-s-auto').checked;
+      $i('cx-s-thr').disabled = au;
+      const thr = au ? prof.auto : +$i('cx-s-thr').value;
+      if(au) $i('cx-s-thr').value = Math.round(prof.auto);
+      $i('cx-s-thr-v').textContent = (au ? 'auto ' : '') + Math.round(thr) + ' dB';
+      const minS = +$i('cx-s-min').value/10, pad = +$i('cx-s-pad').value/100;
+      $i('cx-s-min-v').textContent = minS.toFixed(1) + ' s'; $i('cx-s-pad-v').textContent = pad.toFixed(2) + ' s';
+      plan = cxKeepRanges(c, prof, thr, minS, pad);
+      // talasni oblik: sivo = izbacuje se, svetlo = ostaje
+      const cv = $i('cx-s-wave'), g = cv.getContext('2d'), W = cv.width, H = cv.height, n = prof.db.length;
+      g.clearRect(0, 0, W, H);
+      g.fillStyle = 'rgba(255,90,90,.18)'; g.fillRect(0, 0, W, H);
+      g.fillStyle = 'rgba(80,200,120,.22)';
+      plan.keep.forEach(([s, e])=>{ const x0 = (s - c.inTrim)/(c.outTrim - c.inTrim)*W, x1 = (e - c.inTrim)/(c.outTrim - c.inTrim)*W; g.fillRect(x0, 0, x1 - x0, H); });
+      g.fillStyle = 'rgba(255,255,255,.75)';
+      for(let x=0; x<W; x++){ const k0 = Math.floor(x/W*n), k1 = Math.max(k0+1, Math.floor((x+1)/W*n)); let mxv = -90; for(let k=k0; k<k1 && k<n; k++) mxv = Math.max(mxv, prof.db[k]); const hgt = clamp((mxv + 70)/70, 0, 1)*H; g.fillRect(x, (H - hgt)/2, 1, Math.max(1, hgt)); }
+      const ty = H - (clamp((thr + 70)/70, 0, 1)*H + H)/2;
+      g.strokeStyle = '#ffd25a'; g.setLineDash([4, 3]); g.beginPath(); g.moveTo(0, ty); g.lineTo(W, ty); g.stroke(); g.setLineDash([]);
+      const sp = c.speed || 1;
+      $i('cx-s-res').innerHTML = plan.silences && plan.removed > 0.05
+        ? `Pronađeno <b>${plan.silences}</b> pauza. Video postaje kraći za <b>${(plan.removed/sp).toFixed(1)} s</b> (${plan.keep.length} delova). <span style="color:#7fd99a">Zeleno ostaje</span>, <span style="color:#ff8a8a">crveno se izbacuje</span>.`
+        : 'Nema pauza dužih od zadate. Pomeri prag ili najkraću pauzu.';
+      $i('cx-s-go').disabled = !(plan.silences && plan.removed > 0.05 && plan.keep.length);
+    };
+    ['cx-s-auto','cx-s-thr','cx-s-min','cx-s-pad'].forEach(id=> $i(id).addEventListener('input', recompute));
+    $i('cx-s-go').addEventListener('click', ()=>{
+      if(!plan || !plan.keep.length) return;
+      pushUndoSnapshot();
+      const pieces = cxApplyKeepRanges(c, plan.keep);
+      done(); selectClip(pieces[0].id);
+      md.close();
+    });
+    cxLoudnessProfile(c).then(p=>{ prof = p; recompute(); }).catch(e=>{ console.error(e); $i('cx-s-res').textContent = 'Zvuk ne može da se pročita: ' + (e && e.message || e); });
+  }
+
+  if(tool === 'scenes'){
+    box.innerHTML = `
+      <div class="cx-auto-tip">Pronalazi mesta gde se snimak menja (rez između dva kadra) i deli klip na tim mestima. Ništa se ne briše.</div>
+      <div class="cx-auto-row"><span>Osetljivost</span><input type="range" id="cx-c-sens" min="1" max="100" value="50"><b id="cx-c-sens-v">50</b></div>
+      <div id="cx-c-res" class="cx-auto-res"></div>
+      <button type="button" id="cx-c-go" class="cx-auto-main">🎬 Pronađi scene</button>`;
+    const $i = id=> box.querySelector('#' + id);
+    $i('cx-c-sens').addEventListener('input', ()=> $i('cx-c-sens-v').textContent = $i('cx-c-sens').value);
+    let cuts = null;
+    $i('cx-c-go').addEventListener('click', async ()=>{
+      if(cuts){
+        pushUndoSnapshot();
+        const sp = c.speed || 1;
+        let cur = c;
+        const lts = cuts.map(s=> (s - c.inTrim)/sp).sort((x, y)=> x - y);
+        let base = 0;
+        for(const lt of lts){ const rel = lt - base; if(rel > 0.05 && rel < cur.duration - 0.05){ cur = cxSplitClipAt(cur, rel); base = lt; } }
+        done(); md.close();
+        return;
+      }
+      busy(true);
+      try{
+        cuts = await cxDetectScenes(c, +$i('cx-c-sens').value, f=> cxProgress(md, 'Gledam snimak... ' + Math.round(f*100) + '%', f));
+        const p = md.body.querySelector('.cx-prog'); if(p) p.remove();
+        if(!cuts.length){ $i('cx-c-res').textContent = 'Nije pronađena nijedna promena scene. Povećaj osetljivost i probaj ponovo.'; cuts = null; }
+        else { $i('cx-c-res').innerHTML = `Pronađeno <b>${cuts.length}</b> promena scene: ${cuts.slice(0, 12).map(t=> fmtTime((t - c.inTrim)/(c.speed||1) + c.start)).join(', ')}${cuts.length > 12 ? '…' : ''}`; $i('cx-c-go').textContent = `✂ Podeli na ${cuts.length + 1} delova`; }
+      }catch(e){ console.error(e); $i('cx-c-res').textContent = 'Analiza nije uspela: ' + (e && e.message || e); }
+      busy(false);
+    });
+  }
+
+  if(tool === 'beats'){
+    const vids = state.tracks.filter(t=> t.type === 'video');
+    box.innerHTML = `
+      <div class="cx-auto-tip">Pronalazi udarce (ritam) u pesmi i obeležava ih na klipu. Zatim rezove na video traci može da poravna sa udarcima.</div>
+      <div id="cx-b-res" class="cx-auto-res">${c.beats && c.beats.t ? `Već pronađeno: ~${Math.round(c.beats.bpm)} BPM, ${c.beats.t.length} udaraca.` : ''}</div>
+      <button type="button" id="cx-b-go" class="cx-auto-main">🥁 ${c.beats && c.beats.t ? 'Pronađi ponovo' : 'Pronađi udarce'}</button>
+      <div id="cx-b-snap" style="${c.beats && c.beats.t ? '' : 'display:none;'}">
+        <div class="cx-sub2">Rezovi u ritam</div>
+        <div class="cx-auto-row"><span>Video traka</span><select id="cx-b-track">${vids.map(t=> `<option value="${t.id}">${escapeHtml(t.name || t.id)}</option>`).join('')}</select></div>
+        <div class="cx-auto-row"><span>Rez na svaki</span><select id="cx-b-every"><option value="1">1. udarac</option><option value="2" selected>2. udarac</option><option value="4">4. udarac (takt)</option><option value="8">8. udarac</option></select></div>
+        <button type="button" id="cx-b-apply">✂ Poravnaj rezove na udarce</button>
+        <button type="button" id="cx-b-clear" style="margin-top:4px;">Ukloni oznake udaraca</button>
+      </div>`;
+    const $i = id=> box.querySelector('#' + id);
+    $i('cx-b-go').addEventListener('click', async ()=>{
+      busy(true);
+      try{
+        const r = await cxDetectBeats(c, f=> cxProgress(md, 'Slušam pesmu... ' + Math.round(f*100) + '%', f));
+        const p = md.body.querySelector('.cx-prog'); if(p) p.remove();
+        pushUndoSnapshot();
+        c.beats = { bpm: +r.bpm.toFixed(1), t: r.beats.map(x=> +x.toFixed(3)) };
+        $i('cx-b-res').innerHTML = `Tempo: <b>~${Math.round(r.bpm)} BPM</b>, <b>${r.beats.length}</b> udaraca. Oznake su na klipu (tanke linije).`;
+        $i('cx-b-snap').style.display = '';
+        renderTimeline();
+      }catch(e){ console.error(e); $i('cx-b-res').textContent = 'Analiza nije uspela: ' + (e && e.message || e); }
+      busy(false);
+    });
+    $i('cx-b-apply').addEventListener('click', ()=>{
+      const beats = cxBeatsOnTimeline(c);
+      if(!beats.length) return;
+      pushUndoSnapshot();
+      const n = cxSnapCutsToBeats($i('cx-b-track').value, beats, +$i('cx-b-every').value, 0.3);
+      done();
+      $i('cx-b-res').innerHTML = n ? `Poravnato <b>${n}</b> rezova sa udarcima.` : 'Klipovi na toj traci su prekratki ili već staju na udarac.';
+    });
+    $i('cx-b-clear').addEventListener('click', ()=>{ pushUndoSnapshot(); delete c.beats; renderTimeline(); md.close(); });
+  }
+}
+
+function cxAutoHtml(c, isVideo){
+  return `
+    <div class="cx-sub2">Automatska montaža</div>
+    <div class="cx-auto-btns">
+      <button type="button" data-cx-auto="silence" data-no-undo title="Izbaci pauze u govoru">✂ Seci tišinu</button>
+      ${isVideo ? `<button type="button" data-cx-auto="scenes" data-no-undo title="Podeli klip na mestima gde se menja kadar">🎬 Scene</button>` : ''}
+      <button type="button" data-cx-auto="beats" data-no-undo title="Pronađi ritam pesme i poravnaj rezove">🥁 Udarci</button>
+    </div>`;
+}
+function cxAutoBind(){
+  document.querySelectorAll('[data-cx-auto]').forEach(b=> b.addEventListener('click', ()=> cxAutoOpen(b.dataset.cxAuto)));
+}
+/* oznake udaraca na klipu */
+function cxBeatMark(){
+  document.querySelectorAll('#tracks-inner .clip').forEach(el=>{
+    const c = clipById(el.dataset.clipId); if(!c) return;
+    let lay = el.querySelector(':scope > .cx-beats');
+    if(!(c.beats && c.beats.t && c.beats.t.length)){ if(lay) lay.remove(); return; }
+    const key = c.beats.t.length + '|' + c.start + '|' + c.duration + '|' + state.pxPerSec;
+    if(lay && lay.dataset.k === key) return;
+    if(!lay){ lay = document.createElement('div'); lay.className = 'cx-beats'; el.appendChild(lay); }
+    lay.dataset.k = key;
+    const bs = cxBeatsOnTimeline(c).map(t=> ((t - c.start)/c.duration*100).toFixed(3));
+    lay.innerHTML = bs.map((p, i)=> `<i style="left:${p}%" class="${i % 4 === 0 ? 'b4' : ''}"></i>`).join('');
+  });
+}
+if(typeof cxMarkTimeline === 'function'){
+  var __cxMT2 = cxMarkTimeline;
+  cxMarkTimeline = function(){ __cxMT2.apply(this, arguments); cxBeatMark(); };
+}
+/* dugme u traci sa alatima */
+(function cxAutoToolbar(){
+  const add = ()=>{
+    const anchor = document.getElementById('cx-grp') || document.getElementById('cx-tools');
+    if(!anchor || document.getElementById('cx-auto-tb')) return !!anchor;
+    const box = document.createElement('div'); box.id = 'cx-auto-tb';
+    box.innerHTML = `<button type="button" title="Automatska montaža za izabrani klip">⚡ Auto montaža ▾</button><div class="cx-auto-menu">
+      <button type="button" data-t="silence">✂ Seci tišinu</button><button type="button" data-t="scenes">🎬 Pronađi scene</button><button type="button" data-t="beats">🥁 Udarci muzike</button></div>`;
+    anchor.parentNode.insertBefore(box, anchor.nextSibling);
+    const menu = box.querySelector('.cx-auto-menu');
+    box.firstElementChild.addEventListener('click', e=>{ e.stopPropagation(); menu.classList.toggle('open'); });
+    menu.querySelectorAll('button').forEach(b=> b.addEventListener('click', ()=>{ menu.classList.remove('open'); cxAutoOpen(b.dataset.t); }));
+    document.addEventListener('click', ()=> menu.classList.remove('open'));
+    return true;
+  };
+  if(!add()){ let n = 0; const iv = setInterval(()=>{ if(add() || ++n > 40) clearInterval(iv); }, 250); }
+})();
+
+
+/* ============================================================
+   PAKET 3: BIBLIOTEKA EFEKATA
+   - 16 novih prelaza (guranje, trzaj, okret, kroz crno, bljesak, romb, sat...)
+   - 10 video efekata (glič, VHS, stari film, odsjaj, RGB, kaleidoskop, mozaik,
+     drhtanje, puls na ritam, sjaj)
+   - nalepnice (emodži i natpisi) sa stalnim pokretom
+   - šabloni naslova
+   - podeljen ekran (2, 3, 4 kadra, slika u slici)
+   ============================================================ */
+
+/* ================= PRELAZI ================= */
+var CX_TR_NEW = [
+  ['push-left','Guranje ulevo'], ['push-right','Guranje udesno'], ['push-up','Guranje nagore'], ['push-down','Guranje nadole'],
+  ['whip-left','Brzi trzaj ulevo'], ['whip-right','Brzi trzaj udesno'], ['spin-in','Uvrtanje'], ['flip-x','Okretanje kartice'],
+  ['dip-black','Kroz crno'], ['flash-white','Bljesak (kroz belo)'], ['diamond','Romb'], ['clock','Sat (kružni brisač)'],
+  ['barn-h','Vrata (vodoravno)'], ['barn-v','Vrata (uspravno)'], ['checker','Šahovska polja'], ['stripes','Pruge'],
+];
+var CX_TR_SET = {};
+CX_TR_NEW.forEach(([k, l])=>{ CX_TR_SET[k] = l; TR_LABELS[k] = l; SEQ_TRANSITIONS.push([k, l]); });
+function cxEase(p){ return p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3)/2; }
+/* izlazni (stari) kadar - vraća množilac neprozirnosti */
+function cxTrOut(type, g, p, W, H){
+  switch(type){
+    case 'push-left': g.translate(-W*p, 0); return 1;
+    case 'push-right': g.translate(W*p, 0); return 1;
+    case 'push-up': g.translate(0, -H*p); return 1;
+    case 'push-down': g.translate(0, H*p); return 1;
+    case 'whip-left': g.translate(-W*cxEase(p), 0); return 1;
+    case 'whip-right': g.translate(W*cxEase(p), 0); return 1;
+    case 'flip-x': if(p >= 0.5) return 0; g.translate(W/2, 0); g.scale(Math.max(0.002, 1 - 2*p), 1); g.translate(-W/2, 0); return 1;
+    case 'dip-black': return clamp(1 - 2*p, 0, 1);
+    case 'flash-white': return p < 0.5 ? 1 : 0;
+  }
+  return 1;
+}
+/* ulazni (novi) kadar - isecanje / pomeranje; vraća množilac neprozirnosti */
+function cxTrIn(type, g, p, W, H){
+  const cx = W/2, cy = H/2;
+  switch(type){
+    case 'push-left': g.translate(W*(1-p), 0); return 1;
+    case 'push-right': g.translate(-W*(1-p), 0); return 1;
+    case 'push-up': g.translate(0, H*(1-p)); return 1;
+    case 'push-down': g.translate(0, -H*(1-p)); return 1;
+    case 'whip-left': g.translate(W*(1-cxEase(p)), 0); return 1;
+    case 'whip-right': g.translate(-W*(1-cxEase(p)), 0); return 1;
+    case 'spin-in': g.translate(cx, cy); g.rotate(-(1-p)*Math.PI); g.scale(0.15 + 0.85*p, 0.15 + 0.85*p); g.translate(-cx, -cy); return p;
+    case 'flip-x': if(p < 0.5) return 0; g.translate(cx, 0); g.scale(Math.max(0.002, 2*p - 1), 1); g.translate(-cx, 0); return 1;
+    case 'dip-black': return clamp(2*p - 1, 0, 1);
+    case 'flash-white': return p >= 0.5 ? 1 : 0;
+    case 'diamond': { const r = p*(W/2 + H/2); g.beginPath(); g.moveTo(cx, cy - r); g.lineTo(cx + r, cy); g.lineTo(cx, cy + r); g.lineTo(cx - r, cy); g.closePath(); g.clip(); return 1; }
+    case 'clock': { const R = Math.hypot(W, H); g.beginPath(); g.moveTo(cx, cy); g.arc(cx, cy, R, -Math.PI/2, -Math.PI/2 + Math.max(0.0001, p)*Math.PI*2); g.closePath(); g.clip(); return 1; }
+    case 'barn-h': g.beginPath(); g.rect(cx - W/2*p, 0, W*p, H); g.clip(); return 1;
+    case 'barn-v': g.beginPath(); g.rect(0, cy - H/2*p, W, H*p); g.clip(); return 1;
+    case 'checker': {
+      const n = 8, s = W/n, rows = Math.ceil(H/s);
+      g.beginPath();
+      for(let j=0; j<rows; j++) for(let i=0; i<n; i++){
+        const d = ((i + j) % 2) ? 0.45 : 0, lp = clamp((p - d)/0.55, 0, 1);
+        if(lp <= 0) continue;
+        const x = i*s + s/2, y = j*s + s/2, hs = s/2*lp + 0.5;
+        g.rect(x - hs, y - hs, hs*2, hs*2);
+      }
+      g.clip(); return 1;
+    }
+    case 'stripes': {
+      const n = 10, sh = H/n;
+      g.beginPath();
+      for(let j=0; j<n; j++){ const lp = clamp((p - (j/n)*0.3)/0.7, 0, 1); const w = W*lp; g.rect(j % 2 ? W - w : 0, j*sh, w, sh + 0.5); }
+      g.clip(); return 1;
+    }
+  }
+  return 1;
+}
+/* preko svega, posle novog kadra */
+function cxTrOverlay(type, g, p, W, H){
+  if(type === 'flash-white'){
+    const a = Math.pow(1 - Math.abs(2*p - 1), 0.6);
+    if(a <= 0.01) return;
+    g.save(); g.setTransform(1,0,0,1,0,0); g.globalCompositeOperation = 'source-over'; g.filter = 'none';
+    g.globalAlpha = a; g.fillStyle = '#fff'; g.fillRect(0, 0, W, H); g.restore();
+  }
+}
+/* pregled u biblioteci prelaza */
+var __cxDTP = drawTransitionPreview;
+drawTransitionPreview = function(cnv, type, p, staticView, cyc){
+  if(!CX_TR_SET[type]) return __cxDTP.apply(this, arguments);
+  const w = cnv.width, h = cnv.height, g = cnv.getContext('2d');
+  const { A, B } = trScenes(w, h);
+  if(staticView) p = ({ 'flip-x':0.28, 'dip-black':0.3, 'flash-white':0.4, 'spin-in':0.6, 'clock':0.62, 'checker':0.55 })[type] ?? 0.5;
+  g.save(); g.clearRect(0, 0, w, h); g.fillStyle = '#000'; g.fillRect(0, 0, w, h);
+  g.save(); g.globalAlpha = cxTrOut(type, g, p, w, h); if(g.globalAlpha > 0) g.drawImage(A, 0, 0); g.restore();
+  g.save(); g.globalAlpha = cxTrIn(type, g, p, w, h); if(g.globalAlpha > 0) g.drawImage(B, 0, 0); g.restore();
+  cxTrOverlay(type, g, p, w, h);
+  g.restore();
+};
+function cxTrOptions(c){ return CX_TR_NEW.map(([k, l])=> `<option value="${k}" ${c.transitionType===k?'selected':''}>${l}</option>`).join(''); }
+
+/* ================= VIDEO EFEKTI ================= */
+var CX_FX = [
+  ['glitch','⚡','Glič'], ['vhs','📼','VHS kaseta'], ['oldfilm','🎞','Stari film'], ['leak','🌅','Svetlosni odsjaj'],
+  ['rgb','🌈','RGB pomak'], ['kaleido','🔷','Kaleidoskop'], ['mosaic','🟪','Mozaik'], ['shake','🫨','Drhtanje kamere'],
+  ['pulse','💓','Puls na ritam'], ['bloom','✨','Sjaj (sanjarenje)'],
+];
+function cxFxActive(c){ if(!c || !c.fx) return null; const on = CX_FX.filter(([k])=> (c.fx[k]||0) > 0); return on.length ? on : null; }
+function cxHash(n){ const x = Math.sin(n*127.1 + 311.7)*43758.5453; return x - Math.floor(x); }
+function cxNoise(t, s){ return Math.sin(t*1.7 + s)*0.5 + Math.sin(t*3.1 + s*2.3)*0.3 + Math.sin(t*7.3 + s*4.1)*0.2; }
+function cxCanvas2(fs, key, w, h){
+  let c = fs[key];
+  if(!c){ c = fs[key] = document.createElement('canvas'); }
+  if(c.width !== w || c.height !== h){ c.width = w; c.height = h; }
+  return c;
+}
+function cxRgbSplit(fs, src, dst, w, h, dx, dy){
+  const t = cxCanvas2(fs, 'ch', w, h), tg = t.getContext('2d'), g = dst.getContext('2d');
+  g.globalCompositeOperation = 'source-over'; g.fillStyle = '#000'; g.fillRect(0, 0, w, h);
+  [['#ff0000', -dx, -dy], ['#00ff00', 0, 0], ['#0000ff', dx, dy]].forEach(([col, ox, oy])=>{
+    tg.globalCompositeOperation = 'source-over'; tg.fillStyle = '#000'; tg.fillRect(0, 0, w, h);
+    tg.drawImage(src, ox, oy, w, h);
+    tg.globalCompositeOperation = 'multiply'; tg.fillStyle = col; tg.fillRect(0, 0, w, h);
+    g.globalCompositeOperation = 'lighter'; g.drawImage(t, 0, 0);
+  });
+  g.globalCompositeOperation = 'source-over';
+}
+/* udarci muzike na tajmlajnu (za "Puls na ritam"); bez muzike = 120 BPM */
+function cxAllBeats(){
+  const key = state.clips.map(c=> c.beats ? c.id + c.start + c.duration : '').join('');
+  if(cxAllBeats.k === key) return cxAllBeats.v;
+  let v = [];
+  state.clips.forEach(c=>{ if(c.beats && c.beats.t) v = v.concat(cxBeatsOnTimeline(c)); });
+  v.sort((a, b)=> a - b);
+  cxAllBeats.k = key; cxAllBeats.v = v;
+  return v;
+}
+function cxPulseEnv(T){
+  const B = cxAllBeats();
+  let last;
+  if(B.length){ let lo = 0, hi = B.length - 1; if(T < B[0]) return 0; while(hi - lo > 1){ const m = (lo+hi)>>1; if(B[m] <= T) lo = m; else hi = m; } last = B[hi] <= T ? B[hi] : B[lo]; }
+  else last = Math.floor(T/0.5)*0.5;
+  return Math.exp(-(T - last)*9);
+}
+function cxApplyFx(c, src, w, h, lt, fs){
+  const fx = c.fx, T = c.start + lt;
+  let cur = src, flip = 0;
+  const next = ()=>{ flip ^= 1; const cv = cxCanvas2(fs, flip ? 'p' : 'q', w, h); return cv; };
+  const S = k=> clamp((fx[k]||0)/100, 0, 1);
+  // geometrija: drhtanje + puls
+  if(S('shake') || S('pulse')){
+    const o = next(), g = o.getContext('2d');
+    const sh = S('shake'), pu = S('pulse');
+    const z = 1 + 0.06*sh + 0.12*pu*cxPulseEnv(T);
+    g.setTransform(1,0,0,1,0,0); g.clearRect(0, 0, w, h);
+    g.translate(w/2 + cxNoise(lt*6, 1)*0.025*w*sh, h/2 + cxNoise(lt*6, 7)*0.025*h*sh);
+    g.rotate(cxNoise(lt*5, 3)*0.015*sh);
+    g.scale(z, z);
+    g.drawImage(cur, -w/2, -h/2, w, h);
+    g.setTransform(1,0,0,1,0,0);
+    cur = o;
+  }
+  if(S('mosaic')){
+    const bs = Math.max(2, Math.round(w/(110 - 95*S('mosaic'))));
+    const sw = Math.max(1, Math.round(w/bs)), shh = Math.max(1, Math.round(h/bs));
+    const sm = cxCanvas2(fs, 'sm', sw, shh); const sg = sm.getContext('2d');
+    sg.imageSmoothingEnabled = true; sg.drawImage(cur, 0, 0, sw, shh);
+    const o = next(), g = o.getContext('2d');
+    g.imageSmoothingEnabled = false; g.drawImage(sm, 0, 0, w, h); g.imageSmoothingEnabled = true;
+    cur = o;
+  }
+  if(S('kaleido')){
+    const o = next(), g = o.getContext('2d'), hw = w/2, hh = h/2;
+    // gornja leva četvrtina (iz sredine kadra) se ogleda u sve četiri
+    const sx = w*0.25 + Math.sin(lt*0.6)*w*0.08*S('kaleido'), sy = h*0.25 + Math.cos(lt*0.5)*h*0.08*S('kaleido');
+    g.setTransform(1,0,0,1,0,0); g.clearRect(0, 0, w, h);
+    for(const [mx, my] of [[1,1],[-1,1],[1,-1],[-1,-1]]){
+      g.setTransform(mx, 0, 0, my, mx > 0 ? 0 : w, my > 0 ? 0 : h);
+      g.drawImage(cur, sx, sy, hw, hh, 0, 0, hw, hh);
+    }
+    g.setTransform(1,0,0,1,0,0);
+    cur = o;
+  }
+  // glič: povremeni udari (RGB + pomereni pojasevi)
+  if(S('glitch')){
+    const s = S('glitch'), seed = Math.floor(T*12), hit = cxHash(seed) < 0.18 + 0.5*s;
+    const o = next();
+    const amp = hit ? (0.008 + 0.03*s*cxHash(seed + 1)) * w : 0.002*w*s;
+    cxRgbSplit(fs, cur, o, w, h, amp, 0);
+    if(hit){
+      const g = o.getContext('2d'), n = 3 + Math.floor(cxHash(seed + 2)*8*s);
+      const tmp = cxCanvas2(fs, 'gl', w, h); const tg = tmp.getContext('2d'); tg.clearRect(0,0,w,h); tg.drawImage(o, 0, 0);
+      for(let i=0; i<n; i++){
+        const y = cxHash(seed*7 + i)*h, bh = (0.01 + cxHash(seed*13 + i)*0.08)*h, dx = (cxHash(seed*17 + i) - 0.5)*0.12*w*s;
+        g.drawImage(tmp, 0, y, w, bh, dx, y, w, bh);
+      }
+    }
+    cur = o;
+  } else if(S('rgb')){
+    const o = next(); const d = 0.012*w*S('rgb'); cxRgbSplit(fs, cur, o, w, h, d, d*0.25); cur = o;
+  }
+  if(S('vhs')){
+    const s = S('vhs'), o = next(), g = o.getContext('2d');
+    cxRgbSplit(fs, cur, o, w, h, 0.004*w*s, 0);
+    const tmp = cxCanvas2(fs, 'vh', w, h), tg = tmp.getContext('2d');
+    tg.filter = `saturate(${1 - 0.35*s}) contrast(${1 + 0.1*s}) sepia(${0.2*s}) blur(${(0.0012*w*s).toFixed(2)}px)`;
+    tg.clearRect(0,0,w,h); tg.drawImage(o, 0, 0); tg.filter = 'none';
+    g.clearRect(0, 0, w, h); g.drawImage(tmp, 0, 0);
+    // linije, traka smetnji koja klizi naniže
+    g.globalAlpha = 0.18*s; g.fillStyle = '#000';
+    const ls = Math.max(2, Math.round(h/240));
+    for(let y=0; y<h; y+=ls*2) g.fillRect(0, y, w, ls);
+    const by = ((T*0.23) % 1.2 - 0.1)*h, bh = 0.05*h;
+    g.globalAlpha = 0.55*s;
+    g.drawImage(tmp, 0, by, w, bh, (cxHash(Math.floor(T*30)) - 0.5)*0.03*w, by, w, bh);
+    try{ const pat = getGrainPattern(); g.globalAlpha = 0.35*s; g.fillStyle = pat; g.fillRect(0, by, w, bh); }catch(e){}
+    g.globalAlpha = 0.85*s; g.fillStyle = '#fff'; g.font = `${Math.round(h*0.045)}px monospace`; g.textBaseline = 'top';
+    g.shadowColor = 'rgba(0,0,0,.6)'; g.shadowBlur = 2;
+    g.fillText('▶ PLAY', w*0.05, h*0.06);
+    const sec = Math.floor(lt), mm = String(Math.floor(sec/60)).padStart(2, '0'), ss = String(sec % 60).padStart(2, '0');
+    g.fillText(`00:${mm}:${ss}`, w*0.05, h*0.88);
+    g.shadowBlur = 0; g.globalAlpha = 1;
+    cur = o;
+  }
+  if(S('oldfilm')){
+    const s = S('oldfilm'), o = next(), g = o.getContext('2d'), fr = Math.floor(T*24);
+    const fl = 1 + (cxHash(fr) - 0.5)*0.16*s;
+    g.filter = `sepia(${0.85*s}) contrast(${1 + 0.15*s}) brightness(${fl.toFixed(3)})`;
+    g.clearRect(0, 0, w, h);
+    g.drawImage(cur, 0, (cxHash(fr + 5) - 0.5)*0.004*h*s, w, h);
+    g.filter = 'none';
+    g.strokeStyle = 'rgba(255,255,240,0.35)';
+    const n = Math.floor(cxHash(fr + 9)*3*s + 0.5);
+    for(let i=0; i<n; i++){ const x = cxHash(fr*3 + i)*w; g.lineWidth = Math.max(1, w/900); g.globalAlpha = 0.6*s; g.beginPath(); g.moveTo(x, 0); g.lineTo(x + (cxHash(fr + i) - 0.5)*w*0.01, h); g.stroke(); }
+    g.fillStyle = 'rgba(20,15,10,0.8)';
+    for(let i=0; i<Math.round(8*s); i++){ g.globalAlpha = 0.5; g.beginPath(); g.arc(cxHash(fr*5 + i)*w, cxHash(fr*11 + i)*h, Math.max(1, w/700)*(1 + cxHash(i + fr)*2), 0, Math.PI*2); g.fill(); }
+    g.globalAlpha = 1;
+    const vg = g.createRadialGradient(w/2, h/2, Math.min(w,h)*0.35, w/2, h/2, Math.hypot(w,h)/2);
+    vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, `rgba(0,0,0,${0.7*s})`);
+    g.fillStyle = vg; g.fillRect(0, 0, w, h);
+    cur = o;
+  }
+  if(S('leak')){
+    const s = S('leak'), o = next(), g = o.getContext('2d');
+    g.clearRect(0, 0, w, h); g.drawImage(cur, 0, 0);
+    g.globalCompositeOperation = 'screen';
+    const R = Math.max(w, h);
+    [[ 'rgba(255,140,40,', 0.15, 0.2, 0.7 ], [ 'rgba(255,40,120,', 0.85, 0.75, 0.5 ], [ 'rgba(255,220,120,', 0.5, 0.05, 0.4 ]].forEach(([col, bx, by, a], i)=>{
+      const x = (bx + Math.sin(lt*0.35 + i*2)*0.25)*w, y = (by + Math.cos(lt*0.28 + i)*0.2)*h;
+      const gr = g.createRadialGradient(x, y, 0, x, y, R*0.6);
+      const k = a*s*(0.75 + 0.25*Math.sin(lt*0.9 + i));
+      gr.addColorStop(0, col + k.toFixed(3) + ')'); gr.addColorStop(1, col + '0)');
+      g.fillStyle = gr; g.fillRect(0, 0, w, h);
+    });
+    g.globalCompositeOperation = 'source-over';
+    cur = o;
+  }
+  if(S('bloom')){
+    const s = S('bloom'), o = next(), g = o.getContext('2d');
+    g.clearRect(0, 0, w, h); g.drawImage(cur, 0, 0);
+    const b = cxCanvas2(fs, 'bl', Math.max(2, w>>2), Math.max(2, h>>2)), bg = b.getContext('2d');
+    bg.filter = `brightness(${1 + 0.4*s}) blur(${Math.max(1, b.width*0.02).toFixed(1)}px)`;
+    bg.clearRect(0, 0, b.width, b.height); bg.drawImage(cur, 0, 0, b.width, b.height); bg.filter = 'none';
+    g.globalCompositeOperation = 'screen'; g.globalAlpha = 0.75*s; g.drawImage(b, 0, 0, w, h);
+    g.globalCompositeOperation = 'source-over'; g.globalAlpha = 1;
+    cur = o;
+  }
+  return cur;
+}
+
+/* ================= NALEPNICE I STALNI POKRET NASLOVA ================= */
+var CX_STICKERS = ['❤️','👍','😂','🔥','⭐','🎉','✨','💯','👀','😮','🤯','✅','❌','⚠️','📍','➡️','👇','👆','🎵','💥','💡','🏆','😍','🥳','🙌','👏','💪','🚀','⚡','🌟','☀️','🌈','⚽','🎬','📢','🔔','🛒','💰','⏰','📸','🤔','😎','🙏','💬','🎁','🍕','✈️','🏁'];
+var CX_BADGES = [
+  ['sub', '🔔 PRETPLATI SE', '**PRETPLATI SE** 🔔', '#ff2020', 'pulse'],
+  ['like', '👍 LAJKUJ', '👍 **LAJKUJ**', '#1877f2', 'wiggle'],
+  ['new', 'NOVO!', '**NOVO!**', '#ffb300', 'pulse'],
+  ['live', '🔴 UŽIVO', '🔴 **UŽIVO**', '#e01e37', 'blink'],
+  ['wow', 'WOW', '**WOW!**', '#8a2be2', 'wiggle'],
+  ['sale', 'AKCIJA %', '**AKCIJA -50%**', '#00a86b', 'float'],
+];
+var CX_LOOPS = [['', 'Bez stalnog pokreta'], ['pulse','Pulsiranje'], ['wiggle','Klackanje'], ['float','Lebdenje'], ['spin','Okretanje'], ['blink','Treptanje'], ['shake','Drhtanje']];
+function cxTitleLoop(c, lt, W, H){
+  const L = c.text && c.text.loop;
+  if(!L) return;
+  const x = W*c.text.x, y = H*c.text.y, s = clamp((c.text.loopAmt ?? 60)/100, 0, 1);
+  ctx.translate(x, y);
+  if(L === 'pulse'){ const k = 1 + 0.12*s*(0.5 + 0.5*Math.sin(lt*Math.PI*2*1.2)); ctx.scale(k, k); }
+  else if(L === 'wiggle') ctx.rotate(Math.sin(lt*Math.PI*2*1.5)*0.18*s);
+  else if(L === 'float') ctx.translate(0, Math.sin(lt*Math.PI*2*0.6)*H*0.025*s);
+  else if(L === 'spin') ctx.rotate(lt*Math.PI*2*0.5*(0.3 + s));
+  else if(L === 'blink') ctx.globalAlpha *= (Math.sin(lt*Math.PI*2*1.4) > -0.3 ? 1 : 1 - s);
+  else if(L === 'shake') ctx.translate(cxNoise(lt*14, 2)*W*0.01*s, cxNoise(lt*14, 9)*H*0.01*s);
+  ctx.translate(-x, -y);
+}
+function cxTitleTrack(){ let tr = state.tracks.find(t=> t.type === 'title'); if(!tr) tr = addTrack('title'); return tr; }
+function cxAddSticker(emoji){
+  const c = addTitleAnimClip(cxTitleTrack().id, state.playhead);
+  Object.assign(c.text, { content: emoji, size: 110, x: 0.78, y: 0.3, animation: { preset:'pop', inDur:0.35, outDur:0.3 }, loop:'wiggle', loopAmt:45 });
+  c.duration = 3; c.outTrim = 3;
+  recalcDuration(); renderTimeline(); renderProps(); draw();
+}
+function cxAddBadge(id){
+  const b = CX_BADGES.find(x=> x[0] === id); if(!b) return;
+  const c = addTitleAnimClip(cxTitleTrack().id, state.playhead);
+  Object.assign(c.text, { content: b[2], size: 52, x: 0.5, y: 0.8, bold: true, color:'#ffffff', highlightColor: b[3], markStyle:'highlight', animation: { preset:'bounce', inDur:0.5, outDur:0.35 }, loop: b[4], loopAmt: 50 });
+  c.duration = 4; c.outTrim = 4;
+  recalcDuration(); renderTimeline(); renderProps(); draw();
+}
+function cxLoopHtml(c){
+  const L = (c.text && c.text.loop) || '';
+  return `<div class="field"><label>Stalni pokret (dok traje)</label><select id="cx-loop" data-no-undo>${CX_LOOPS.map(([k, l])=> `<option value="${k}" ${L===k?'selected':''}>${l}</option>`).join('')}</select></div>
+    ${sliderRow('cx-loop-amt', 'Jačina pokreta', c.text.loopAmt ?? 60, 0, 100)}`;
+}
+function cxLoopBind(c){
+  const s = document.getElementById('cx-loop'); if(!s) return;
+  s.addEventListener('change', ()=>{ pushUndoSnapshot(); c.text.loop = s.value || null; draw(); });
+  const a = document.getElementById('cx-loop-amt');
+  if(a) a.addEventListener('input', e=>{ c.text.loopAmt = +a.value; syncValLabel(e); draw(); });
+}
+
+/* ================= ŠABLONI NASLOVA ================= */
+var CX_TITLE_TPL = [
+  { id:'big', n:'Veliki naslov', p:{ content:'NASLOV', size:110, y:0.5, bold:true, animation:{ preset:'letters', inDur:0.8, outDur:0.4 }, shadow:{ on:true, color:'#000000', opacity:70, blur:18, x:0, y:6 } } },
+  { id:'lower', n:'Donja trećina', p:{ content:'**Ime Prezime**\nzanimanje', size:40, x:0.27, y:0.82, bold:true, highlightColor:'#3d6bf5', markStyle:'highlight', animation:{ preset:'slideRight', inDur:0.5, outDur:0.4 } } },
+  { id:'neon', n:'Neon', p:{ content:'NEON', size:96, color:'#7dfcff', y:0.45, animation:{ preset:'glitch', inDur:0.6, outDur:0.4 }, shadow:{ on:true, color:'#00e5ff', opacity:100, blur:28, x:0, y:0 }, loop:'blink', loopAmt:25 } },
+  { id:'outline', n:'Obris', p:{ content:'OBRIS', size:100, color:'#ffffff', strokeColor:'#000000', strokeWidth:8, bold:true, animation:{ preset:'pop', inDur:0.45, outDur:0.35 } } },
+  { id:'type', n:'Kucanje', p:{ content:'Jednom davno...', size:54, font:'Courier New', y:0.5, animation:{ preset:'typewriter', inDur:1.6, outDur:0.4 } } },
+  { id:'glitch', n:'Glič naslov', p:{ content:'GLITCH', size:100, color:'#ff3df5', y:0.5, bold:true, animation:{ preset:'glitch', inDur:0.7, outDur:0.5 }, shadow:{ on:true, color:'#00fff0', opacity:90, blur:0, x:5, y:0 }, loop:'shake', loopAmt:20 } },
+  { id:'end', n:'Hvala na gledanju', p:{ content:'Hvala na gledanju!', size:72, y:0.45, animation:{ preset:'fade', inDur:0.9, outDur:0.9 }, loop:'float', loopAmt:40 } },
+  { id:'words', n:'Reč po reč', p:{ content:'Ovo je **najbolji** deo', size:64, y:0.5, bold:true, highlightColor:'#ffcc00', markStyle:'highlight', animation:{ preset:'words', inDur:1.2, outDur:0.4 } } },
+];
+function cxAddTitleTpl(id){
+  const t = CX_TITLE_TPL.find(x=> x.id === id); if(!t) return;
+  const c = addTitleAnimClip(cxTitleTrack().id, state.playhead);
+  const p = JSON.parse(JSON.stringify(t.p));
+  Object.assign(c.text, p);
+  c.duration = 4; c.outTrim = 4;
+  recalcDuration(); renderTimeline(); selectClip(c.id); draw();
+}
+
+/* ================= PODELJEN EKRAN ================= */
+var CX_SPLITS = [
+  { id:'2v', n:'2 kadra: levo | desno', cells:[[0,0,.5,1],[.5,0,.5,1]] },
+  { id:'2h', n:'2 kadra: gore / dole', cells:[[0,0,1,.5],[0,.5,1,.5]] },
+  { id:'3c', n:'3 kolone', cells:[[0,0,1/3,1],[1/3,0,1/3,1],[2/3,0,1/3,1]] },
+  { id:'1+2', n:'1 veliki + 2 mala', cells:[[0,0,.6,1],[.6,0,.4,.5],[.6,.5,.4,.5]] },
+  { id:'4', n:'4 kadra (mreža)', cells:[[0,0,.5,.5],[.5,0,.5,.5],[0,.5,.5,.5],[.5,.5,.5,.5]] },
+  { id:'pip', n:'Slika u slici', cells:[[0,0,1,1],[.64,.06,.3,.3]] },
+];
+function cxSplitIcon(s){
+  return `<svg viewBox="0 0 32 18" width="48" height="27">${s.cells.map(([x,y,w,h], i)=> `<rect x="${x*32+0.6}" y="${y*18+0.6}" width="${w*32-1.2}" height="${h*18-1.2}" rx="1.2" fill="${['#3b82f6','#f59e0b','#10b981','#ef4444'][i]}" opacity=".85"/>`).join('')}</svg>`;
+}
+function cxApplySplit(id){
+  const s = CX_SPLITS.find(x=> x.id === id); if(!s) return;
+  const t = state.playhead;
+  const vids = state.tracks.filter(tr=> tr.type === 'video');
+  const list = [];
+  vids.forEach(tr=>{ const c = clipsOnTrack(tr.id).find(c=> t >= c.start && t < c.start + c.duration); if(c) list.push(c); });
+  if(list.length < 2){
+    alert('Za podeljen ekran stavi klipove na RAZLIČITE video trake (Video 1, Video 2, ...) tako da se preklapaju u vremenu, pa postavi plejhed (crvenu liniju) na to mesto.\n\nTrenutno je ispod plejheda ' + list.length + ' video klip.');
+    return;
+  }
+  pushUndoSnapshot();
+  const W = canvas.width, H = canvas.height, gap = id === 'pip' ? 0 : 0.004;
+  list.slice(0, s.cells.length).forEach((c, i)=>{
+    const [x, y, w, h] = s.cells[i];
+    const cell = { x: x + (x > 0 ? gap : 0), y: y + (y > 0 ? gap : 0), w: w - (x > 0 ? gap : 0) - (x + w < 1 ? gap : 0), h: h - (y > 0 ? gap : 0) - (y + h < 1 ? gap : 0) };
+    const el = getPlaybackEl(c);
+    const iw = (el && (el.videoWidth || el.naturalWidth)) || W, ih = (el && (el.videoHeight || el.naturalHeight)) || H;
+    const base = Math.min(W/iw, H/ih);
+    c.cell = (i === 0 && id === 'pip') ? null : cell;
+    c.transform.auto = false;
+    c.transform.x = cell.x + cell.w/2; c.transform.y = cell.y + cell.h/2;
+    c.transform.scale = Math.max(cell.w*W/(iw*base), cell.h*H/(ih*base));
+    if(id === 'pip' && i === 0){ c.transform.x = 0.5; c.transform.y = 0.5; c.transform.scale = Math.max(W/(iw*base), H/(ih*base)); }
+    c.keyframesEnabled = false;
+  });
+  list.slice(s.cells.length).forEach(c=>{ c.cell = null; });
+  renderTimeline(); renderProps(); draw();
+}
+function cxClearSplit(){
+  pushUndoSnapshot();
+  state.clips.forEach(c=>{ if(c.cell){ c.cell = null; c.transform.x = 0.5; c.transform.y = 0.5; c.transform.scale = 1; } });
+  renderProps(); draw();
+}
+function cxCellClip(c, g, W, H){
+  const q = c.cell; if(!q) return;
+  g.beginPath(); g.rect(q.x*W, q.y*H, q.w*W, q.h*H); g.clip();
+}
+
+/* ================= PANEL KLIPA: VIDEO EFEKTI ================= */
+function cxFxHtml(c, isVideo){
+  if(!isVideo) return '';
+  const fx = c.fx || {};
+  return `
+    <div class="cx-sub2">Video efekti</div>
+    <div class="cx-fx-grid">${CX_FX.map(([k, ic, n])=> `<button type="button" data-fx="${k}" data-no-undo class="${(fx[k]||0) > 0 ? 'on' : ''}"><span>${ic}</span>${n}</button>`).join('')}</div>
+    <div id="cx-fx-sliders">${CX_FX.filter(([k])=> (fx[k]||0) > 0).map(([k, ic, n])=> sliderRow('cx-fx-' + k, ic + ' ' + n, fx[k], 1, 100)).join('')}</div>
+    <div style="font-size:10.5px;color:var(--muted);line-height:1.5;">Klik uključuje / isključuje efekat. Može ih biti više odjednom. „Puls na ritam“ prati udarce pesme ako si ih pronašao (⚡ Auto montaža → Udarci).</div>`;
+}
+function cxFxBind(c){
+  document.querySelectorAll('.cx-fx-grid [data-fx]').forEach(b=> b.addEventListener('click', ()=>{
+    pushUndoSnapshot();
+    c.fx = c.fx || {};
+    const k = b.dataset.fx;
+    c.fx[k] = (c.fx[k]||0) > 0 ? 0 : 60;
+    renderProps(); cxMotionMark(); draw();
+  }));
+  CX_FX.forEach(([k])=>{
+    const s = document.getElementById('cx-fx-' + k);
+    if(s) s.addEventListener('input', e=>{ c.fx[k] = +s.value; syncValLabel(e); draw(); });
+  });
+}
+
+/* ================= LEVI PANELI ================= */
+function cxInitFxPanes(tries){
+  const ef = document.getElementById('cx-pane-effects'), ti = document.getElementById('cx-pane-titles'), el = document.getElementById('cx-pane-elements'), tr = document.getElementById('cx-pane-trans');
+  if(!ef || !ti || !el){ if((tries||0) < 30) setTimeout(()=> cxInitFxPanes((tries||0) + 1), 250); return; }
+  const need = ()=>{ const c = clipById(state.selectedClipId); const m = c && mediaById(c.mediaId); if(!c || !m || m.kind !== 'video'){ alert('Prvo klikni na video klip na tajmlajnu.'); return null; } return c; };
+  if(!document.getElementById('cx-fx-pane')){
+    const box = document.createElement('div'); box.id = 'cx-fx-pane';
+    box.innerHTML = `<div class="cx-sub2">Video efekti (izabrani klip)</div>
+      <div class="cx-fx-grid">${CX_FX.map(([k, ic, n])=> `<button type="button" data-k="${k}"><span>${ic}</span>${n}</button>`).join('')}</div>
+      <div class="cx-sub2">Podeljen ekran</div>
+      <div class="cx-split-grid">${CX_SPLITS.map(s=> `<button type="button" data-s="${s.id}" title="${s.n}">${cxSplitIcon(s)}<span>${s.n}</span></button>`).join('')}</div>
+      <button type="button" id="cx-split-clear">Vrati ceo ekran</button>
+      <div class="cx-muted">Klipovi na različitim video trakama, ispod plejheda, rasporede se u polja (Video 1 = prvo polje).</div>`;
+    ef.appendChild(box);
+    box.querySelectorAll('[data-k]').forEach(b=> b.addEventListener('click', e=>{
+      e.stopPropagation(); const c = need(); if(!c) return;
+      pushUndoSnapshot(); c.fx = c.fx || {}; c.fx[b.dataset.k] = (c.fx[b.dataset.k]||0) > 0 ? 0 : 60;
+      renderProps(); cxMotionMark(); draw(); cxFxPaneSync();
+    }));
+    box.querySelectorAll('[data-s]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); cxApplySplit(b.dataset.s); }));
+    box.querySelector('#cx-split-clear').addEventListener('click', e=>{ e.stopPropagation(); cxClearSplit(); });
+  }
+  if(!document.getElementById('cx-tpl-pane')){
+    const box = document.createElement('div'); box.id = 'cx-tpl-pane';
+    box.innerHTML = `<div class="cx-sub2">Šabloni naslova</div>
+      <div class="cx-tpl-grid">${CX_TITLE_TPL.map(t=> `<button type="button" data-t="${t.id}" class="cx-tpl-${t.id}"><b>${t.n}</b></button>`).join('')}</div>
+      <div class="cx-muted">Dodaje se na plejhed. Tekst, boju i animaciju menjaš desno.</div>`;
+    ti.appendChild(box);
+    box.querySelectorAll('[data-t]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); cxAddTitleTpl(b.dataset.t); }));
+  }
+  if(!document.getElementById('cx-stk-pane')){
+    const box = document.createElement('div'); box.id = 'cx-stk-pane';
+    box.innerHTML = `<div class="cx-sub2">Natpisi</div>
+      <div class="cx-badge-grid">${CX_BADGES.map(b=> `<button type="button" data-b="${b[0]}" style="--bc:${b[3]}">${b[1]}</button>`).join('')}</div>
+      <div class="cx-sub2">Nalepnice</div>
+      <div class="cx-stk-grid">${CX_STICKERS.map(s=> `<button type="button" data-e="${s}">${s}</button>`).join('')}</div>
+      <div class="cx-muted">Pojavljuje se na plejhedu i blago se klati. Povuci je u pregledu ili podesi desno.</div>`;
+    el.insertBefore(box, el.children[1] || null);
+    box.querySelectorAll('[data-e]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); cxAddSticker(b.dataset.e); }));
+    box.querySelectorAll('[data-b]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); cxAddBadge(b.dataset.b); }));
+  }
+  if(tr && !document.getElementById('cx-tr-note')){
+    const n = document.createElement('div'); n.id = 'cx-tr-note'; n.className = 'cx-muted';
+    n.textContent = `Ukupno ${Object.keys(TR_LABELS).filter(k=> !TEXT_ANIM_TYPES.includes(k) && !k.startsWith('o-')).length - 1} prelaza, od toga ${CX_TR_NEW.length} novih: guranje, brzi trzaj, uvrtanje, okretanje kartice, kroz crno, bljesak, romb, sat, vrata, šahovska polja, pruge.`;
+    tr.appendChild(n);
+  }
+  cxFxPaneSync();
+}
+function cxFxPaneSync(){
+  const c = clipById(state.selectedClipId);
+  document.querySelectorAll('#cx-fx-pane [data-k]').forEach(b=> b.classList.toggle('on', !!(c && c.fx && c.fx[b.dataset.k] > 0)));
+}
+(function(){ const go = ()=> setTimeout(()=> cxInitFxPanes(0), 120); if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go(); })();
+var __cxSelFx = selectClip;
+selectClip = function(){ const r = __cxSelFx.apply(this, arguments); try{ cxFxPaneSync(); }catch(e){} return r; };
+
+
+/* ============================================================
+   PAKET 4: SNIMANJE I GLAS
+   - snimanje ekrana / kamere / ekran + kamera (sa zvukom računara i mikrofonom)
+   - promena glasa (dubok, veverica, robot, radio, eho, pećina...)
+   - uklanjanje pozadine bez zelenog platna (AI, radi na računaru)
+   ============================================================ */
+
+/* ================= PROMENA GLASA ================= */
+var CX_VOICES = [['', 'Bez promene'], ['deep', '🗿 Dubok glas'], ['monster', '👹 Čudovište'], ['chipmunk', '🐿 Veverica'], ['robot', '🤖 Robot'],
+  ['alien', '👽 Vanzemaljac'], ['radio', '📻 Radio / telefon'], ['megaphone', '📢 Megafon'], ['echo', '🏔 Eho'], ['cave', '🕳 Pećina (odjek)']];
+function cxVoiceOn(c){ return !!(c && c.voice && c.voice.preset); }
+/* menjanje visine glasa bez menjanja brzine (dve linije kašnjenja koje se smenjuju) */
+function cxPitchShifter(ac, ratio){
+  const sr = ac.sampleRate, bufferTime = 0.1, fadeTime = 0.05, delayTime = 0.1;
+  const len = Math.round(bufferTime*sr);
+  const mk = (fn)=>{ const b = ac.createBuffer(1, len, sr), d = b.getChannelData(0); for(let i=0; i<len; i++) d[i] = fn(i); return b; };
+  const fl = Math.round(fadeTime*sr);
+  const fadeBuf = mk(i=> i < fl ? Math.sqrt(i/fl) : (i >= len - fl ? Math.sqrt(1 - (i - (len - fl))/fl) : 1));
+  const up = ratio > 1;
+  const delBuf = mk(i=> up ? (len - i)/len : i/len);
+  const input = ac.createGain(), output = ac.createGain();
+  const nodes = [];
+  const t0 = ac.currentTime + 0.01, t1 = t0 + bufferTime - fadeTime;
+  [t0, t1].forEach(st=>{
+    const mod = ac.createBufferSource(); mod.buffer = delBuf; mod.loop = true;
+    const mg = ac.createGain(); mg.gain.value = delayTime*Math.min(0.95, Math.abs(ratio - 1));
+    const d = ac.createDelay(1); d.delayTime.value = 0;
+    mod.connect(mg); mg.connect(d.delayTime);
+    const fade = ac.createBufferSource(); fade.buffer = fadeBuf; fade.loop = true;
+    const mix = ac.createGain(); mix.gain.value = 0;
+    fade.connect(mix.gain);
+    input.connect(d); d.connect(mix); mix.connect(output);
+    mod.start(st); fade.start(st);
+    nodes.push(mod, fade);
+  });
+  return { input, output, nodes };
+}
+function cxImpulse(ac, sec, decay){
+  const n = Math.round(ac.sampleRate*sec), b = ac.createBuffer(2, n, ac.sampleRate);
+  for(let ch=0; ch<2; ch++){ const d = b.getChannelData(ch); for(let i=0; i<n; i++) d[i] = (Math.random()*2 - 1)*Math.pow(1 - i/n, decay); }
+  return b;
+}
+function cxShaper(ac, k){ const s = ac.createWaveShaper(), n = 1024, cu = new Float32Array(n); for(let i=0; i<n; i++){ const x = i/(n-1)*2 - 1; cu[i] = (1 + k)*x/(1 + k*Math.abs(x)); } s.curve = cu; s.oversample = '2x'; return s; }
+function cxVoiceBuild(ac, preset){
+  const input = ac.createGain(), output = ac.createGain(), nodes = [];
+  const chain = (...ns)=>{ for(let i=0; i<ns.length-1; i++) ns[i].connect(ns[i+1]); };
+  const ps = (r)=>{ const p = cxPitchShifter(ac, r); nodes.push(...p.nodes); return p; };
+  const osc = (f, type)=>{ const o = ac.createOscillator(); o.type = type || 'sine'; o.frequency.value = f; o.start(); nodes.push(o); return o; };
+  const ring = (src, f)=>{ const g = ac.createGain(); g.gain.value = 0; osc(f).connect(g.gain); src.connect(g); return g; };
+  const filt = (type, f, q)=>{ const b = ac.createBiquadFilter(); b.type = type; b.frequency.value = f; if(q) b.Q.value = q; return b; };
+  switch(preset){
+    case 'deep': { const p = ps(0.75); chain(input, p.input); const lo = filt('lowshelf', 200); lo.gain.value = 4; chain(p.output, lo, output); break; }
+    case 'monster': { const p = ps(0.6); chain(input, p.input); const sh = cxShaper(ac, 4), lp = filt('lowpass', 2500); const g = ac.createGain(); g.gain.value = 0.8; chain(p.output, sh, lp, g, output); break; }
+    case 'chipmunk': { const p = ps(1.5); chain(input, p.input); const g = ac.createGain(); g.gain.value = 1.5; chain(p.output, g, output); break; }
+    case 'robot': {
+      const r = ring(input, 50); const d = ac.createDelay(0.1); d.delayTime.value = 0.012; const fb = ac.createGain(); fb.gain.value = 0.45;
+      chain(r, d, fb, d); const g = ac.createGain(); g.gain.value = 1.6; r.connect(g); d.connect(g); g.connect(output); break;
+    }
+    case 'alien': {
+      const p = ps(1.26); chain(input, p.input);
+      const g = ac.createGain(); g.gain.value = 0; const o = osc(420); const lfo = osc(3); const lg = ac.createGain(); lg.gain.value = 140; chain(lfo, lg, o.frequency); o.connect(g.gain);
+      p.output.connect(g); const dry = ac.createGain(); dry.gain.value = 0.5; p.output.connect(dry); const wet = ac.createGain(); wet.gain.value = 1.2; g.connect(wet); dry.connect(output); wet.connect(output); break;
+    }
+    case 'radio': { const hp = filt('highpass', 400, 0.8), lp = filt('lowpass', 3200, 0.8), sh = cxShaper(ac, 3), g = ac.createGain(); g.gain.value = 0.9; chain(input, hp, lp, sh, g, output); break; }
+    case 'megaphone': { const bp = filt('bandpass', 1300, 1.4), sh = cxShaper(ac, 25), hp = filt('highpass', 500), g = ac.createGain(); g.gain.value = 0.55; chain(input, bp, sh, hp, g, output); break; }
+    case 'echo': { const d = ac.createDelay(1); d.delayTime.value = 0.28; const fb = ac.createGain(); fb.gain.value = 0.42; const wet = ac.createGain(); wet.gain.value = 0.55; chain(input, d, fb, d); d.connect(wet); input.connect(output); wet.connect(output); break; }
+    case 'cave': { const cv = ac.createConvolver(); cv.buffer = cxImpulse(ac, 3.2, 2.2); const wet = ac.createGain(); wet.gain.value = 0.5; const dry = ac.createGain(); dry.gain.value = 0.75; chain(input, cv, wet, output); chain(input, dry, output); break; }
+    default: input.connect(output);
+  }
+  return { input, output, stop(){ nodes.forEach(n=>{ try{ n.stop(); }catch(e){} }); try{ input.disconnect(); output.disconnect(); }catch(e){} } };
+}
+/* uživo: zapis -> promena glasa -> EQ lanac -> traka */
+var __cxLiveV = cxLive;
+cxLive = function(c){
+  __cxLiveV(c);
+  const el = c && c.el; if(!el || !el.__gainNode || !el.__cxChain) return;
+  const key = cxVoiceOn(c) ? c.voice.preset : '';
+  if(el.__cxVKey === key) return;
+  try{ el.__gainNode.disconnect(); }catch(e){}
+  if(el.__cxVoice){ el.__cxVoice.stop(); el.__cxVoice = null; }
+  if(key){ el.__cxVoice = cxVoiceBuild(audioCtx, key); el.__gainNode.connect(el.__cxVoice.input); el.__cxVoice.output.connect(el.__cxChain.input); }
+  else el.__gainNode.connect(el.__cxChain.input);
+  el.__cxVKey = key;
+};
+var __cxConnOffV = cxConnectOffline;
+cxConnectOffline = function(octx, c, gainNode, fadeGain){
+  if(!cxVoiceOn(c)) return __cxConnOffV(octx, c, gainNode, fadeGain);
+  const v = cxVoiceBuild(octx, c.voice.preset);
+  gainNode.connect(v.input);
+  return __cxConnOffV(octx, c, v.output, fadeGain);
+};
+function cxVoiceHtml(c, media){
+  if(!media || media.kind === 'image' || (c.type !== 'video' && c.type !== 'audio')) return '';
+  const p = cxVoiceOn(c) ? c.voice.preset : '';
+  return `<div class="cx-sub2">Promena glasa</div>
+    <div class="cx-voice-grid">${CX_VOICES.map(([k, l])=> `<button type="button" data-voice="${k}" data-no-undo class="${p===k?'on':''}">${l}</button>`).join('')}</div>
+    <div style="font-size:10.5px;color:var(--muted);line-height:1.5;">Čuje se odmah u pregledu i ulazi u export. Brzina govora ostaje ista.</div>`;
+}
+function cxVoiceBind(c){
+  document.querySelectorAll('[data-voice]').forEach(b=> b.addEventListener('click', ()=>{
+    pushUndoSnapshot();
+    c.voice = b.dataset.voice ? { preset: b.dataset.voice } : null;
+    document.querySelectorAll('[data-voice]').forEach(x=> x.classList.toggle('on', x === b));
+    if(c.el) cxLive(c);
+  }));
+}
+
+/* ================= UKLANJANJE POZADINE (AI) ================= */
+var CX_SELFIE_VER = '0.1.1675465747';
+var __cxSegP = null;
+function cxLoadScript(src){ return new Promise((res, rej)=>{ const s = document.createElement('script'); s.src = src; s.crossOrigin = 'anonymous'; s.onload = res; s.onerror = ()=> rej(new Error('Ne mogu da učitam ' + src)); document.head.appendChild(s); }); }
+function cxGetSegmenter(){
+  if(__cxSegP) return __cxSegP;
+  __cxSegP = (async ()=>{
+    const base = (window.cadriaDesktop && window.cadriaDesktop.selfieBase) || `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation@${CX_SELFIE_VER}/`;
+    if(!window.SelfieSegmentation) await cxLoadScript(base + 'selfie_segmentation.js');
+    // MediaPipe ume da iskoči sa alert() porukom (npr. bez grafičke kartice) - umesto toga samo zapis u konzoli
+    if(!window.__cxAlertWrapped){ const A = window.alert.bind(window); window.alert = (m)=>{ if(/WebGL|MediaPipe|graph/i.test(String(m))) console.warn('AI:', m); else A(m); }; window.__cxAlertWrapped = true; }
+    const seg = new window.SelfieSegmentation({ locateFile: f=> base + f });
+    seg.setOptions({ modelSelection: 0, selfieMode: false });
+    let resolve = null;
+    seg.onResults(r=>{ if(resolve){ const f = resolve; resolve = null; f(r); } });
+    try{ await seg.initialize(); }catch(e){ throw new Error('AI ne može da se pokrene na ovom računaru (treba podrška za WebGL / grafičku kartu). ' + (e && e.message || '')); }
+    const inp = document.createElement('canvas');
+    let busy = Promise.resolve();
+    return {
+      // vraća masku (platno, alfa = osoba) za dati kadar
+      run(src, w, h){
+        const job = busy.then(async ()=>{
+          const s = 256, k = Math.min(1, s / Math.max(w, h)) * 1.5;
+          inp.width = Math.max(16, Math.round(w*k)); inp.height = Math.max(16, Math.round(h*k));
+          inp.getContext('2d').drawImage(src, 0, 0, inp.width, inp.height);
+          const r = await new Promise((res)=>{ resolve = res; seg.send({ image: inp }).catch(()=>{ if(resolve){ resolve = null; res(null); } }); });
+          if(!r || !r.segmentationMask) return null;
+          const m = document.createElement('canvas'); m.width = inp.width; m.height = inp.height;
+          m.getContext('2d').drawImage(r.segmentationMask, 0, 0, m.width, m.height);
+          return m;
+        });
+        busy = job.catch(()=>{});
+        return job;
+      },
+    };
+  })();
+  __cxSegP.catch(()=>{ __cxSegP = null; });
+  return __cxSegP;
+}
+var __cxBgMask = new WeakMap(); // klip -> { t, mask, pending }
+function cxBgOn(c){ return !!(c && c.bg && c.bg.on); }
+/* pre crtanja kadra u exportu: sačekaj masku za tačno ovaj kadar */
+async function cxPrepareBg(active){
+  for(const c of active || []){
+    if(!cxBgOn(c)) continue;
+    const el = getPlaybackEl(c); if(!el) continue;
+    const t = el.tagName === 'VIDEO' ? el.currentTime : -1;
+    const st = __cxBgMask.get(c);
+    if(st && st.t === t && st.mask) continue;
+    try{
+      const seg = await cxGetSegmenter();
+      const w = el.videoWidth || el.width, h = el.videoHeight || el.height;
+      const mask = await seg.run(el, w, h);
+      __cxBgMask.set(c, { t, mask });
+    }catch(e){ console.warn('pozadina', e); }
+  }
+}
+/* sinhrono (iz crtanja): koristi poslednju masku, a novu traži u pozadini */
+function cxBgMaskFor(c, el, t){
+  let st = __cxBgMask.get(c);
+  if(!st){ st = { t:-1, mask:null }; __cxBgMask.set(c, st); }
+  if(st.t !== t && !st.pending && !state.exporting){
+    st.pending = true;
+    cxGetSegmenter().then(seg=> seg.run(el, el.videoWidth || el.width, el.videoHeight || el.height)).then(mask=>{
+      st.pending = false;
+      if(mask){ st.t = t; st.mask = mask; if(!state.playing) draw(); }
+    }).catch(e=>{ st.pending = false; st.err = e; console.warn(e); const m = document.getElementById('cx-bg-msg'); if(m) m.textContent = 'AI model nije mogao da se učita: ' + (e && e.message || e); });
+  }
+  return st.mask;
+}
+function cxBgApply(c, frame, w, h, fs, el, t){
+  const mask = cxBgMaskFor(c, el, t);
+  if(!mask) return frame;
+  const b = c.bg, edge = clamp(b.edge ?? 30, 0, 100)/100;
+  const person = cxCanvas2(fs, 'bgp', w, h), pg = person.getContext('2d');
+  pg.globalCompositeOperation = 'source-over'; pg.clearRect(0, 0, w, h);
+  pg.filter = edge > 0 ? `blur(${(edge*w/220).toFixed(2)}px)` : 'none';
+  pg.drawImage(mask, 0, 0, w, h);
+  pg.filter = 'none';
+  pg.globalCompositeOperation = 'source-in';
+  pg.drawImage(frame, 0, 0, w, h);
+  pg.globalCompositeOperation = 'source-over';
+  if(b.mode === 'remove') return person;
+  const out = cxCanvas2(fs, 'bgo', w, h), g = out.getContext('2d');
+  g.clearRect(0, 0, w, h);
+  if(b.mode === 'blur'){ g.filter = `blur(${(clamp(b.blur ?? 40, 1, 100)/100*w/40).toFixed(1)}px)`; g.drawImage(frame, -w*0.03, -h*0.03, w*1.06, h*1.06); g.filter = 'none'; }
+  else { g.fillStyle = b.color || '#00b140'; g.fillRect(0, 0, w, h); }
+  g.drawImage(person, 0, 0);
+  return out;
+}
+function cxBgHtml(c, isVideo){
+  if(!isVideo) return '';
+  const b = c.bg || { on:false, mode:'remove', color:'#1e293b', blur:40, edge:30 };
+  return `<div class="cx-sub2">Uklanjanje pozadine (AI)</div>
+    <label class="checkbox-row"><input type="checkbox" id="cx-bg-on" ${b.on?'checked':''}> Ukloni pozadinu iza osobe</label>
+    <div id="cx-bg-opts" style="${b.on?'':'display:none;'}">
+      <div class="field"><label>Umesto pozadine</label><select id="cx-bg-mode" data-no-undo>
+        <option value="remove" ${b.mode==='remove'?'selected':''}>Providno (vidi se traka ispod)</option>
+        <option value="blur" ${b.mode==='blur'?'selected':''}>Zamućena pozadina</option>
+        <option value="color" ${b.mode==='color'?'selected':''}>Jednobojna</option></select></div>
+      <div class="field" id="cx-bg-color-f" style="${b.mode==='color'?'':'display:none;'}"><label>Boja</label><input type="color" id="cx-bg-color" value="${b.color || '#1e293b'}"></div>
+      <div id="cx-bg-blur-f" style="${b.mode==='blur'?'':'display:none;'}">${sliderRow('cx-bg-blur', 'Jačina zamućenja', b.blur ?? 40, 1, 100)}</div>
+      ${sliderRow('cx-bg-edge', 'Mekoća ivice', b.edge ?? 30, 0, 100)}
+    </div>
+    <div id="cx-bg-msg" style="font-size:10.5px;color:var(--muted);line-height:1.5;">Radi bez zelenog platna: AI prepoznaje osobu u kadru. Najbolje za snimke gde je osoba blizu kamere (vlog, intervju). „Providno“ = stavi klip na Video 2, a novu pozadinu na Video 1.</div>`;
+}
+function cxBgBind(c){
+  const on = document.getElementById('cx-bg-on'); if(!on) return;
+  const b = ()=> c.bg || (c.bg = { on:false, mode:'remove', color:'#1e293b', blur:40, edge:30 });
+  on.addEventListener('change', ()=>{
+    pushUndoSnapshot(); b().on = on.checked;
+    document.getElementById('cx-bg-opts').style.display = on.checked ? '' : 'none';
+    if(on.checked){ const m = document.getElementById('cx-bg-msg'); if(m) m.textContent = 'Učitavam AI model...'; cxGetSegmenter().then(()=>{ if(m) m.textContent = 'AI model je spreman.'; draw(); }).catch(e=>{ if(m) m.textContent = 'AI model nije mogao da se učita: ' + (e && e.message || e); }); }
+    cxMotionMark(); draw();
+  });
+  const mode = document.getElementById('cx-bg-mode');
+  mode.addEventListener('change', ()=>{ pushUndoSnapshot(); b().mode = mode.value; document.getElementById('cx-bg-color-f').style.display = mode.value === 'color' ? '' : 'none'; document.getElementById('cx-bg-blur-f').style.display = mode.value === 'blur' ? '' : 'none'; draw(); });
+  document.getElementById('cx-bg-color').addEventListener('input', e=>{ b().color = e.target.value; draw(); });
+  const bl = document.getElementById('cx-bg-blur'); bl.addEventListener('input', e=>{ b().blur = +bl.value; syncValLabel(e); draw(); });
+  const ed = document.getElementById('cx-bg-edge'); ed.addEventListener('input', e=>{ b().edge = +ed.value; syncValLabel(e); draw(); });
+}
+
+/* ================= SNIMANJE EKRANA I KAMERE ================= */
+/* WebM iz MediaRecorder-a nema upisano trajanje - upisujemo ga (Duration u Segment > Info) */
+function cxFixWebmDuration(blob, durMs){
+  return blob.slice(0, Math.min(blob.size, 1<<20)).arrayBuffer().then(ab=>{
+    const u = new Uint8Array(ab);
+    const vlen = (b)=>{ for(let i=0; i<8; i++) if(b & (0x80 >> i)) return i + 1; return 0; };
+    const readId = (p)=>{ const l = vlen(u[p]); return { len:l, id: [...u.slice(p, p+l)].reduce((a, x)=> a*256 + x, 0) }; };
+    const readSize = (p)=>{ const l = vlen(u[p]); let v = u[p] & (0xff >> l); let allOnes = v === (0xff >> l); for(let i=1; i<l; i++){ v = v*256 + u[p+i]; if(u[p+i] !== 0xff) allOnes = false; } return { len:l, v, unknown: allOnes }; };
+    let p = 0;
+    const h = readId(p); if(h.id !== 0x1A45DFA3) return blob;
+    const hs = readSize(p + h.len); p += h.len + hs.len + hs.v;
+    const sg = readId(p); if(sg.id !== 0x18538067) return blob;
+    const ss = readSize(p + sg.len); const segSizePos = p + sg.len; p += sg.len + ss.len;
+    while(p < u.length - 12){
+      const e = readId(p), es = readSize(p + e.len);
+      const body = p + e.len + es.len;
+      if(e.id === 0x1549A966){ // Info
+        const end = body + es.v;
+        let q = body, scale = 1e6, durPos = -1;
+        while(q < end){ const ce = readId(q), cs = readSize(q + ce.len), cb = q + ce.len + cs.len; if(ce.id === 0x2AD7B1){ let v = 0; for(let i=0; i<cs.v; i++) v = v*256 + u[cb+i]; scale = v; } if(ce.id === 0x4489) durPos = cb; q = cb + cs.v; }
+        const dur = durMs * 1e6 / scale;
+        if(durPos >= 0){ const dv = new DataView(ab); if(u[durPos-1] === 0x84) dv.setFloat32(durPos, dur); else dv.setFloat64(durPos, dur); return new Blob([u, blob.slice(u.length)], { type: blob.type }); }
+        const durEl = new Uint8Array(11); durEl[0] = 0x44; durEl[1] = 0x89; durEl[2] = 0x88; new DataView(durEl.buffer).setFloat64(3, dur);
+        const content = u.slice(body, end);
+        const newSize = content.length + durEl.length;
+        const sizeV = new Uint8Array(8); sizeV[0] = 0x01; let v = newSize; for(let i=7; i>=1; i--){ sizeV[i] = v & 0xff; v = Math.floor(v/256); }
+        const idB = u.slice(p, p + e.len);
+        const before = u.slice(0, p), after = u.slice(end);
+        if(!ss.unknown){ // poznata veličina segmenta - uvećaj je
+          let sv = ss.v + (e.len + 8 + newSize) - (end - p);
+          for(let i=ss.len-1; i>=1; i--){ before[segSizePos+i] = sv & 0xff; sv = Math.floor(sv/256); }
+          before[segSizePos] = (before[segSizePos] & (0xff << (8 - ss.len)) & 0xff) | (sv & (0xff >> ss.len));
+        }
+        return new Blob([before, idB, sizeV, content, durEl, after, blob.slice(u.length)], { type: blob.type });
+      }
+      if(es.unknown) break;
+      p = body + es.v;
+    }
+    return blob;
+  }).catch(()=> blob);
+}
+function cxFmtClock(s){ s = Math.max(0, Math.floor(s)); return String(Math.floor(s/60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+async function cxImportRecorded(blob, name){
+  const file = new File([blob], name, { type: blob.type || 'video/webm' });
+  handleFiles([file]);
+  for(let i=0; i<100; i++){ const m = state.media.find(x=> x.name === name); if(m) return m; await new Promise(r=> setTimeout(r, 150)); }
+  return null;
+}
+function cxRecNext(prefix){ return state.media.filter(m=> m.name.startsWith(prefix)).length + 1; }
+async function cxOpenRecorder(){
+  const desk = !!(window.cadriaDesktop && window.cadriaDesktop.screens);
+  const canScreen = !!(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia);
+  const md = cxModal('⏺ Snimanje', `<div class="cx-rec">
+    <div class="cx-rec-modes">
+      <button type="button" data-m="screen" class="on">🖥<b>Ekran</b></button>
+      <button type="button" data-m="cam">📷<b>Kamera</b></button>
+      <button type="button" data-m="both">🖥+📷<b>Ekran i kamera</b></button>
+      <button type="button" data-m="mic">🎙<b>Samo glas</b></button>
+    </div>
+    <div id="cx-rec-src"></div>
+    <div id="cx-rec-cam-f" class="cx-auto-row" style="display:none;"><span>Kamera</span><select id="cx-rec-cam"></select></div>
+    <label class="checkbox-row"><input type="checkbox" id="cx-rec-mic" checked> 🎙 Mikrofon (tvoj glas)</label>
+    <label class="checkbox-row" id="cx-rec-sys-f"><input type="checkbox" id="cx-rec-sys" checked> 🔊 Zvuk računara (muzika, igra, video)</label>
+    <div class="cx-auto-row"><span>Kvalitet</span><select id="cx-rec-q"><option value="6">Dobar (manji fajl)</option><option value="12" selected>Visok</option><option value="25">Najviši</option></select></div>
+    <div class="cx-auto-tip" id="cx-rec-tip">Snimak se posle zaustavljanja sam ubaci u medijateku i na tajmlajn (na plejhed).</div>
+    <button type="button" id="cx-rec-go" class="cx-auto-main">⏺ Počni snimanje (odbrojavanje 3 s)</button>
+  </div>`);
+  const box = md.body;
+  let mode = 'screen', srcId = null;
+  const $i = id=> box.querySelector('#' + id);
+  const loadSources = async ()=>{
+    const wrap = $i('cx-rec-src');
+    if(!(mode === 'screen' || mode === 'both')){ wrap.innerHTML = ''; return; }
+    if(!desk){ wrap.innerHTML = canScreen ? '<div class="cx-auto-tip">Posle klika na „Počni“ izaberi ekran ili prozor u prozoru pregledača.</div>' : '<div class="cx-auto-tip">Ovaj pregledač ne može da snima ekran.</div>'; return; }
+    wrap.innerHTML = '<div class="cx-auto-tip">Tražim ekrane i prozore...</div>';
+    try{
+      const list = await window.cadriaDesktop.screens();
+      if(!list.length){ wrap.innerHTML = '<div class="cx-auto-tip">Biće snimljen ceo ekran.</div>'; srcId = null; return; }
+      wrap.innerHTML = `<div class="cx-rec-srcs">${list.map((s, i)=> `<button type="button" data-id="${s.id}" class="${i===0?'on':''}">${s.thumb ? `<img src="${s.thumb}">` : '<div class="cx-rec-noimg">🖥</div>'}<span>${s.screen ? '🖥 ' : '🗔 '}${escapeHtml(s.name)}</span></button>`).join('')}</div>`;
+      srcId = list.length ? list[0].id : null;
+      wrap.querySelectorAll('[data-id]').forEach(b=> b.addEventListener('click', ()=>{ srcId = b.dataset.id; wrap.querySelectorAll('[data-id]').forEach(x=> x.classList.toggle('on', x === b)); }));
+    }catch(e){ wrap.innerHTML = '<div class="cx-auto-tip">Spisak ekrana nije dostupan, biće snimljen ceo ekran.</div>'; }
+  };
+  const loadCams = async ()=>{
+    const f = $i('cx-rec-cam-f');
+    f.style.display = (mode === 'cam' || mode === 'both') ? '' : 'none';
+    if(f.style.display === 'none') return;
+    try{
+      let devs = await navigator.mediaDevices.enumerateDevices();
+      $i('cx-rec-cam').innerHTML = devs.filter(d=> d.kind === 'videoinput').map((d, i)=> `<option value="${d.deviceId}">${escapeHtml(d.label || ('Kamera ' + (i+1)))}</option>`).join('') || '<option value="">Podrazumevana kamera</option>';
+    }catch(e){}
+  };
+  box.querySelectorAll('[data-m]').forEach(b=> b.addEventListener('click', ()=>{
+    mode = b.dataset.m; box.querySelectorAll('[data-m]').forEach(x=> x.classList.toggle('on', x === b));
+    $i('cx-rec-sys-f').style.display = (mode === 'screen' || mode === 'both') ? '' : 'none';
+    $i('cx-rec-mic').closest('label').style.display = mode === 'mic' ? 'none' : '';
+    loadSources(); loadCams();
+  }));
+  loadSources();
+  $i('cx-rec-go').addEventListener('click', async ()=>{
+    if(mode === 'mic'){ md.close(); const b = document.getElementById('btn-record-mic'); if(b) b.click(); return; }
+    const opts = { mode, srcId, mic: $i('cx-rec-mic').checked, sys: $i('cx-rec-sys').checked, cam: $i('cx-rec-cam').value, mbps: +$i('cx-rec-q').value };
+    md.close();
+    try{ await cxRecord(opts); }catch(e){ console.error(e); alert('Snimanje nije uspelo: ' + (e && e.message || e) + (e && e.name === 'NotAllowedError' ? '\n\nDozvoli pristup ekranu/kameri/mikrofonu i probaj ponovo.' : '')); }
+  });
+}
+async function cxRecord(o){
+  const streams = [], stopAll = ()=> streams.forEach(s=> s.getTracks().forEach(t=> t.stop()));
+  let screen = null, cam = null, mic = null;
+  try{
+    if(o.mode === 'screen' || o.mode === 'both'){
+      if(window.cadriaDesktop && window.cadriaDesktop.pickScreen) await window.cadriaDesktop.pickScreen(o.srcId);
+      try{ screen = await navigator.mediaDevices.getDisplayMedia({ video: { frameRate: 30 }, audio: !!o.sys }); }
+      catch(e){ if(e && /constraint/i.test(e.message || '')) screen = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: !!o.sys }); else throw e; }
+      streams.push(screen);
+    }
+    if(o.mode === 'cam' || o.mode === 'both'){
+      cam = await navigator.mediaDevices.getUserMedia({ video: Object.assign({ width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: 30 }, o.cam ? { deviceId: { exact: o.cam } } : {}), audio: false });
+      streams.push(cam);
+    }
+    if(o.mic){
+      mic = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+      streams.push(mic);
+    }
+  }catch(e){ stopAll(); throw e; }
+  // zvuk: mikrofon + zvuk računara u jedan trag
+  const mix = new AudioContext(), dest = mix.createMediaStreamDestination();
+  let hasAudio = false;
+  [screen, mic].forEach(s=>{ if(s && s.getAudioTracks().length){ mix.createMediaStreamSource(new MediaStream(s.getAudioTracks())).connect(dest); hasAudio = true; } });
+  const mime = ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'].find(t=> MediaRecorder.isTypeSupported(t)) || '';
+  const mkRec = (videoTrack, withAudio, mbps)=>{
+    const tracks = [videoTrack].concat(withAudio && hasAudio ? dest.stream.getAudioTracks() : []);
+    const r = new MediaRecorder(new MediaStream(tracks), { mimeType: mime || undefined, videoBitsPerSecond: Math.round(mbps*1e6), audioBitsPerSecond: 160000 });
+    r.__chunks = []; r.ondataavailable = e=>{ if(e.data && e.data.size) r.__chunks.push(e.data); };
+    return r;
+  };
+  const main = screen || cam;
+  const recs = [mkRec(main.getVideoTracks()[0], true, o.mbps)];
+  if(screen && cam) recs.push(mkRec(cam.getVideoTracks()[0], false, Math.max(4, o.mbps/2)));
+  // odbrojavanje
+  const bar = document.createElement('div'); bar.id = 'cx-rec-bar';
+  document.body.appendChild(bar);
+  for(let n=3; n>=1; n--){ bar.innerHTML = `<span class="cx-rec-count">${n}</span><span>Snimanje počinje...</span>`; await new Promise(r=> setTimeout(r, 1000)); }
+  const at = state.playhead;
+  let elapsed = 0, since = performance.now(), paused = false, stopped = false;
+  recs.forEach(r=> r.start(1000));
+  bar.innerHTML = `<span class="cx-rec-dot"></span><b id="cx-rec-time">00:00</b><button type="button" id="cx-rec-pause">⏸ Pauza</button><button type="button" id="cx-rec-stop">■ Zaustavi</button>`;
+  const timeEl = bar.querySelector('#cx-rec-time');
+  const iv = setInterval(()=>{ timeEl.textContent = cxFmtClock((elapsed + (paused ? 0 : performance.now() - since))/1000); }, 250);
+  return new Promise((resolve, reject)=>{
+    bar.querySelector('#cx-rec-pause').addEventListener('click', e=>{
+      if(!paused){ recs.forEach(r=> r.pause()); elapsed += performance.now() - since; paused = true; e.target.textContent = '▶ Nastavi'; bar.classList.add('paused'); }
+      else { recs.forEach(r=> r.resume()); since = performance.now(); paused = false; e.target.textContent = '⏸ Pauza'; bar.classList.remove('paused'); }
+    });
+    const finish = async ()=>{
+      if(stopped) return; stopped = true;
+      clearInterval(iv);
+      if(!paused) elapsed += performance.now() - since;
+      bar.innerHTML = '<span>Obrađujem snimak...</span>';
+      await Promise.all(recs.map(r=> new Promise(res=>{ if(r.state === 'inactive') return res(); r.onstop = res; r.stop(); })));
+      stopAll(); try{ mix.close(); }catch(e){}
+      try{
+        const names = [];
+        const n = cxRecNext(o.mode === 'cam' ? 'Snimak kamere' : 'Snimak ekrana');
+        for(let i=0; i<recs.length; i++){
+          const blob = new Blob(recs[i].__chunks, { type: (recs[i].mimeType || 'video/webm').split(';')[0] });
+          if(!blob.size) continue;
+          const fixed = await cxFixWebmDuration(blob, elapsed);
+          const name = (i === 0 ? (o.mode === 'cam' ? 'Snimak kamere ' : 'Snimak ekrana ') : 'Snimak kamere (uz ekran) ') + n + '.webm';
+          const m = await cxImportRecorded(fixed, name);
+          if(m) names.push(m);
+        }
+        // na tajmlajn: ekran na Video 1, kamera na Video 2 kao mali prozor u uglu
+        const vids = () => state.tracks.filter(t=> t.type === 'video');
+        if(names[0]){
+          addClipToTrack(names[0].id, vids()[0].id, at);
+          const c0 = state.clips[state.clips.length - 1];
+          if(names[1]){
+            const t2 = vids()[1] || addTrack('video');
+            addClipToTrack(names[1].id, t2.id, at);
+            const c1 = state.clips[state.clips.length - 1];
+            c1.start = c0.start;
+            Object.assign(c1.transform, { auto:false, x: 0.82, y: 0.78, scale: 0.3 });
+          }
+          recalcDuration(); renderTimeline(); selectClip(c0.id); seekTo(c0.start);
+        }
+        bar.remove(); resolve(names);
+      }catch(e){ bar.remove(); reject(e); }
+    };
+    bar.querySelector('#cx-rec-stop').addEventListener('click', finish);
+    // korisnik zaustavio deljenje ekrana iz sistema
+    if(screen) screen.getVideoTracks()[0].addEventListener('ended', finish);
+  });
+}
+/* dugme "Snimi" gore levo otvara izbor: ekran, kamera, ekran + kamera, glas */
+(function cxRecHook(){
+  const tryHook = ()=>{
+    const b = [...document.querySelectorAll('button')].find(x=> x.id !== 'btn-record-mic' && /Snimi\s*$/.test(x.textContent.trim()) && !x.closest('.cx-modal'));
+    if(!b) return false;
+    if(b.dataset.cxRec) return true;
+    b.dataset.cxRec = '1'; b.title = 'Snimi ekran, kameru ili glas';
+    b.addEventListener('click', e=>{ e.stopImmediatePropagation(); e.preventDefault(); cxOpenRecorder(); }, true);
+    return true;
+  };
+  if(!tryHook()){ let n = 0; const iv = setInterval(()=>{ if(tryHook() || ++n > 40) clearInterval(iv); }, 250); }
+  // i u meniju Audio
+  const addPane = (tries)=>{
+    const pa = document.getElementById('cx-pane-audio');
+    if(!pa){ if((tries||0) < 30) setTimeout(()=> addPane((tries||0) + 1), 250); return; }
+    if(document.getElementById('cx-rec-open')) return;
+    const bt = document.createElement('button'); bt.type = 'button'; bt.id = 'cx-rec-open'; bt.textContent = '🖥 Snimi ekran ili kameru';
+    bt.addEventListener('click', e=>{ e.stopPropagation(); cxOpenRecorder(); });
+    const mic = document.getElementById('btn-record-mic');
+    if(mic && mic.parentNode === pa) pa.insertBefore(bt, mic.nextSibling); else pa.appendChild(bt);
+  };
+  addPane(0);
 })();
 
 /* CADRIA-ALATI-END */

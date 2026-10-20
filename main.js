@@ -1,7 +1,7 @@
 // CADRIA EDIT – samostalan Windows program (Electron).
 // Program nosi sopstveni ugrađeni Chrome, pa ne zavisi od Edge-a ni od bilo kog pregledača.
 // Editor (folder html) ostaje isti: novi izgled, logo, export bez interneta, AI preko interneta.
-const { app, BrowserWindow, protocol, net, session, shell, dialog, Menu } = require('electron');
+const { app, BrowserWindow, protocol, net, session, shell, dialog, Menu, ipcMain, desktopCapturer } = require('electron');
 const path = require('path');
 const { pathToFileURL } = require('url');
 
@@ -41,6 +41,14 @@ function start() {
       if (!f.startsWith(base)) return new Response('Nije dozvoljeno', { status: 403 });
       return net.fetch(pathToFileURL(f).toString());
     }
+    // ugrađen AI model za uklanjanje pozadine (radi i bez interneta)
+    const mp = rel.match(/^\/mp\/selfie\/(.+)$/);
+    if (mp) {
+      const base = path.join(__dirname, 'node_modules', '@mediapipe', 'selfie_segmentation');
+      const f = path.normalize(path.join(base, mp[1]));
+      if (!f.startsWith(base)) return new Response('Nije dozvoljeno', { status: 403 });
+      return net.fetch(pathToFileURL(f).toString());
+    }
     const file = path.normalize(path.join(HTML_DIR, rel));
     if (!file.startsWith(HTML_DIR)) return new Response('Nije dozvoljeno', { status: 403 });
     return net.fetch(pathToFileURL(file).toString());
@@ -54,6 +62,25 @@ function start() {
     callback(own(details.requestingUrl || wc.getURL()));
   });
   ses.setPermissionCheckHandler((wc, permission, origin) => own(origin) || own(wc && wc.getURL()));
+
+  // Snimanje ekrana: editor prvo pokaže svoj izbor (ceo ekran ili prozor), pa traži snimak.
+  let pickedSource = null;
+  ipcMain.handle('cx-screens', async () => {
+    const list = await desktopCapturer.getSources({ types: ['screen', 'window'], thumbnailSize: { width: 320, height: 180 } });
+    return list.filter(s => !/^CADRIA EDIT$/i.test(s.name) || s.id.startsWith('screen'))
+      .map(s => ({ id: s.id, name: s.name, screen: s.id.startsWith('screen'), thumb: s.thumbnail.isEmpty() ? '' : s.thumbnail.toDataURL() }));
+  });
+  ipcMain.handle('cx-pick-screen', (e, id) => { pickedSource = id || null; return true; });
+  ses.setDisplayMediaRequestHandler(async (request, callback) => {
+    try {
+      const list = await desktopCapturer.getSources({ types: ['screen', 'window'] });
+      const src = list.find(s => s.id === pickedSource) || list.find(s => s.id.startsWith('screen')) || list[0];
+      pickedSource = null;
+      if (!src) return callback({});
+      // zvuk računara (sve što se čuje) - Windows podržava "loopback"
+      callback(request.audioRequested && process.platform === 'win32' ? { video: src, audio: 'loopback' } : { video: src });
+    } catch (e) { callback({}); }
+  });
 
   // Sve što bi išlo u "Preuzimanja" pita gde da se sačuva (direktno na disk).
   ses.on('will-download', (event, item) => {
