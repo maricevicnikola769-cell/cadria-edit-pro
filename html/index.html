@@ -734,6 +734,13 @@ body.cx-dragging-tool{ user-select:none; cursor:ew-resize !important; }
 .cx-rec-count{ font-size:20px; font-weight:800; color:#ef4444; min-width:18px; text-align:center; }
 @keyframes cxRecBlink{ 50%{ opacity:.25; } }
 #cx-rec-open{ margin-top:6px; }
+/* Paket 5: maske, sloj podešavanja, usklađivanje boja, auto-uokviravanje */
+.cx-p5-chk{ display:flex; align-items:center; gap:8px; font-size:12px; margin:6px 0; cursor:pointer; }
+.cx-p5-tipovi{ display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:8px 0; }
+.cx-p5-tipovi button{ font-size:12px; padding:7px 6px; }
+.cx-p5-tipovi button.on{ background:var(--accent, #3b82f6); color:#fff; border-color:transparent; }
+.cx-p5-hint{ font-size:10.5px; color:var(--muted, #8a94a6); line-height:1.5; margin:4px 0 8px; }
+#btn-cx-adjust{ white-space:nowrap; }
 </style>
 </head>
 <body>
@@ -828,6 +835,8 @@ body.cx-dragging-tool{ user-select:none; cursor:ew-resize !important; }
           <button type="button" class="format-btn" id="fmt-169" data-fmt="16:9">▭ 16:9<br><span style="font-weight:400;font-size:10px;">Horizontalno</span></button>
           <button type="button" class="format-btn" id="fmt-916" data-fmt="9:16">▯ 9:16<br><span style="font-weight:400;font-size:10px;">Vertikalno</span></button>
         </div>
+        <button type="button" id="cx-reframe" style="width:100%;margin-top:8px;">📱 Auto-uokviri u 9:16 (kadar prati osobu)</button>
+        <div class="cx-p5-hint">Horizontalni video pretvara u vertikalni za TikTok / Reels / Shorts. AI pronalazi lice i pomera isečak da osoba ostane u kadru (treba internet za AI; bez njega se seče po sredini).</div>
         <hr class="divider">
         <h3>KVALITET / REZOLUCIJA</h3>
         <div class="field">
@@ -1035,6 +1044,7 @@ body.cx-dragging-tool{ user-select:none; cursor:ew-resize !important; }
       <button id="btn-add-text-track">+ Titl traka</button>
       <button id="btn-add-title-track">+ Animacija traka</button>
       <div class="sep"></div>
+      <button id="btn-cx-adjust" title="Sloj podešavanja: boje i efekti koje mu podesiš važe za sve klipove ispod njega, dok traje">🎚 Sloj podešavanja</button>
       <div style="position:relative;">
         <button id="btn-multicam-toggle" title="Sinhronizuj i brzo prebacuj između više kamera istog snimka">🎥 Multicam</button>
         <div id="multicam-panel">
@@ -5513,6 +5523,7 @@ function renderProps(){
     ${cxAutoHtml(c, isVideo)}
     ${cxFxHtml(c, isVideo)}
     ${cxBgHtml(c, isVideo)}
+    ${cxMaskHtml(c, isVideo)}
     <hr class="divider">
     ${isVideo ? `
     <button type="button" id="p-ai-enhance" style="width:100%;">🤖 AI analiziraj i popravi kvalitet</button>
@@ -5545,6 +5556,7 @@ function renderProps(){
       <button type="button" id="p-cg-reset" style="flex:1;">Resetuj color grading</button>
     </div>
     <div style="font-size:10.5px;color:var(--muted);line-height:1.5;margin-top:-4px;">Lift podiže/spušta crne tonove, Gamma menja krivu srednjih tonova, Gain pojačava/slabi svetle tonove, Temperatura pomera balans hladno↔toplo (plavo↔crveno), Tint pomera zeleno↔magenta. Za precizniju boju koristi Točkove boja i Krive ispod.</div>
+    ${cxMatchHtml(c)}
     ${cxColorHtml(c)}
     ${cxPixelHtml(c)}
     ` : ''}
@@ -5704,6 +5716,8 @@ function renderProps(){
   cxAutoBind();
   cxFxBind(c);
   cxBgBind(c);
+  cxMaskBind(c);
+  cxMatchBind(c);
   $('#p-audio-fadein').oninput = e=>{ c.audioFadeIn = +e.target.value; syncValLabel(e); applyAllClipGains(activeClipsForTime(state.playhead)); };
   $('#p-audio-fadeout').oninput = e=>{ c.audioFadeOut = +e.target.value; syncValLabel(e); applyAllClipGains(activeClipsForTime(state.playhead)); };
   if(isVideo){
@@ -7878,7 +7892,7 @@ function draw(){
     clips.forEach((c, i)=>{
       const m = mediaById(c.mediaId);
       if(!m) return;
-      const el = cxFrameSource(c, getPlaybackEl(c), t - c.start);
+      const el = m.adjust ? cxAdjustSnap(W, H) : cxFrameSource(c, getPlaybackEl(c), t - c.start);
       if(!el) return;
       const kf = getInterpolatedTransform(c, t - c.start);
       let alpha = kf.opacity;
@@ -7917,6 +7931,7 @@ function draw(){
       if(c.filters.fadeOut > 0 && timeToEnd < c.filters.fadeOut){
         alpha *= clamp(timeToEnd / c.filters.fadeOut, 0, 1);
       }
+      const __cxM = cxMaskBegin(c, W, H);
       ctx.save();
       ctx.globalAlpha = clamp(alpha,0,1);
       if(cxBlendOk(c.blendMode)) ctx.globalCompositeOperation = c.blendMode;
@@ -8205,6 +8220,7 @@ function draw(){
       if(transitionWrapped) ctx.restore();
       if(activeTransitionType && CX_TR_SET[activeTransitionType]) cxTrOverlay(activeTransitionType, ctx, inProgress, W, H);
       ctx.restore();
+      cxMaskEnd(__cxM, t - c.start, W, H);
     });
   });
 
@@ -10017,7 +10033,7 @@ function saveProjectAsJson(){
     exportFormat: state.exportFormat,
     duration: state.duration,
     pxPerSec: state.pxPerSec,
-    media: state.media.map(m=>({ id:m.id, name:m.name, kind:m.kind, duration:m.duration })),
+    media: state.media.map(m=>({ id:m.id, name:m.name, kind:m.kind, duration:m.duration, adjust: m.adjust ? true : undefined })),
     tracks: state.tracks,
     clips: state.clips.map(c=>{ const { el, ...rest } = c; return rest; }),
     markers: state.markers,
@@ -10047,12 +10063,12 @@ function loadProjectFromJsonFile(file){
       return;
     }
     pendingProjectLoad = project;
-    const mediaList = (project.media || []).map(m=>`• ${m.name}`).join('\n') || '(projekat ne koristi nijedan fajl)';
-    if(project.media && project.media.length){
+    const mediaList = (project.media || []).filter(m=> !m.adjust).map(m=>`• ${m.name}`).join('\n') || '(projekat ne koristi nijedan fajl)';
+    if(project.media && project.media.filter(m=> !m.adjust).length){
       alert(`Projekat je pročitan. Iz bezbednosnih razloga browsera, video/audio/slika fajlovi se ne čuvaju UNUTAR .json fajla - potrebno je da u sledećem dijalogu ponovo izabereš iste originalne fajlove (mogu bilo kojim redosledom, prepoznaju se po imenu):\n\n${mediaList}`);
       $('#project-relink-input').click();
     } else {
-      finishProjectLoad(project, {});
+      finishProjectLoad(project, cxAdjustMap(project));
     }
   };
   reader.readAsText(file);
@@ -10073,6 +10089,7 @@ async function relinkAndFinishProjectLoad(project, files){
   const idToNewMedia = {};
   const missing = [];
   const tasks = (project.media || []).map(meta=>{
+    if(meta.adjust){ idToNewMedia[meta.id] = cxAdjustMedia(meta.id); return Promise.resolve(); }
     const file = byName.get((meta.name||'').toLowerCase());
     if(!file){ missing.push(meta.name); return Promise.resolve(); }
     const url = URL.createObjectURL(file);
@@ -12845,7 +12862,7 @@ function cxFilterOrder(str){
       videoName: state.videoName, resolution: { ...state.resolution }, aspectFormat: state.aspectFormat,
       quality: state.quality, customRes: state.customRes, autoEnhance: state.autoEnhance,
       useGpuFilters: state.useGpuFilters, exportFormat: state.exportFormat, duration: state.duration, pxPerSec: state.pxPerSec,
-      media: state.media.map(m=>({ id:m.id, name:m.name, kind:m.kind, duration:m.duration })),
+      media: state.media.map(m=>({ id:m.id, name:m.name, kind:m.kind, duration:m.duration, adjust: m.adjust ? true : undefined })),
       tracks: state.tracks, clips: state.clips.map(c=>{ const { el, ...rest } = c; return rest; }),
       markers: state.markers, watermark: { ...state.watermark }, sequenceMode: !!state.sequenceMode,
       outro: { ...state.outro }, aiVideo: !!state.aiVideo,
@@ -12884,11 +12901,12 @@ function cxFilterOrder(str){
     bar.querySelector('#cx-restore-no').onclick = ()=> bar.remove();
     bar.querySelector('#cx-restore-yes').onclick = ()=>{
       bar.remove();
-      if(p.media && p.media.length){
+      const fajlovi = (p.media || []).filter(m=> !m.adjust);
+      if(fajlovi.length){
         pendingProjectLoad = p;
-        alert('Izaberi ponovo iste video/audio/slika fajlove (možeš sve odjednom, prepoznaju se po imenu):\n\n' + p.media.map(m=>'• ' + m.name).join('\n'));
+        alert('Izaberi ponovo iste video/audio/slika fajlove (možeš sve odjednom, prepoznaju se po imenu):\n\n' + fajlovi.map(m=>'• ' + m.name).join('\n'));
         $('#project-relink-input').click();
-      } else finishProjectLoad(p, {});
+      } else finishProjectLoad(p, typeof cxAdjustMap === 'function' ? cxAdjustMap(p) : {});
     };
   }
   window.addEventListener('beforeunload', ()=>{ autosave(); try{ localStorage.removeItem(OPEN_KEY); }catch(e){} });
@@ -16800,6 +16818,419 @@ async function cxRecord(o){
   };
   addPane(0);
 })();
+
+/* ============================================================
+   PAKET 5 (nivo Filmore): MASKE, SLOJ PODEŠAVANJA, USKLADI BOJE, AUTO-UOKVIRAVANJE 9:16
+   ============================================================ */
+
+/* ---------------- MASKE ----------------
+   Maska ograničava gde se klip vidi: pravougaonik, elipsa, linija (pola kadra) ili
+   ručno nacrtan oblik. Omekšane ivice, obrnuto (sve osim oblika) i animacija kroz
+   vreme (ključne tačke). Radi ovako: pre crtanja klipa se zapamti šta je već na
+   platnu, klip se nacrta normalno, a onda se van maske vrati ono što je bilo ispod.
+   Isto u pregledu i u exportu. */
+const __cxMk = { pre: document.createElement('canvas'), tmp: document.createElement('canvas'), m: document.createElement('canvas') };
+const CX_MASK_TIPOVI = [['rect', '▭ Pravougaonik'], ['ellipse', '◯ Elipsa'], ['linear', '◐ Linija'], ['poly', '✏ Crtana']];
+let __cxMaskCrtaj = null;   // id klipa kome se trenutno crta maska na pregledu
+
+function cxMaskDefault(){
+  return { on:false, type:'rect', x:0.5, y:0.5, w:0.5, h:0.5, rot:0, feather:10, invert:false, pts:[], kf:[] };
+}
+function cxMaskOn(c){
+  const k = c && c.mask;
+  return !!(k && k.on && (k.type !== 'poly' || (k.pts && k.pts.length >= 3)));
+}
+function cxMaskAt(c, lt){
+  const k = c.mask, b = { x:k.x, y:k.y, w:k.w, h:k.h, rot:k.rot, feather:k.feather };
+  const kf = (k.kf || []).slice().sort((a, b_)=> a.t - b_.t);
+  if(!kf.length) return b;
+  if(lt <= kf[0].t) return { ...b, ...kf[0] };
+  const z = kf[kf.length-1];
+  if(lt >= z.t) return { ...b, ...z };
+  for(let i=0; i<kf.length-1; i++){
+    const a = kf[i], d = kf[i+1];
+    if(lt >= a.t && lt <= d.t){
+      const p = kfEase('smooth', (lt - a.t) / Math.max(1e-6, d.t - a.t));
+      const o = {};
+      ['x','y','w','h','rot','feather'].forEach(n=> o[n] = a[n] + (d[n] - a[n]) * p);
+      return o;
+    }
+  }
+  return b;
+}
+function cxMaskBegin(c, W, H){
+  if(!cxMaskOn(c)) return null;
+  const pre = __cxMk.pre;
+  if(pre.width !== W || pre.height !== H){ pre.width = W; pre.height = H; }
+  const g = pre.getContext('2d');
+  g.setTransform(1,0,0,1,0,0); g.globalCompositeOperation = 'copy'; g.globalAlpha = 1; g.filter = 'none';
+  g.drawImage(canvas, 0, 0);
+  g.globalCompositeOperation = 'source-over';
+  return { c };
+}
+function cxMaskPath(g, k, p, W, H){
+  const cx = p.x*W, cy = p.y*H;
+  g.beginPath();
+  if(k.type === 'poly'){
+    k.pts.forEach((q, i)=> i ? g.lineTo(q.x*W, q.y*H) : g.moveTo(q.x*W, q.y*H));
+    g.closePath();
+    return;
+  }
+  g.save();
+  g.translate(cx, cy);
+  g.rotate((p.rot||0) * Math.PI/180);
+  if(k.type === 'ellipse') g.ellipse(0, 0, Math.max(1, p.w*W/2), Math.max(1, p.h*H/2), 0, 0, Math.PI*2);
+  else if(k.type === 'linear'){ const D = (W + H) * 2; g.rect(-D, 0, 2*D, D); }   // sve "ispod" linije
+  else g.rect(-p.w*W/2, -p.h*H/2, p.w*W, p.h*H);
+  g.restore();
+}
+function cxMaskEnd(st, lt, W, H){
+  if(!st) return;
+  const c = st.c, k = c.mask, p = cxMaskAt(c, lt);
+  const M = __cxMk.m, T = __cxMk.tmp;
+  for(const cv of [M, T]) if(cv.width !== W || cv.height !== H){ cv.width = W; cv.height = H; }
+  const gm = M.getContext('2d');
+  gm.setTransform(1,0,0,1,0,0); gm.clearRect(0, 0, W, H);
+  const fpx = clamp(p.feather||0, 0, 100) / 100 * 0.2 * Math.min(W, H);
+  gm.filter = fpx > 0.5 ? `blur(${fpx.toFixed(1)}px)` : 'none';
+  gm.fillStyle = '#fff';
+  if(k.invert){
+    gm.filter = 'none'; gm.fillRect(0, 0, W, H);
+    gm.globalCompositeOperation = 'destination-out';
+    gm.filter = fpx > 0.5 ? `blur(${fpx.toFixed(1)}px)` : 'none';
+  }
+  cxMaskPath(gm, k, p, W, H);
+  gm.fill();
+  gm.globalCompositeOperation = 'source-over'; gm.filter = 'none';
+  const gt = T.getContext('2d');
+  gt.setTransform(1,0,0,1,0,0); gt.globalCompositeOperation = 'copy'; gt.drawImage(canvas, 0, 0);
+  gt.globalCompositeOperation = 'destination-in'; gt.drawImage(M, 0, 0);
+  gt.globalCompositeOperation = 'source-over';
+  ctx.save();
+  ctx.setTransform(1,0,0,1,0,0); ctx.filter = 'none'; ctx.globalAlpha = 1;
+  ctx.globalCompositeOperation = 'copy'; ctx.drawImage(__cxMk.pre, 0, 0);
+  ctx.globalCompositeOperation = 'source-over'; ctx.drawImage(T, 0, 0);
+  // obris maske samo u pregledu, dok je klip izabran (ne ulazi u export)
+  if(!state.exporting && state.selectedClipId === c.id){
+    ctx.setLineDash([6, 5]); ctx.lineWidth = 1.5; ctx.strokeStyle = 'rgba(255,214,0,.9)';
+    cxMaskPath(ctx, k, p, W, H);
+    if(k.type === 'linear'){
+      ctx.beginPath(); const D = (W + H);
+      ctx.save(); ctx.translate(p.x*W, p.y*H); ctx.rotate((p.rot||0)*Math.PI/180); ctx.moveTo(-D, 0); ctx.lineTo(D, 0); ctx.restore();
+    }
+    ctx.stroke(); ctx.setLineDash([]);
+  }
+  ctx.restore();
+}
+
+function cxMaskHtml(c, isVideo){
+  if(!isVideo) return '';
+  if(!c.mask) c.mask = cxMaskDefault();
+  const k = c.mask, poly = k.type === 'poly', lin = k.type === 'linear';
+  const kfN = (k.kf || []).length;
+  return `
+    <hr class="divider">
+    <div class="section-title">🎭 MASKA</div>
+    <label class="cx-p5-chk"><input type="checkbox" id="cx-mk-on" ${k.on ? 'checked' : ''}> Uključi masku na ovom klipu</label>
+    ${k.on ? `
+    <div class="cx-p5-tipovi">${CX_MASK_TIPOVI.map(([v, t])=> `<button type="button" class="cx-mk-tip ${k.type === v ? 'on' : ''}" data-v="${v}">${t}</button>`).join('')}</div>
+    ${poly ? `
+      <div class="field-row"><button type="button" id="cx-mk-crtaj" style="flex:1;">${__cxMaskCrtaj === c.id ? '✅ Završi crtanje' : '✏ Crtaj na pregledu'}</button>
+      <button type="button" id="cx-mk-brisi" style="flex:1;">🗑 Obriši tačke (${(k.pts||[]).length})</button></div>
+      <div class="cx-p5-hint">Klikći po pregledu da postaviš tačke oblika (najmanje 3), pa „Završi crtanje“.</div>` : `
+      ${sliderRow('cx-mk-x', 'Položaj X (%)', Math.round(k.x*100), 0, 100)}
+      ${sliderRow('cx-mk-y', 'Položaj Y (%)', Math.round(k.y*100), 0, 100)}
+      ${lin ? '' : sliderRow('cx-mk-w', 'Širina (%)', Math.round(k.w*100), 2, 150)}
+      ${lin ? '' : sliderRow('cx-mk-h', 'Visina (%)', Math.round(k.h*100), 2, 150)}
+      ${sliderRow('cx-mk-rot', lin ? 'Ugao linije (°)' : 'Rotacija (°)', Math.round(k.rot), -180, 180)}`}
+    ${sliderRow('cx-mk-feather', 'Omekšane ivice', Math.round(k.feather), 0, 100)}
+    <label class="cx-p5-chk"><input type="checkbox" id="cx-mk-inv" ${k.invert ? 'checked' : ''}> Obrni masku (vidi se sve OSIM oblika)</label>
+    ${poly ? '' : `
+    <div class="field-row">
+      <button type="button" id="cx-mk-kf" style="flex:1;">🔑 Zapamti položaj na plejhedu</button>
+      <button type="button" id="cx-mk-kf-del" style="flex:1;" ${kfN ? '' : 'disabled'}>🗑 Ključne tačke (${kfN})</button>
+    </div>`}
+    <div class="cx-p5-hint">Maska je u kadru (ne pomera se sa klipom). Za animaciju: na jednom trenutku namesti masku i klikni „Zapamti“, pa na drugom trenutku ponovo – maska glatko prelazi između njih. Primer: stavi isti snimak na dve trake i maskom napravi „klon“ osobe, ili otkrij drugi video kroz krug.</div>
+    ` : `<div class="cx-p5-hint">Maska prikazuje samo deo klipa (krug, pravougaonik, polovina kadra ili oblik koji nacrtaš). Ispod se vidi klip sa niže trake.</div>`}`;
+}
+function cxMaskBind(c){
+  const on = $('#cx-mk-on');
+  if(!on) return;
+  const k = c.mask;
+  const izmena = (fn, prerender)=>{ pushUndoSnapshot(); fn(); if(prerender) renderProps(); draw(); };
+  on.onchange = e=> izmena(()=>{ k.on = e.target.checked; if(!k.on) __cxMaskCrtaj = null; }, true);
+  document.querySelectorAll('.cx-mk-tip').forEach(b=> b.onclick = ()=> izmena(()=>{ k.type = b.dataset.v; if(k.type === 'linear'){ k.y = 0.5; } }, true));
+  const vezi = (id, fn)=>{ const el = $('#'+id); if(!el) return; el.oninput = e=>{ fn(+e.target.value); if(typeof syncValLabel === 'function') syncValLabel(e); draw(); }; el.onchange = ()=> pushUndoSnapshot(); };
+  vezi('cx-mk-x', v=> k.x = v/100);
+  vezi('cx-mk-y', v=> k.y = v/100);
+  vezi('cx-mk-w', v=> k.w = v/100);
+  vezi('cx-mk-h', v=> k.h = v/100);
+  vezi('cx-mk-rot', v=> k.rot = v);
+  vezi('cx-mk-feather', v=> k.feather = v);
+  const inv = $('#cx-mk-inv'); if(inv) inv.onchange = e=> izmena(()=> k.invert = e.target.checked);
+  const cr = $('#cx-mk-crtaj');
+  if(cr) cr.onclick = ()=>{ __cxMaskCrtaj = __cxMaskCrtaj === c.id ? null : c.id; if(__cxMaskCrtaj) { pushUndoSnapshot(); k.pts = []; } renderProps(); draw(); };
+  const br = $('#cx-mk-brisi'); if(br) br.onclick = ()=> izmena(()=> k.pts = [], true);
+  const kfb = $('#cx-mk-kf');
+  if(kfb) kfb.onclick = ()=> izmena(()=>{
+    const lt = clamp(state.playhead - c.start, 0, c.duration);
+    k.kf = (k.kf || []).filter(q=> Math.abs(q.t - lt) > 0.04);
+    k.kf.push({ t:lt, x:k.x, y:k.y, w:k.w, h:k.h, rot:k.rot, feather:k.feather });
+  }, true);
+  const kfd = $('#cx-mk-kf-del'); if(kfd) kfd.onclick = ()=> izmena(()=> k.kf = [], true);
+}
+// crtanje oblika maske klikovima po pregledu
+canvas.addEventListener('pointerdown', e=>{
+  if(!__cxMaskCrtaj) return;
+  const c = clipById(__cxMaskCrtaj);
+  if(!c || !c.mask){ __cxMaskCrtaj = null; return; }
+  e.preventDefault(); e.stopImmediatePropagation();
+  const r = canvas.getBoundingClientRect();
+  c.mask.pts.push({ x: clamp((e.clientX - r.left)/r.width, 0, 1), y: clamp((e.clientY - r.top)/r.height, 0, 1) });
+  renderProps(); draw();
+}, true);
+
+/* ---------------- SLOJ PODEŠAVANJA ----------------
+   Klip bez sopstvene slike: boje, efekti, zamućenje, izgled, maska… koje mu podesiš
+   primenjuju se na SVE što je ispod njega u kadru, dok traje. Neprozirnost = jačina. */
+const __cxAdj = document.createElement('canvas');
+let __cxAdjIkona = null;
+function cxAdjustIkona(){
+  if(__cxAdjIkona) return __cxAdjIkona;
+  const cv = document.createElement('canvas'); cv.width = 160; cv.height = 90;
+  const g = cv.getContext('2d');
+  const gr = g.createLinearGradient(0, 0, 160, 90);
+  gr.addColorStop(0, '#3b82f6'); gr.addColorStop(0.5, '#a855f7'); gr.addColorStop(1, '#f59e0b');
+  g.fillStyle = gr; g.fillRect(0, 0, 160, 90);
+  g.fillStyle = 'rgba(0,0,0,.35)'; g.fillRect(0, 0, 160, 90);
+  g.fillStyle = '#fff'; g.font = 'bold 34px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillText('🎚', 80, 45);
+  __cxAdjIkona = cv.toDataURL('image/png');
+  return __cxAdjIkona;
+}
+function cxAdjustMedia(id){
+  const img = new Image();
+  img.src = cxAdjustIkona();
+  return { id: id || uid('m'), name: '🎚 Sloj podešavanja', kind: 'image', url: img.src, el: img, duration: 5, adjust: true, thumb: img.src };
+}
+function cxAdjustSnap(W, H){
+  if(__cxAdj.width !== W || __cxAdj.height !== H){ __cxAdj.width = W; __cxAdj.height = H; }
+  const g = __cxAdj.getContext('2d');
+  g.globalCompositeOperation = 'copy'; g.drawImage(canvas, 0, 0); g.globalCompositeOperation = 'source-over';
+  return __cxAdj;
+}
+function cxAdjustMap(project){
+  const o = {};
+  (project.media || []).filter(m=> m.adjust).forEach(m=> o[m.id] = cxAdjustMedia(m.id));
+  return o;
+}
+function cxDodajSlojPodesavanja(){
+  let m = state.media.find(x=> x.adjust);
+  if(!m){ m = cxAdjustMedia(); state.media.push(m); renderBin(); }
+  const start = Math.max(0, state.playhead), dur = 5;
+  const vids = state.tracks.filter(t=> t.type === 'video');
+  // ide na video traku IZNAD postojećih (kasnija traka u spisku se crta preko ranijih), na kojoj je to vreme slobodno
+  let tr = vids.slice(1).reverse().find(t=> !state.clips.some(c=> c.trackId === t.id && c.start < start + dur && c.start + c.duration > start));
+  if(!tr) tr = addTrack('video');
+  pushUndoSnapshot();
+  const c = makeClip(m.id, tr.id, start);
+  c.duration = dur; c.outTrim = dur;
+  c.transform = { x:0.5, y:0.5, scale:1, rotate:0, auto:false };
+  c.volume = 0;
+  state.clips.push(c);
+  recalcDuration(); renderTimeline(); selectClip(c.id); seekTo(state.playhead); draw();
+}
+
+/* ---------------- USKLADI BOJE ----------------
+   Izabrani klip dobija boje drugog klipa: program uporedi kadrove oba klipa
+   (prosečne boje, svetlinu, kontrast, zasićenost) i sam podesi Osvetljenost,
+   Kontrast, Zasićenost, Temperaturu i Tint. */
+async function cxKadarKlipa(c, n){
+  const m = mediaById(c.mediaId);
+  if(!m || !m.el) return null;
+  const cv = document.createElement('canvas'); cv.width = n; cv.height = Math.max(8, Math.round(n * 9/16));
+  const g = cv.getContext('2d', { willReadFrequently:true });
+  if(m.kind === 'image'){ g.drawImage(m.el, 0, 0, cv.width, cv.height); return cv; }
+  const v = await createAnalysisVideoEl(m);
+  try{
+    const lt = clamp(state.playhead - c.start, 0, c.duration);
+    const tt = (state.playhead >= c.start && state.playhead < c.start + c.duration) ? lt : c.duration/2;
+    await seekMediaElAndWait(v, clamp(getSourceTimeForClip(c, tt), 0, m.duration || 0));
+    const iw = v.videoWidth, ih = v.videoHeight;
+    if(iw && ih) cv.height = Math.max(8, Math.round(n * ih/iw));
+    g.drawImage(v, 0, 0, cv.width, cv.height);
+  } finally { try{ v.removeAttribute('src'); v.load(); }catch(e){} }
+  return cv;
+}
+function cxStatistika(cv, p){
+  const W = cv.width, H = cv.height;
+  const o = document.createElement('canvas'); o.width = W; o.height = H;
+  const g = o.getContext('2d', { willReadFrequently:true });
+  let f = `brightness(${p.b}%) contrast(${p.c}%) saturate(${p.s}%)`;
+  if(p.t || p.n || p.lift || p.gain !== 100 || p.gamma !== 100){
+    updateColorGradeFilter(p.lift||0, p.gamma??100, p.gain??100, p.t||0, p.n||0);
+    f += ' url(#colorgrade-filter)';
+  }
+  g.filter = f; g.drawImage(cv, 0, 0); g.filter = 'none';
+  const d = g.getImageData(0, 0, W, H).data, n = W*H;
+  let r = 0, gg = 0, b = 0, l2 = 0, l = 0, ch = 0;
+  for(let i=0; i<d.length; i+=4){
+    const R = d[i], G = d[i+1], B = d[i+2], L = 0.299*R + 0.587*G + 0.114*B;
+    r += R; gg += G; b += B; l += L; l2 += L*L;
+    ch += Math.max(R, G, B) - Math.min(R, G, B);
+  }
+  l /= n;
+  return { r: r/n, g: gg/n, b: b/n, l, sd: Math.sqrt(Math.max(0, l2/n - l*l)), ch: ch/n };
+}
+function cxRazlika(a, b){
+  return ((a.r-b.r)**2 + (a.g-b.g)**2 + (a.b-b.b)**2) / 3 + (a.sd-b.sd)**2 * 1.5 + (a.ch-b.ch)**2 * 1.2 + (a.l-b.l)**2;
+}
+async function cxUskladiBoje(cilj, ref){
+  const dugme = $('#cx-match-go');
+  if(dugme){ dugme.disabled = true; dugme.textContent = '⏳ Upoređujem boje…'; }
+  try{
+    const [kc, kr] = await Promise.all([cxKadarKlipa(cilj, 96), cxKadarKlipa(ref, 96)]);
+    if(!kc || !kr) throw new Error('kadar nije dostupan');
+    const rg = ref.colorGrade || {}, rf = ref.filters || {};
+    const sr = cxStatistika(kr, { b: rf.brightness ?? 100, c: rf.contrast ?? 100, s: rf.saturation ?? 100, t: rg.temperature||0, n: rg.tint||0, lift: rg.lift||0, gamma: rg.gamma??100, gain: rg.gain??100 });
+    const cg = cilj.colorGrade || {};
+    const p = { b:100, c:100, s:100, t:0, n:0, lift: cg.lift||0, gamma: cg.gamma??100, gain: cg.gain??100 };
+    const opseg = { b:[30, 200], c:[30, 200], s:[0, 200], t:[-50, 50], n:[-50, 50] };
+    let best = cxRazlika(cxStatistika(kc, p), sr);
+    for(const korak of [16, 8, 4, 2, 1]){
+      for(let krug=0; krug<3; krug++){
+        let bolje = false;
+        for(const k of ['b', 'c', 's', 't', 'n']){
+          for(const smer of [1, -1]){
+            const v = clamp(p[k] + smer*korak, opseg[k][0], opseg[k][1]);
+            if(v === p[k]) continue;
+            const q = { ...p, [k]: v }, e = cxRazlika(cxStatistika(kc, q), sr);
+            if(e < best - 1e-6){ best = e; p[k] = v; bolje = true; break; }
+          }
+        }
+        if(!bolje) break;
+      }
+    }
+    pushUndoSnapshot();
+    cilj.filters.brightness = Math.round(p.b); cilj.filters.contrast = Math.round(p.c); cilj.filters.saturation = Math.round(p.s);
+    if(!cilj.colorGrade) cilj.colorGrade = { lift:0, gamma:100, gain:100, temperature:0, tint:0 };
+    cilj.colorGrade.temperature = Math.round(p.t); cilj.colorGrade.tint = Math.round(p.n);
+    renderProps(); seekTo(state.playhead); draw();
+  }catch(err){
+    alert('Usklađivanje boja nije uspelo: ' + (err && err.message || err));
+    renderProps();
+  }
+}
+function cxMatchHtml(c){
+  const drugi = state.clips.filter(x=> x.type === 'video' && x.id !== c.id && !(mediaById(x.mediaId) || {}).adjust);
+  if(!drugi.length) return '';
+  const opis = x=>{ const m = mediaById(x.mediaId); return `${(m && m.name) || 'klip'} · ${fmtTime(x.start)}`; };
+  return `
+    <div class="section-title" style="margin-top:6px;">🎨 USKLADI BOJE SA DRUGIM KLIPOM</div>
+    <div class="field-row" style="gap:6px;">
+      <select id="cx-match-ref" style="flex:1;min-width:0;">${drugi.map(x=> `<option value="${x.id}">${escapeHtml(opis(x))}</option>`).join('')}</select>
+      <button type="button" id="cx-match-go">🎨 Uskladi</button>
+    </div>
+    <div class="cx-p5-hint">Ovaj klip dobija boje izabranog klipa (npr. dve kamere istog događaja da izgledaju isto). Menja Osvetljenost, Kontrast, Zasićenost, Temperaturu i Tint – posle možeš fino da doteraš. Ctrl+Z vraća.</div>`;
+}
+function cxMatchBind(c){
+  const b = $('#cx-match-go');
+  if(b) b.onclick = ()=>{ const r = clipById($('#cx-match-ref').value); if(r) cxUskladiBoje(c, r); };
+}
+
+/* ---------------- AUTO-UOKVIRAVANJE 9:16 ----------------
+   Horizontalni video se pretvara u vertikalni (TikTok, Reels, Shorts): kadar se
+   popuni po visini, a isečak se pomera levo-desno tako da osoba ostane u sredini
+   (AI pronalazi lice, kao kod zamućenja lica). Bez interneta: isečak u sredini. */
+async function cxAutoUokviri(){
+  const glavna = state.tracks.find(t=> t.type === 'video');
+  const klipovi = glavna ? state.clips.filter(c=> c.trackId === glavna.id && c.type === 'video' && (mediaById(c.mediaId) || {}).kind === 'video') : [];
+  if(!klipovi.length){ alert('Na prvoj video traci nema video klipova za uokviravanje.'); return; }
+  if(state.aspectFormat === '9:16' && !confirm('Projekat je već 9:16. Ponovo uokviriti klipove (prethodna animacija pozicije biće zamenjena)?')) return;
+  const dugmad = ['cx-reframe', 'cx-reframe-2'].map(id=> document.getElementById(id)).filter(Boolean);
+  const stara = dugmad.map(d=> d.textContent);
+  const status = t=> dugmad.forEach(d=>{ d.disabled = true; d.textContent = t; });
+  if(state.playing) pause();
+  const tragovi = new Map();
+  let detektor = null;
+  try{ status('⏳ Učitavam AI detektor lica…'); detektor = await getFaceDetector(); }
+  catch(e){ alert('AI detektor lica nije mogao da se učita (treba internet). Video će biti isečen po sredini – položaj možeš da pomeriš ručno.'); }
+  if(detektor){
+    for(let i=0; i<klipovi.length; i++){
+      const v = klipovi[i], tacke = [];
+      try{
+        const src = await openTrackingSource({ start:v.start, duration:v.duration }, v, 480);
+        const korak = v.duration > 60 ? 0.5 : 0.25;
+        let pret = null;
+        for(let lt=0; lt<=v.duration + 1e-6; lt+=korak){
+          status(`📱 Tražim osobu… klip ${i+1}/${klipovi.length} · ${Math.round(lt/Math.max(0.01, v.duration)*100)}%`);
+          const f = await src.grab(Math.min(lt, v.duration - 0.02));
+          if(!f) continue;
+          const lica = (await detektor.detect(src.frameCnv)) || [];
+          if(!lica.length) continue;
+          const kand = lica.map(d=>({ x:(d.x + d.w/2)/src.aW, y:(d.y + d.h/2)/src.aH, w:d.w/src.aW }));
+          // najveće lice, a ako već pratimo nekoga – ono najbliže prethodnom (ne skače sa osobe na osobu)
+          kand.sort((a, b)=> pret ? (Math.abs(a.x - pret.x) - a.w*0.5) - (Math.abs(b.x - pret.x) - b.w*0.5) : b.w - a.w);
+          pret = kand[0];
+          tacke.push({ t: Math.min(lt, v.duration), x: (v.filters && v.filters.mirror) ? 1 - pret.x : pret.x });
+        }
+      }catch(e){ console.warn('auto-uokviravanje', e); }
+      tragovi.set(v.id, tacke);
+    }
+  }
+  // prelazak na 9:16
+  const b916 = $('#fmt-916');
+  if(b916 && state.aspectFormat !== '9:16') b916.click();
+  await new Promise(r=> setTimeout(r, 50));
+  pushUndoSnapshot();
+  const W = state.resolution.w, H = state.resolution.h;
+  for(const v of klipovi){
+    const m = mediaById(v.mediaId), iw = m.el.videoWidth || 16, ih = m.el.videoHeight || 9;
+    const base = Math.min(W/iw, H/ih), cover = Math.max(W/iw, H/ih), sc = cover / base;
+    const w = iw * cover;                                   // širina slike na platnu (veća od kadra)
+    const lim = w / (2*W);                                  // x u [1-lim, lim] = bez crnih traka
+    const xZa = fx=> clamp(0.5 - (fx - 0.5) * w / W, 1 - lim, lim);
+    const t = tragovi.get(v.id) || [];
+    v.transform.auto = false; v.transform.scale = sc; v.transform.y = 0.5;
+    if(t.length < 2){
+      v.transform.x = t.length ? xZa(t[0].x) : 0.5;
+      v.keyframesEnabled = false; v.keyframes = [];
+      continue;
+    }
+    // izglađivanje (±0,75 s) i „mirna kamera“: pomera se tek kad osoba ode dovoljno daleko
+    const gl = t.map((p, i)=>{ const s = t.filter(q=> Math.abs(q.t - p.t) <= 0.75); return { t:p.t, x: s.reduce((a, q)=> a + q.x, 0)/s.length }; });
+    const kfs = [];
+    let drz = gl[0].x;
+    kfs.push({ time:0, x:xZa(drz), y:0.5, scale:sc, opacity:1, ease:'smooth' });
+    for(const p of gl){
+      if(Math.abs(p.x - drz) > 0.06){ drz = p.x; kfs.push({ time:p.t, x:xZa(drz), y:0.5, scale:sc, opacity:1, ease:'smooth' }); }
+    }
+    if(kfs.length === 1){ v.transform.x = kfs[0].x; v.keyframesEnabled = false; v.keyframes = []; }
+    else { v.keyframesEnabled = true; v.keyframes = kfs; v.transform.x = kfs[0].x; }
+  }
+  dugmad.forEach((d, i)=>{ d.disabled = false; d.textContent = stara[i]; });
+  renderTimeline(); renderProps(); seekTo(state.playhead); draw();
+  const nadjeno = [...tragovi.values()].filter(t=> t.length >= 2).length;
+  alert(detektor
+    ? `Gotovo: video je sada 9:16. Kadar prati osobu u ${nadjeno} od ${klipovi.length} klipova${nadjeno < klipovi.length ? ' (u ostalima nije pronađeno lice – isečak je po sredini)' : ''}. Pusti video i proveri; položaj možeš da doteraš u „Pozicija i veličina“ / Keyframe.`
+    : 'Gotovo: video je sada 9:16, isečen po sredini.');
+}
+document.addEventListener('click', e=>{
+  if(e.target.closest('#cx-reframe')) cxAutoUokviri();
+  if(e.target.closest('#btn-cx-adjust')) cxDodajSlojPodesavanja();
+});
+
+// isto dugme i u levom meniju „Podešavanja“ (da se ne traži po prozoru sa svim podešavanjima)
+(function dodajUMeni(pokusaj){
+  const b = [...document.querySelectorAll('button')].find(x=> x.textContent.trim() === '⚙ Otvori sva podešavanja');
+  if(!b){ if(pokusaj < 40) setTimeout(()=> dodajUMeni(pokusaj + 1), 250); return; }
+  if(document.getElementById('cx-reframe-2')) return;
+  const n = document.createElement('button');
+  n.type = 'button'; n.id = 'cx-reframe-2'; n.textContent = '📱 Auto-uokviri u 9:16 (TikTok / Reels)';
+  n.title = 'Horizontalni video pretvara u vertikalni; kadar prati osobu';
+  n.addEventListener('click', e=>{ e.stopPropagation(); cxAutoUokviri(); });
+  b.after(n);
+})(0);
 
 /* CADRIA-ALATI-END */
 })();
