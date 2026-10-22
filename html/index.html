@@ -5504,6 +5504,7 @@ function renderProps(){
     <div style="font-size:10.5px;color:var(--muted);line-height:1.5;margin-top:-4px;">Postepeno pojačavanje/utišavanje zvuka na početku/kraju OVOG klipa (nezavisno od jačine iznad) - koristi se da se izbegne "seckanje"/nagli prekid zvuka, čest slučaj za muziku i za početak/kraj govora.</div>
     ${cxAfxHtml(c, media)}
     ${cxVoiceHtml(c, media)}
+    ${cxAfx2Html(c, media)}
     ${!isVideo ? `
     <label class="checkbox-row" style="margin-top:6px;"><input type="checkbox" id="p-loop" ${c.loop ? 'checked' : ''}> 🔁 Ponavljaj u krug (loop) dok traje klip</label>
     <div style="font-size:10.5px;color:var(--muted);line-height:1.5;margin-top:-4px;">Korisno za pozadinsku muziku - produži "Trajanje" ispod duže od same pesme (npr. preko celog videa), i ona će se sama ponavljati od početka umesto da stane.</div>
@@ -5556,6 +5557,7 @@ function renderProps(){
       <button type="button" id="p-cg-reset" style="flex:1;">Resetuj color grading</button>
     </div>
     <div style="font-size:10.5px;color:var(--muted);line-height:1.5;margin-top:-4px;">Lift podiže/spušta crne tonove, Gamma menja krivu srednjih tonova, Gain pojačava/slabi svetle tonove, Temperatura pomera balans hladno↔toplo (plavo↔crveno), Tint pomera zeleno↔magenta. Za precizniju boju koristi Točkove boja i Krive ispod.</div>
+    ${cxLutHtml(c)}
     ${cxMatchHtml(c)}
     ${cxColorHtml(c)}
     ${cxPixelHtml(c)}
@@ -5718,6 +5720,7 @@ function renderProps(){
   cxBgBind(c);
   cxMaskBind(c);
   cxMatchBind(c);
+  cxLutBind(c);
   $('#p-audio-fadein').oninput = e=>{ c.audioFadeIn = +e.target.value; syncValLabel(e); applyAllClipGains(activeClipsForTime(state.playhead)); };
   $('#p-audio-fadeout').oninput = e=>{ c.audioFadeOut = +e.target.value; syncValLabel(e); applyAllClipGains(activeClipsForTime(state.playhead)); };
   if(isVideo){
@@ -5864,6 +5867,7 @@ function renderProps(){
   cxBlendBind(c);
   cxAfxBind(c);
   cxVoiceBind(c);
+  cxAfx2Bind(c);
   $('#p-in').onchange = e=>{
     const v = clamp(+e.target.value, 0, c.outTrim-0.2);
     const delta = v - c.inTrim;
@@ -7892,7 +7896,7 @@ function draw(){
     clips.forEach((c, i)=>{
       const m = mediaById(c.mediaId);
       if(!m) return;
-      const el = m.adjust ? cxAdjustSnap(W, H) : cxFrameSource(c, getPlaybackEl(c), t - c.start);
+      const el = cxLutSrc(c, m.adjust ? cxAdjustSnap(W, H) : cxFrameSource(c, getPlaybackEl(c), t - c.start));
       if(!el) return;
       const kf = getInterpolatedTransform(c, t - c.start);
       let alpha = kf.opacity;
@@ -10041,6 +10045,7 @@ function saveProjectAsJson(){
     sequenceMode: !!state.sequenceMode,
     outro: { ...state.outro },
     aiVideo: !!state.aiVideo,
+    luts: cxLutsZaSnimanje(),
   };
   const blob = new Blob([JSON.stringify(project, null, 2)], { type:'application/json' });
   const url = URL.createObjectURL(blob);
@@ -10159,6 +10164,7 @@ function finishProjectLoad(project, idToNewMedia){
   state.watermark = { ...state.watermark, ...(project.watermark || {}), enabled: !!(project.watermark && project.watermark.enabled) };
   syncWatermarkUI();
   state.sequenceMode = !!project.sequenceMode;
+  cxLutsIzProjekta(project);
   state.aiVideo = !!project.aiVideo; $('#p-ai-video').checked = state.aiVideo; syncAiButton();
   state.outro = { type:'o-none', dur:1.5, audioFade:true, logo:false, logoDur:2.5, logoText:'', credits:false, creditsText:'', creditsStyle:'roll', creditsDur:10, creditsFont:'Geometra', creditsSize:100, ...(project.outro || {}) };
   if(state.outro.credits) ensureFontLoaded(state.outro.creditsFont);
@@ -12865,7 +12871,7 @@ function cxFilterOrder(str){
       media: state.media.map(m=>({ id:m.id, name:m.name, kind:m.kind, duration:m.duration, adjust: m.adjust ? true : undefined })),
       tracks: state.tracks, clips: state.clips.map(c=>{ const { el, ...rest } = c; return rest; }),
       markers: state.markers, watermark: { ...state.watermark }, sequenceMode: !!state.sequenceMode,
-      outro: { ...state.outro }, aiVideo: !!state.aiVideo,
+      outro: { ...state.outro }, aiVideo: !!state.aiVideo, luts: typeof cxLutsZaSnimanje === 'function' ? cxLutsZaSnimanje() : undefined,
     };
   }
   let lastSaved = '', lastSavedAt = 0;
@@ -16358,7 +16364,7 @@ function cxInitFxPanes(tries){
   }
   if(tr && !document.getElementById('cx-tr-note')){
     const n = document.createElement('div'); n.id = 'cx-tr-note'; n.className = 'cx-muted';
-    n.textContent = `Ukupno ${Object.keys(TR_LABELS).filter(k=> !TEXT_ANIM_TYPES.includes(k) && !k.startsWith('o-')).length - 1} prelaza, od toga ${CX_TR_NEW.length} novih: guranje, brzi trzaj, uvrtanje, okretanje kartice, kroz crno, bljesak, romb, sat, vrata, šahovska polja, pruge.`;
+    n.textContent = `Ukupno ${Object.keys(TR_LABELS).filter(k=> !TEXT_ANIM_TYPES.includes(k) && !k.startsWith('o-')).length - 1} prelaza, od toga ${CX_TR_NEW.length} novih: guranje, brzi trzaj, uvrtanje, okretanje kartice, kroz crno, bljesak, romb, sat, vrata, šahovska polja, pruge, zvezda, srce, krst, zum zamućenje, zemljotres, treperenje, gašenje TV-a, svetlosni prolaz, spaljivanje boje, pikseli, kocka.`;
     tr.appendChild(n);
   }
   cxFxPaneSync();
@@ -17231,6 +17237,743 @@ document.addEventListener('click', e=>{
   n.addEventListener('click', e=>{ e.stopPropagation(); cxAutoUokviri(); });
   b.after(n);
 })(0);
+
+/* ============================================================
+   PAKET 6: LUT FILTERI (.cube) – isti fajlovi kao u Filmori, Premiere-u i DaVinci-ju
+   ------------------------------------------------------------
+   LUT je tabela „ova boja → ona boja“ (filmski izgled, ispravka kamere, LOG→Rec709).
+   Primena ide na grafičkoj kartici (WebGL2, 3D tekstura) – brzo i u pregledu i u
+   exportu; ako WebGL2 nije dostupan, računa procesor (sporije, ali isto).
+   LUT-ovi se čuvaju u projektu (ne treba ponovo birati fajl).
+   ============================================================ */
+if(!state.luts) state.luts = {};          // id -> { name, n, data: Uint8Array (n³·3), b64 }
+
+function cxLutParse(tekst, ime){
+  let n = 0, min = [0,0,0], max = [1,1,1];
+  const vrednosti = [];
+  for(const red0 of tekst.split(/\r?\n/)){
+    const red = red0.trim();
+    if(!red || red[0] === '#') continue;
+    const d = red.split(/\s+/);
+    const k = d[0].toUpperCase();
+    if(k === 'LUT_3D_SIZE'){ n = parseInt(d[1], 10); continue; }
+    if(k === 'LUT_1D_SIZE') throw new Error('Ovo je 1D LUT – podržani su 3D LUT-ovi (.cube sa LUT_3D_SIZE).');
+    if(k === 'DOMAIN_MIN'){ min = d.slice(1, 4).map(Number); continue; }
+    if(k === 'DOMAIN_MAX'){ max = d.slice(1, 4).map(Number); continue; }
+    if(/^[A-Z_]+$/.test(k)) continue;           // TITLE i ostale oznake
+    if(d.length >= 3) vrednosti.push(+d[0], +d[1], +d[2]);
+  }
+  if(!n || n < 2 || n > 129) throw new Error('U fajlu nije pronađena veličina LUT-a (LUT_3D_SIZE).');
+  if(vrednosti.length < n*n*n*3) throw new Error(`LUT je nepotpun (očekivano ${n*n*n} redova, pronađeno ${Math.floor(vrednosti.length/3)}).`);
+  const data = new Uint8Array(n*n*n*3);
+  for(let i=0; i<n*n*n*3; i++){
+    const ch = i % 3, v = (vrednosti[i] - min[ch]) / ((max[ch] - min[ch]) || 1);
+    data[i] = Math.round(clamp(v, 0, 1) * 255);
+  }
+  return { name: (ime || 'LUT').replace(/\.cube$/i, ''), n, data };
+}
+function cxLutU8uB64(u8){ let s = ''; for(let i=0; i<u8.length; i+=0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i+0x8000)); return btoa(s); }
+function cxLutIzB64(b){ return Uint8Array.from(atob(b), c=> c.charCodeAt(0)); }
+function cxLutsZaSnimanje(){
+  const o = {};
+  Object.entries(state.luts || {}).forEach(([id, l])=>{ o[id] = { name: l.name, n: l.n, b64: l.b64 || (l.b64 = cxLutU8uB64(l.data)) }; });
+  return o;
+}
+function cxLutsIzProjekta(p){
+  state.luts = {};
+  Object.entries((p && p.luts) || {}).forEach(([id, l])=>{ try{ state.luts[id] = { name: l.name, n: l.n, data: cxLutIzB64(l.b64), b64: l.b64 }; }catch(e){} });
+}
+
+/* ---------- primena (WebGL2) ---------- */
+const __cxLutGL = { cv: null, gl: null, prog: null, tex: null, lutTex: {}, ok: null };
+function cxLutGLInit(){
+  if(__cxLutGL.ok !== null) return __cxLutGL.ok;
+  try{
+    const cv = document.createElement('canvas');
+    const gl = cv.getContext('webgl2', { premultipliedAlpha:false, preserveDrawingBuffer:true });
+    if(!gl) return (__cxLutGL.ok = false);
+    const sh = (tip, src)=>{ const s = gl.createShader(tip); gl.shaderSource(s, src); gl.compileShader(s); if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; };
+    const p = gl.createProgram();
+    gl.attachShader(p, sh(gl.VERTEX_SHADER, `#version 300 es
+      in vec2 a; out vec2 uv;
+      void main(){ uv = vec2(a.x*0.5+0.5, 0.5-a.y*0.5); gl_Position = vec4(a, 0.0, 1.0); }`));
+    gl.attachShader(p, sh(gl.FRAGMENT_SHADER, `#version 300 es
+      precision highp float; precision highp sampler3D;
+      in vec2 uv; out vec4 o;
+      uniform sampler2D src; uniform sampler3D lut; uniform float n; uniform float jac;
+      void main(){
+        vec4 c = texture(src, uv);
+        vec3 k = clamp(c.rgb, 0.0, 1.0) * ((n - 1.0) / n) + 0.5 / n;
+        o = vec4(mix(c.rgb, texture(lut, k).rgb, jac), c.a);
+      }`));
+    gl.linkProgram(p);
+    if(!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+    gl.useProgram(p);
+    const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(p, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    const tex = gl.createTexture(); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex);
+    [gl.TEXTURE_WRAP_S, gl.TEXTURE_WRAP_T].forEach(x=> gl.texParameteri(gl.TEXTURE_2D, x, gl.CLAMP_TO_EDGE));
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.uniform1i(gl.getUniformLocation(p, 'src'), 0); gl.uniform1i(gl.getUniformLocation(p, 'lut'), 1);
+    Object.assign(__cxLutGL, { cv, gl, prog: p, tex, uN: gl.getUniformLocation(p, 'n'), uJ: gl.getUniformLocation(p, 'jac') });
+    return (__cxLutGL.ok = true);
+  }catch(e){ console.warn('LUT bez grafičke kartice:', e); return (__cxLutGL.ok = false); }
+}
+function cxLutTex(id, l){
+  const G = __cxLutGL, gl = G.gl;
+  if(G.lutTex[id]) return G.lutTex[id];
+  const t = gl.createTexture();
+  gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_3D, t);
+  gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+  gl.texImage3D(gl.TEXTURE_3D, 0, gl.RGB8, l.n, l.n, l.n, 0, gl.RGB, gl.UNSIGNED_BYTE, l.data);
+  [gl.TEXTURE_MIN_FILTER, gl.TEXTURE_MAG_FILTER].forEach(x=> gl.texParameteri(gl.TEXTURE_3D, x, gl.LINEAR));
+  [gl.TEXTURE_WRAP_S, gl.TEXTURE_WRAP_T, gl.TEXTURE_WRAP_R].forEach(x=> gl.texParameteri(gl.TEXTURE_3D, x, gl.CLAMP_TO_EDGE));
+  gl.activeTexture(gl.TEXTURE0);
+  return (G.lutTex[id] = t);
+}
+function cxLutCPU(src, dst, l, jac){
+  const g = dst.getContext('2d', { willReadFrequently:true });
+  g.clearRect(0, 0, dst.width, dst.height); g.drawImage(src, 0, 0, dst.width, dst.height);
+  const im = g.getImageData(0, 0, dst.width, dst.height), d = im.data, L = l.data, n = l.n, s = (n - 1) / 255;
+  for(let i=0; i<d.length; i+=4){
+    const r = d[i]*s, gg = d[i+1]*s, b = d[i+2]*s;
+    const r0 = Math.min(n-2, r|0), g0 = Math.min(n-2, gg|0), b0 = Math.min(n-2, b|0), fr = r - r0, fg = gg - g0, fb = b - b0;
+    for(let ch=0; ch<3; ch++){
+      const v = (rr, g1, bb)=> L[((bb*n + g1)*n + rr)*3 + ch];
+      const c00 = v(r0, g0, b0)*(1-fr) + v(r0+1, g0, b0)*fr, c10 = v(r0, g0+1, b0)*(1-fr) + v(r0+1, g0+1, b0)*fr;
+      const c01 = v(r0, g0, b0+1)*(1-fr) + v(r0+1, g0, b0+1)*fr, c11 = v(r0, g0+1, b0+1)*(1-fr) + v(r0+1, g0+1, b0+1)*fr;
+      const lut = (c00*(1-fg) + c10*fg)*(1-fb) + (c01*(1-fg) + c11*fg)*fb;
+      d[i+ch] = d[i+ch] + (lut - d[i+ch]) * jac;
+    }
+  }
+  g.putImageData(im, 0, 0);
+}
+const __cxLutOut = new WeakMap();
+function cxLutSrc(c, el){
+  if(!el || !c || !c.lut || !c.lut.id) return el;
+  const l = state.luts && state.luts[c.lut.id];
+  const jac = clamp((c.lut.jacina ?? 100) / 100, 0, 1);
+  if(!l || jac <= 0) return el;
+  const sw = el.videoWidth || el.naturalWidth || el.width, sh = el.videoHeight || el.naturalHeight || el.height;
+  if(!sw || !sh) return el;
+  if(el.tagName === 'VIDEO' && el.readyState < 2) return el;
+  const lim = Math.max(canvas.width, canvas.height) * 1.15, f = Math.min(1, lim / Math.max(sw, sh));
+  const cw = Math.max(2, Math.round(sw*f)), ch = Math.max(2, Math.round(sh*f));
+  let out = __cxLutOut.get(c);
+  if(!out){ out = document.createElement('canvas'); __cxLutOut.set(c, out); }
+  if(out.width !== cw || out.height !== ch){ out.width = cw; out.height = ch; }
+  if(cxLutGLInit()){
+    const G = __cxLutGL, gl = G.gl;
+    if(G.cv.width !== cw || G.cv.height !== ch){ G.cv.width = cw; G.cv.height = ch; }
+    gl.viewport(0, 0, cw, ch);
+    gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_3D, cxLutTex(c.lut.id, l));
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, G.tex);
+    gl.pixelStorei(gl.UNPACK_ALIGNMENT, 4);
+    try{ gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, el); }catch(e){ return el; }
+    gl.uniform1f(G.uN, l.n); gl.uniform1f(G.uJ, jac);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    const g = out.getContext('2d');
+    g.clearRect(0, 0, cw, ch); g.drawImage(G.cv, 0, 0);
+  } else {
+    cxLutCPU(el, out, l, jac);
+  }
+  out.videoWidth = el.videoWidth || (el.naturalWidth || undefined); out.videoHeight = el.videoHeight || (el.naturalHeight || undefined);
+  if(!out.videoWidth){ delete out.videoWidth; delete out.videoHeight; }
+  out.__ai = el.__ai;
+  return out;
+}
+
+/* ---------- panel ---------- */
+function cxLutHtml(c){
+  const luts = Object.entries(state.luts || {});
+  const izabran = c.lut && state.luts[c.lut.id];
+  return `
+    <div class="section-title" style="margin-top:6px;">🎞 LUT FILTER (.cube)</div>
+    <div class="field-row" style="gap:6px;">
+      <select id="cx-lut-sel" style="flex:1;min-width:0;">
+        <option value="">— bez LUT-a —</option>
+        ${luts.map(([id, l])=> `<option value="${id}" ${c.lut && c.lut.id === id ? 'selected' : ''}>${escapeHtml(l.name)} (${l.n}³)</option>`).join('')}
+      </select>
+      <button type="button" id="cx-lut-ucitaj">📂 Učitaj .cube</button>
+    </div>
+    ${izabran ? sliderRow('cx-lut-jac', 'Jačina LUT-a (%)', Math.round(c.lut.jacina ?? 100), 0, 100) : ''}
+    ${izabran ? `<div class="field-row"><button type="button" id="cx-lut-svima" style="flex:1;">Primeni ovaj LUT na sve video klipove</button></div>` : ''}
+    <div class="cx-p5-hint">LUT = gotov filmski izgled ili ispravka boja kamere (npr. LOG → normalne boje). Isti .cube fajlovi kao u Filmori, Premiere-u i DaVinci-ju. Učitan LUT ostaje u projektu i može se izabrati i na drugim klipovima.</div>`;
+}
+function cxLutBind(c){
+  const sel = $('#cx-lut-sel');
+  if(!sel) return;
+  sel.onchange = e=>{ pushUndoSnapshot(); c.lut = e.target.value ? { id: e.target.value, jacina: (c.lut && c.lut.jacina) ?? 100 } : null; renderProps(); draw(); };
+  $('#cx-lut-ucitaj').onclick = ()=>{
+    const inp = document.createElement('input');
+    inp.type = 'file'; inp.accept = '.cube,text/plain'; inp.multiple = true;
+    inp.onchange = async ()=>{
+      let poslednji = null;
+      for(const f of inp.files){
+        try{
+          const l = cxLutParse(await f.text(), f.name);
+          const id = uid('lut');
+          state.luts[id] = l; poslednji = id;
+        }catch(err){ alert(`${f.name}: ${err.message || err}`); }
+      }
+      if(poslednji){ pushUndoSnapshot(); c.lut = { id: poslednji, jacina: 100 }; renderProps(); draw(); }
+    };
+    inp.click();
+  };
+  const j = $('#cx-lut-jac');
+  if(j){ j.oninput = e=>{ c.lut.jacina = +e.target.value; syncValLabel(e); draw(); }; j.onchange = ()=> pushUndoSnapshot(); }
+  const sv = $('#cx-lut-svima');
+  if(sv) sv.onclick = ()=>{
+    pushUndoSnapshot();
+    state.clips.filter(x=> x.type === 'video' && !(mediaById(x.mediaId) || {}).adjust).forEach(x=> x.lut = { ...c.lut });
+    draw(); alert('LUT je primenjen na sve video klipove.');
+  };
+}
+
+/* ============================================================
+   PAKET 6b: EFEKTI I PRELAZI PRENETI IZ FILMCRAFT-a
+   ------------------------------------------------------------
+   Formule (izobličenja, ivice, utiskivanje, prelazi) su prenete iz projekta
+   FilmCraft (https://github.com/storytold/filmcraft), crates/render –
+   effects.rs, vfx/*, transitions/* – i prilagođene načinu crtanja Cadrie.
+   FilmCraft: Copyright (c) the FilmCraft / ArtCraft contributors,
+   licenca MIT ili Apache-2.0 (po izboru). Tekst MIT licence:
+     Permission is hereby granted, free of charge, to any person obtaining a copy
+     of this software and associated documentation files (the "Software"), to deal
+     in the Software without restriction, including without limitation the rights
+     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+     copies of the Software, and to permit persons to whom the Software is
+     furnished to do so, subject to the following conditions: The above copyright
+     notice and this permission notice shall be included in all copies or
+     substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS",
+     WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.
+   ============================================================ */
+
+/* ---------------- grafička kartica: izobličenja i obrada piksela ---------------- */
+const CX_GLFX_MODE = { fisheye:1, unfish:1, twirl:2, wave:3, bulge:4, sketch:5, emboss:6, paint:7, edgeglow:8 };
+const __cxGF = { ok: null };
+function cxGfInit(){
+  if(__cxGF.ok !== null) return __cxGF.ok;
+  try{
+    const cv = document.createElement('canvas');
+    const gl = cv.getContext('webgl2', { premultipliedAlpha:false, preserveDrawingBuffer:true });
+    if(!gl) return (__cxGF.ok = false);
+    const sh = (tip, src)=>{ const s = gl.createShader(tip); gl.shaderSource(s, src); gl.compileShader(s); if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; };
+    const p = gl.createProgram();
+    gl.attachShader(p, sh(gl.VERTEX_SHADER, `#version 300 es
+      in vec2 a; out vec2 uv; void main(){ uv = vec2(a.x*0.5+0.5, 0.5-a.y*0.5); gl_Position = vec4(a, 0.0, 1.0); }`));
+    gl.attachShader(p, sh(gl.FRAGMENT_SHADER, `#version 300 es
+      precision highp float;
+      in vec2 uv; out vec4 o;
+      uniform sampler2D src; uniform vec2 res; uniform int mode; uniform float s; uniform float t; uniform float k;
+      float luma(vec3 c){ return dot(c, vec3(0.2126, 0.7152, 0.0722)); }
+      vec4 at(vec2 p){ return texture(src, clamp(p, vec2(0.0), res) / res); }
+      void main(){
+        vec2 px = uv * res, c = res * 0.5;
+        if(mode == 1){                       // sočivo (FilmCraft lens_distortion): k > 0 riblje oko, k < 0 ispravka
+          float nrm = length(c); vec2 d = (px - c) / nrm; float r2 = dot(d, d);
+          vec2 q = c + d * (1.0 - k * r2) * nrm;
+          if(k < 0.0){ q = c + (q - c) / (1.0 - k); }   // ispravka: blago uvećaj da ivice ne budu crne
+          o = (q.x < 0.0 || q.y < 0.0 || q.x > res.x || q.y > res.y) ? vec4(0.0, 0.0, 0.0, 1.0) : at(q);
+        } else if(mode == 2){                // vrtlog (twirl)
+          float rad = 0.5 * min(res.x, res.y); vec2 d = px - c; float dd = length(d);
+          if(dd >= rad){ o = at(px); return; }
+          float kk = 1.0 - dd / rad, a = k * kk * kk; float sn = sin(a), cs = cos(a);
+          o = at(c + vec2(d.x * cs - d.y * sn, d.x * sn + d.y * cs));
+        } else if(mode == 3){                // talasi (wave_warp)
+          float hgt = 0.045 * res.y * s, wid = max(1.0, 0.18 * res.x), off = hgt * sin(px.x / wid * 6.2831853 - t * 2.0 * 3.14159);
+          o = at(vec2(px.x, px.y + off));
+        } else if(mode == 4){                // ispupčenje (spherize)
+          float r = 0.45 * min(res.x, res.y); vec2 d = px - c; float dd = length(d);
+          if(dd >= r || dd < 1e-4){ o = at(px); return; }
+          float n = dd / r, kk = 1.0 - 0.5 * s * (1.0 - sqrt(1.0 - n * n)) * 2.0;
+          o = at(c + d * kk);
+        } else if(mode == 5 || mode == 8){   // crtež / neonske ivice (find_edges, Sobel)
+          vec2 e = vec2(1.0);
+          float l00 = luma(at(px + vec2(-1,-1)).rgb), l10 = luma(at(px + vec2(0,-1)).rgb), l20 = luma(at(px + vec2(1,-1)).rgb);
+          float l01 = luma(at(px + vec2(-1, 0)).rgb),                                   l21 = luma(at(px + vec2(1, 0)).rgb);
+          float l02 = luma(at(px + vec2(-1, 1)).rgb), l12 = luma(at(px + vec2(0, 1)).rgb), l22 = luma(at(px + vec2(1, 1)).rgb);
+          float gx = l20 + 2.0*l21 + l22 - l00 - 2.0*l01 - l02, gy = l02 + 2.0*l12 + l22 - l00 - 2.0*l10 - l20;
+          float m = min(1.0, sqrt(gx*gx + gy*gy) * 1.6);
+          vec4 org = at(px);
+          if(mode == 5){ vec3 crt = vec3(1.0 - m); o = vec4(mix(org.rgb, crt, s), org.a); }
+          else { vec3 boja = 0.5 + 0.5 * cos(6.2831 * (uv.x * 0.6 + uv.y * 0.4 + t * 0.15) + vec3(0.0, 2.1, 4.2));
+                 o = vec4(org.rgb * (1.0 - 0.75 * s) + boja * m * 1.6 * s, org.a); }
+        } else if(mode == 6){                // utisnuto (emboss)
+          vec2 d = vec2(cos(0.785), -sin(0.785)) * max(1.0, res.x / 640.0) * 2.0;
+          float v = clamp(0.5 + (luma(at(px + d).rgb) - luma(at(px - d).rgb)) * 2.0, 0.0, 1.0);
+          vec4 org = at(px); o = vec4(mix(org.rgb, vec3(v), s), org.a);
+        } else if(mode == 7){                // uljana slika (Kuwahara)
+          int R = int(3.0 + 6.0 * s);
+          vec3 m[4]; vec3 q[4];
+          for(int i=0; i<4; i++){ m[i] = vec3(0.0); q[i] = vec3(0.0); }
+          float n = float((R + 1) * (R + 1));
+          for(int j=0; j<=R; j++) for(int i=0; i<=R; i++){
+            vec3 a0 = at(px + vec2(-i, -j)).rgb, a1 = at(px + vec2(i, -j)).rgb, a2 = at(px + vec2(-i, j)).rgb, a3 = at(px + vec2(i, j)).rgb;
+            m[0] += a0; q[0] += a0*a0; m[1] += a1; q[1] += a1*a1; m[2] += a2; q[2] += a2*a2; m[3] += a3; q[3] += a3*a3;
+          }
+          float best = 1e9; vec3 res3 = vec3(0.0);
+          for(int i=0; i<4; i++){ vec3 mu = m[i] / n; vec3 v = abs(q[i] / n - mu*mu); float sv = v.r + v.g + v.b; if(sv < best){ best = sv; res3 = mu; } }
+          o = vec4(res3, at(px).a);
+        } else { o = at(px); }
+      }`));
+    gl.linkProgram(p);
+    if(!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+    gl.useProgram(p);
+    const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(p, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    const tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, tex);
+    [gl.TEXTURE_WRAP_S, gl.TEXTURE_WRAP_T].forEach(x=> gl.texParameteri(gl.TEXTURE_2D, x, gl.CLAMP_TO_EDGE));
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    const U = n=> gl.getUniformLocation(p, n);
+    Object.assign(__cxGF, { cv, gl, tex, uRes: U('res'), uMode: U('mode'), uS: U('s'), uT: U('t'), uK: U('k') });
+    return (__cxGF.ok = true);
+  }catch(e){ console.warn('efekti bez grafičke kartice:', e); return (__cxGF.ok = false); }
+}
+function cxGf(src, dst, w, h, mode, s, t, k){
+  if(!cxGfInit()) return false;
+  const G = __cxGF, gl = G.gl;
+  if(G.cv.width !== w || G.cv.height !== h){ G.cv.width = w; G.cv.height = h; }
+  gl.viewport(0, 0, w, h);
+  gl.bindTexture(gl.TEXTURE_2D, G.tex);
+  try{ gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src); }catch(e){ return false; }
+  gl.uniform2f(G.uRes, w, h); gl.uniform1i(G.uMode, mode); gl.uniform1f(G.uS, s); gl.uniform1f(G.uT, t); gl.uniform1f(G.uK, k);
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  const g = dst.getContext('2d'); g.clearRect(0, 0, w, h); g.drawImage(G.cv, 0, 0);
+  return true;
+}
+
+/* ---------------- novi video efekti (u istoj listi kao Glič, VHS…) ---------------- */
+const CX_FX_FC = [
+  ['unfish','📐','Ispravi sočivo (GoPro)'], ['fisheye','🐟','Riblje oko'], ['twirl','🌀','Vrtlog'], ['wave','🌊','Talasi'],
+  ['bulge','🔮','Ispupčenje'], ['sketch','✏️','Crtež olovkom'], ['emboss','🪨','Utisnuto'], ['paint','🖌','Uljana slika'],
+  ['edgeglow','💡','Neonske ivice'], ['tilt','🔭','Minijatura (tilt-shift)'], ['rays','☀️','Zraci svetla'],
+  ['flare','🌟','Odsjaj sočiva'], ['stopmo','🎞','Stop-motion'], ['strobe','📸','Stroboskop'],
+];
+CX_FX_FC.forEach(e=> CX_FX.push(e));
+const __cxFxStari = cxApplyFx;
+cxApplyFx = function(c, src, w, h, lt, fs){
+  let cur = __cxFxStari(c, src, w, h, lt, fs);
+  const fx = c.fx || {}, T = c.start + lt;
+  const S = k=> clamp((fx[k]||0)/100, 0, 1);
+  let flip = 0;
+  const next = ()=>{ flip ^= 1; return cxCanvas2(fs, flip ? 'fc1' : 'fc2', w, h); };
+  // stop-motion: kadar se menja samo nekoliko puta u sekundi (FilmCraft posterize_time)
+  if(S('stopmo')){
+    const fps = Math.round(24 - 20*S('stopmo')), korak = Math.floor(T*fps);
+    const drz = cxCanvas2(fs, 'stopmo', w, h);
+    if(fs.stopmoK !== korak){ const g = drz.getContext('2d'); g.clearRect(0, 0, w, h); g.drawImage(cur, 0, 0, w, h); fs.stopmoK = korak; }
+    cur = drz;
+  }
+  for(const k of ['unfish', 'fisheye', 'twirl', 'wave', 'bulge', 'sketch', 'emboss', 'paint', 'edgeglow']){
+    const s = S(k); if(!s) continue;
+    const kk = k === 'unfish' ? -0.55*s : k === 'fisheye' ? 0.9*s : k === 'twirl' ? 4.5*s : 0;
+    const o = next();
+    if(k === 'paint'){                          // uljana slika se računa na upola manjoj slici (4× brže, izgled isti)
+      const hw = Math.max(2, w>>1), hh = Math.max(2, h>>1), m1 = cxCanvas2(fs, 'pt1', hw, hh), m2 = cxCanvas2(fs, 'pt2', hw, hh);
+      const g1 = m1.getContext('2d'); g1.clearRect(0, 0, hw, hh); g1.drawImage(cur, 0, 0, hw, hh);
+      if(cxGf(m1, m2, hw, hh, CX_GLFX_MODE[k], s*0.6, lt, kk)){ const g = o.getContext('2d'); g.clearRect(0, 0, w, h); g.drawImage(m2, 0, 0, w, h); cur = o; }
+      continue;
+    }
+    if(cxGf(cur, o, w, h, CX_GLFX_MODE[k], s, lt, kk)) cur = o;
+  }
+  if(S('tilt')){                                   // minijatura: oštra traka u sredini, gore/dole zamućeno, žive boje
+    const s = S('tilt'), o = next(), g = o.getContext('2d'), b = cxCanvas2(fs, 'tiltb', w, h), bg = b.getContext('2d');
+    bg.filter = `blur(${(w*0.011*s).toFixed(1)}px)`; bg.clearRect(0, 0, w, h); bg.drawImage(cur, 0, 0); bg.filter = 'none';
+    bg.globalCompositeOperation = 'destination-in';
+    const gr = bg.createLinearGradient(0, 0, 0, h);
+    gr.addColorStop(0, 'rgba(0,0,0,1)'); gr.addColorStop(0.32, 'rgba(0,0,0,0)'); gr.addColorStop(0.62, 'rgba(0,0,0,0)'); gr.addColorStop(1, 'rgba(0,0,0,1)');
+    bg.fillStyle = gr; bg.fillRect(0, 0, w, h); bg.globalCompositeOperation = 'source-over';
+    g.filter = `saturate(${1 + 0.6*s}) contrast(${1 + 0.08*s})`; g.clearRect(0, 0, w, h); g.drawImage(cur, 0, 0); g.drawImage(b, 0, 0); g.filter = 'none';
+    cur = o;
+  }
+  if(S('rays')){                                   // zraci svetla (volumetric_rays): svetli delovi se razvlače iz sredine
+    const s = S('rays'), o = next(), g = o.getContext('2d');
+    const sm = cxCanvas2(fs, 'rays', Math.max(2, w>>2), Math.max(2, h>>2)), sg = sm.getContext('2d');
+    sg.filter = 'brightness(0.9) contrast(3.2) saturate(0.7)'; sg.clearRect(0, 0, sm.width, sm.height); sg.drawImage(cur, 0, 0, sm.width, sm.height); sg.filter = 'none';
+    g.clearRect(0, 0, w, h); g.drawImage(cur, 0, 0);
+    g.globalCompositeOperation = 'lighter';
+    const cx = w*(0.5 + 0.08*Math.sin(lt*0.4)), cy = h*0.35, n = 14;
+    for(let i=1; i<=n; i++){
+      const z = 1 + i*0.04*s; g.globalAlpha = 0.06*s*(1 - i/(n+1));
+      g.drawImage(sm, cx - cx*z, cy - cy*z, w*z, h*z);
+    }
+    g.globalAlpha = 1; g.globalCompositeOperation = 'source-over';
+    cur = o;
+  }
+  if(S('flare')){                                  // odsjaj sočiva: sjajno sunce i krugovi duž linije kroz sredinu
+    const s = S('flare'), o = next(), g = o.getContext('2d');
+    g.clearRect(0, 0, w, h); g.drawImage(cur, 0, 0);
+    const fx0 = w*(0.22 + 0.1*Math.sin(lt*0.3)), fy0 = h*(0.25 + 0.05*Math.cos(lt*0.25)), cx = w/2, cy = h/2, R = Math.max(w, h);
+    g.globalCompositeOperation = 'screen';
+    let gr = g.createRadialGradient(fx0, fy0, 0, fx0, fy0, R*0.35);
+    gr.addColorStop(0, `rgba(255,250,235,${s})`); gr.addColorStop(0.12, `rgba(255,220,160,${0.7*s})`); gr.addColorStop(1, 'rgba(255,200,120,0)');
+    g.fillStyle = gr; g.fillRect(0, 0, w, h);
+    [[0.35, 0.05, '120,200,255'], [0.6, 0.03, '255,160,90'], [0.9, 0.08, '160,255,170'], [1.25, 0.05, '255,120,200'], [1.55, 0.12, '120,160,255']].forEach(([d, r, col])=>{
+      const x = fx0 + (cx - fx0)*d*2, y = fy0 + (cy - fy0)*d*2, rr = R*r;
+      const q = g.createRadialGradient(x, y, rr*0.6, x, y, rr);
+      q.addColorStop(0, `rgba(${col},${0.35*s})`); q.addColorStop(1, `rgba(${col},0)`);
+      g.fillStyle = q; g.beginPath(); g.arc(x, y, rr, 0, Math.PI*2); g.fill();
+    });
+    g.globalCompositeOperation = 'source-over';
+    cur = o;
+  }
+  if(S('strobe')){                                 // stroboskop (FilmCraft strobe): kratki beli bljeskovi
+    const s = S('strobe'), per = 0.6 - 0.45*s;
+    if((T % per) < 0.05){ const o = next(), g = o.getContext('2d'); g.clearRect(0, 0, w, h); g.drawImage(cur, 0, 0); g.fillStyle = `rgba(255,255,255,${0.85*s})`; g.fillRect(0, 0, w, h); cur = o; }
+  }
+  return cur;
+};
+
+/* ---------------- novi prelazi ---------------- */
+const CX_TR_FC = [
+  ['fc-star','Zvezda'], ['fc-heart','Srce'], ['fc-cross','Krst'], ['fc-zoomblur','Zum zamućenje'], ['fc-quake','Zemljotres'],
+  ['fc-flicker','Treperenje'], ['fc-tv','Gašenje TV-a'], ['fc-sweep','Svetlosni prolaz'], ['fc-burn','Spaljivanje boje'],
+  ['fc-blur','Zamućeno pretapanje'], ['fc-pixel','Pikseli'], ['fc-cube','Kocka (3D)'], ['fc-leak','Svetlosni bljesak boja'],
+];
+CX_TR_FC.forEach(([k, l])=>{ CX_TR_NEW.push([k, l]); CX_TR_SET[k] = l; TR_LABELS[k] = l; SEQ_TRANSITIONS.push([k, l]); });
+const cxSm = (a, b, x)=>{ const t = clamp((x - a)/(b - a), 0, 1); return t*t*(3 - 2*t); };
+const cxBell = p=> Math.sin(Math.PI * clamp(p, 0, 1));
+function cxTvQ(p){ const q = p < 0.5 ? p*2 : (1 - p)*2; return { sy: Math.max(0.004, 1 - cxSm(0, 0.65, q)), sx: Math.max(0.004, 1 - cxSm(0.6, 1, q)), white: cxSm(0.2, 0.7, q) }; }
+function cxFlickB(p){ const j = Math.floor(p*16); return cxHash(j*3.7 + 11) < cxSm(0.1, 0.9, p); }
+const __cxTrOutStari = cxTrOut, __cxTrInStari = cxTrIn, __cxTrOverStari = cxTrOverlay;
+cxTrOut = function(type, g, p, W, H){
+  switch(type){
+    case 'fc-tv': { if(p >= 0.5) return 0; const q = cxTvQ(p); g.translate(W/2, H/2); g.scale(q.sx, q.sy); g.translate(-W/2, -H/2); return 1; }
+    case 'fc-flicker': return cxFlickB(p) ? 0 : 1;
+    case 'fc-cube': { const a = p*Math.PI/2; g.scale(Math.max(0.002, Math.cos(a)), 1); return 1; }
+    case 'fc-zoomblur': { const z = 1 + 2.2*Math.pow(Math.min(1, p/0.5), 2); g.translate(W/2, H/2); g.scale(z, z); g.translate(-W/2, -H/2); return p < 0.5 ? 1 : 0; }
+  }
+  return __cxTrOutStari(type, g, p, W, H);
+};
+cxTrIn = function(type, g, p, W, H){
+  const cx = W/2, cy = H/2, R = Math.hypot(W, H);
+  switch(type){
+    case 'fc-star': {
+      const r = p*R*1.15, n = 5; g.beginPath();
+      for(let i=0; i<n*2; i++){ const a = -Math.PI/2 + i*Math.PI/n, rr = i % 2 ? r*0.45 : r; g.lineTo(cx + Math.cos(a)*rr, cy + Math.sin(a)*rr); }
+      g.closePath(); g.clip(); return 1;
+    }
+    case 'fc-heart': {
+      const s = p*R*0.075 + 0.01; g.beginPath();
+      for(let i=0; i<=64; i++){ const t = i/64*Math.PI*2, x = 16*Math.pow(Math.sin(t), 3), y = -(13*Math.cos(t) - 5*Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t)); g.lineTo(cx + x*s, cy + y*s + s*2); }
+      g.closePath(); g.clip(); return 1;
+    }
+    case 'fc-cross': { const a = p*R*0.62, b = p*R*0.2; g.beginPath(); g.rect(cx - a, cy - b, 2*a, 2*b); g.rect(cx - b, cy - a, 2*b, 2*a); g.clip(); return 1; }
+    case 'fc-zoomblur': { const z = 1 + 2.2*(1 - Math.pow(Math.max(0, (p - 0.5)/0.5), 0.5)); g.translate(cx, cy); g.scale(z, z); g.translate(-cx, -cy); return p >= 0.5 ? 1 : 0; }
+    case 'fc-quake': return cxSm(0.25, 0.75, p);
+    case 'fc-flicker': return cxFlickB(p) ? 1 : 0;
+    case 'fc-tv': { if(p < 0.5) return 0; const q = cxTvQ(p); g.translate(cx, cy); g.scale(q.sx, q.sy); g.translate(-cx, -cy); return 1; }
+    case 'fc-sweep': {                         // nova slika iza svetle linije koja prelazi kadar (dijagonalno)
+      const dx = Math.cos(0.5), dy = Math.sin(0.5), e = p*(W*dx + H*dy), L = W + H;
+      const px0 = dx*e, py0 = dy*e, tx = -dy*L, ty = dx*L;
+      g.beginPath(); g.moveTo(px0 + tx, py0 + ty); g.lineTo(px0 - tx, py0 - ty); g.lineTo(px0 - tx - dx*L, py0 - ty - dy*L); g.lineTo(px0 + tx - dx*L, py0 + ty - dy*L);
+      g.closePath(); g.clip(); return 1;
+    }
+    case 'fc-burn': case 'fc-leak': return cxSm(0.2, 0.8, p);
+    case 'fc-blur': case 'fc-pixel': return cxSm(0.35, 0.65, p);
+    case 'fc-cube': { const a = p*Math.PI/2; g.translate(W*Math.cos(a), 0); g.scale(Math.max(0.002, Math.sin(a)), 1); return 1; }
+  }
+  return __cxTrInStari(type, g, p, W, H);
+};
+const __cxTrTmp = document.createElement('canvas');
+function cxTrKopija(g, W, H){
+  if(__cxTrTmp.width !== W || __cxTrTmp.height !== H){ __cxTrTmp.width = W; __cxTrTmp.height = H; }
+  const t = __cxTrTmp.getContext('2d'); t.globalCompositeOperation = 'copy'; t.drawImage(g.canvas, 0, 0, W, H); t.globalCompositeOperation = 'source-over';
+  return __cxTrTmp;
+}
+cxTrOverlay = function(type, g, p, W, H){
+  if(!String(type).startsWith('fc-')) return __cxTrOverStari(type, g, p, W, H);
+  const env = cxBell(p), cx = W/2, cy = H/2;
+  g.save(); g.setTransform(1,0,0,1,0,0); g.filter = 'none'; g.globalAlpha = 1; g.globalCompositeOperation = 'source-over';
+  switch(type){
+    case 'fc-zoomblur': {                       // radijalno zamućenje (FilmCraft cross_zoom)
+      const t = cxTrKopija(g, W, H), n = 10, b = 0.18*env;
+      if(b > 0.004) for(let i=1; i<=n; i++){ const z = 1 + b*i/n; g.globalAlpha = 1/(i + 1); g.drawImage(t, cx - cx*z, cy - cy*z, W*z, H*z); }
+      break;
+    }
+    case 'fc-quake': {                          // zemljotres: tresenje, okret i blago uvećanje (FilmCraft earthquake)
+      const t = cxTrKopija(g, W, H), q = p*45;
+      const ox = cxNoise(q, 0.5)*0.05*W*env, oy = cxNoise(q, 7.5)*0.05*H*env, r = cxNoise(q*0.7, 3.5)*0.04*env, z = 1 + 0.08*env;
+      g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
+      g.translate(cx + ox, cy + oy); g.rotate(r); g.scale(z, z); g.drawImage(t, -cx, -cy, W, H);
+      break;
+    }
+    case 'fc-flicker': {
+      const j = Math.floor(p*16), gain = 1 + (cxHash(j*5.3 + 2) - 0.5)*1.2*env;
+      if(gain > 1){ g.globalCompositeOperation = 'lighter'; g.globalAlpha = Math.min(1, gain - 1); g.fillStyle = '#fff'; }
+      else { g.globalAlpha = Math.min(1, 1 - gain); g.fillStyle = '#000'; }
+      g.fillRect(0, 0, W, H);
+      break;
+    }
+    case 'fc-tv': {                             // gašenje TV-a: slika se skupi u liniju pa u tačku, sa sjajem
+      const q = cxTvQ(p), hx = W/2*q.sx, hy = Math.max(H/2*q.sy, 1.5);
+      g.globalAlpha = q.white*0.9; g.fillStyle = '#eef6ff'; g.fillRect(cx - hx, cy - hy, hx*2, hy*2);
+      g.globalCompositeOperation = 'lighter'; g.globalAlpha = q.white;
+      const gr = g.createRadialGradient(cx, cy, 0, cx, cy, Math.max(hx, 12)*1.4);
+      gr.addColorStop(0, 'rgba(200,230,255,0.9)'); gr.addColorStop(1, 'rgba(200,230,255,0)');
+      g.fillStyle = gr; g.fillRect(cx - hx*1.5 - 30, cy - hy - 40, hx*3 + 60, hy*2 + 80);
+      break;
+    }
+    case 'fc-sweep': {                          // svetla traka na granici (FilmCraft light_sweep)
+      const dx = Math.cos(0.5), dy = Math.sin(0.5), hi = W*dx + H*dy, e = p*hi, bw = Math.max(W, H)*0.06;
+      const gr = g.createLinearGradient(dx*(e - bw), dy*(e - bw), dx*(e + bw), dy*(e + bw));
+      gr.addColorStop(0, 'rgba(255,240,210,0)'); gr.addColorStop(0.5, 'rgba(255,240,210,0.9)'); gr.addColorStop(1, 'rgba(255,240,210,0)');
+      g.globalCompositeOperation = 'lighter'; g.fillStyle = gr; g.fillRect(0, 0, W, H);
+      break;
+    }
+    case 'fc-burn': {                           // spaljivanje boje (FilmCraft burn_chroma): preliv boja koji „pregori“ sliku
+      const hue = p*Math.PI*2, col = [0, 2.1, 4.2].map(o=> Math.round(160 + 95*Math.cos(hue + o)));
+      g.globalCompositeOperation = 'color-dodge'; g.globalAlpha = 0.55*env; g.fillStyle = `rgb(${col.join(',')})`; g.fillRect(0, 0, W, H);
+      g.globalCompositeOperation = 'lighter'; g.globalAlpha = 0.15*env*env; g.fillStyle = '#fff'; g.fillRect(0, 0, W, H);
+      break;
+    }
+    case 'fc-leak': {                           // šareni svetlosni bljesak (FilmCraft chroma_leak)
+      g.globalCompositeOperation = 'screen';
+      [['255,40,150', 0.15], ['30,200,255', 0.55], ['255,215,30', 0.9]].forEach(([col, side], i)=>{
+        const x = W*(side + (p - 0.5)*(0.8 + cxHash(i + 1))), y = H*(0.25 + 0.5*cxHash(i + 9)), R = Math.max(W, H)*(0.3 + 0.2*cxHash(i + 4));
+        const gr = g.createRadialGradient(x, y, 0, x, y, R);
+        gr.addColorStop(0, `rgba(${col},${0.85*env})`); gr.addColorStop(1, `rgba(${col},0)`);
+        g.fillStyle = gr; g.fillRect(0, 0, W, H);
+      });
+      break;
+    }
+    case 'fc-blur': {
+      const px = Math.max(W, H)*0.025*env;
+      if(px > 0.4){ const t = cxTrKopija(g, W, H); g.filter = `blur(${px.toFixed(1)}px)`; g.drawImage(t, 0, 0); }
+      break;
+    }
+    case 'fc-pixel': {
+      const n = Math.max(1, Math.round(1 + 60*env*env));
+      if(n > 1){ const t = cxTrKopija(g, W, H), sw = Math.max(1, Math.round(W/n)), sh = Math.max(1, Math.round(H/n));
+        const m = cxCanvas2(__cxTrPx, 'm', sw, sh), mg = m.getContext('2d'); mg.drawImage(t, 0, 0, sw, sh);
+        g.imageSmoothingEnabled = false; g.drawImage(m, 0, 0, W, H); g.imageSmoothingEnabled = true; }
+      break;
+    }
+    case 'fc-cube': {                           // senčenje strana kocke
+      const a = p*Math.PI/2, xs = W*Math.cos(a);
+      g.globalAlpha = 0.55*Math.sin(a); g.fillStyle = '#000'; g.fillRect(0, 0, xs, H);
+      g.globalAlpha = 0.55*Math.cos(a); g.fillRect(xs, 0, W - xs, H);
+      break;
+    }
+  }
+  g.restore();
+};
+const __cxTrPx = {};
+
+/* ============================================================
+   PAKET 7: AUDIO EFEKTI + GOTOVI IZGLEDI BOJA (po uzoru na FilmCraft:
+   crates/render/src/audio_fx.rs i lumetri_presets.rs – MIT/Apache-2.0)
+   Audio lanac po klipu: zapis -> promena glasa -> AUDIO EFEKTI -> EQ i čišćenje -> traka.
+   Isto u pregledu i u exportu.
+   ============================================================ */
+var CX_AFX2 = [
+  ['govor', '🎙', 'Pojačaj govor'], ['deess', '🐍', 'Ublaži „s“ i „š“ (de-esser)'], ['reverb', '⛪', 'Odjek prostorije'],
+  ['delay', '🔁', 'Eho (delay)'], ['warm', '📻', 'Topli analogni zvuk'], ['width', '↔', 'Širi stereo'], ['limit', '📢', 'Glasnije bez pucanja (limiter)'],
+];
+var CX_REVERB_TIP = [['soba', 'Soba', 0.7], ['sala', 'Sala', 1.9], ['crkva', 'Crkva', 4.2]];
+function cxAfx2(c){ if(!c.afx2) c.afx2 = {}; return c.afx2; }
+function cxAfx2On(c){ const a = c && c.afx2; return !!(a && CX_AFX2.some(([k])=> (a[k]||0) > 0)); }
+
+/* jedan stepen: ulaz -> (suvo + obrađeno) -> izlaz; jačina 0 = potpuno zaobiđen */
+function cxAfx2Build(ac){
+  const input = ac.createGain(), output = ac.createGain(), U = {};
+  const filt = (type, f, q)=>{ const b = ac.createBiquadFilter(); b.type = type; b.frequency.value = f; if(q) b.Q.value = q; return b; };
+  const gain = v=>{ const g = ac.createGain(); g.gain.value = v; return g; };
+  let cur = input;
+  const stepen = (ime, gradi)=>{
+    const ul = gain(1), suvo = gain(1), mokro = gain(0), iz = gain(1);
+    cur.connect(ul); ul.connect(suvo); suvo.connect(iz);
+    const u = gradi(ul, mokro) || {};
+    mokro.connect(iz);
+    U[ime] = Object.assign(u, { suvo, mokro });
+    cur = iz;
+  };
+  // pojačaj govor: niski rez, „prisutnost“ oko 3 kHz, manje mumlanja, blaga kompresija
+  stepen('govor', (ul, mokro)=>{
+    const hp = filt('highpass', 90, 0.7), mud = filt('peaking', 250, 1), pres = filt('peaking', 3200, 0.9), air = filt('highshelf', 9000);
+    const comp = ac.createDynamicsCompressor(); comp.threshold.value = -26; comp.ratio.value = 3; comp.knee.value = 10; comp.attack.value = 0.006; comp.release.value = 0.18;
+    const mk = gain(1.6);
+    ul.connect(hp); hp.connect(mud); mud.connect(pres); pres.connect(air); air.connect(comp); comp.connect(mk); mk.connect(mokro);
+    return { mud, pres, air };
+  });
+  // de-esser: visoki opseg (iznad ~5,5 kHz) ide kroz kompresor, ostalo netaknuto (Linkwitz-Riley podela)
+  stepen('deess', (ul, mokro)=>{
+    const lp1 = filt('lowpass', 5500, 0.707), lp2 = filt('lowpass', 5500, 0.707), hp1 = filt('highpass', 5500, 0.707), hp2 = filt('highpass', 5500, 0.707);
+    const comp = ac.createDynamicsCompressor(); comp.knee.value = 6; comp.attack.value = 0.001; comp.release.value = 0.06;
+    ul.connect(lp1); lp1.connect(lp2); lp2.connect(mokro);
+    ul.connect(hp1); hp1.connect(hp2); hp2.connect(comp); comp.connect(mokro);
+    return { comp };
+  });
+  // odjek prostorije (konvolucija sa veštačkim odzivom sobe / sale / crkve)
+  stepen('reverb', (ul, mokro)=>{ const cv = ac.createConvolver(), pre = ac.createDelay(0.1); pre.delayTime.value = 0.018; ul.connect(pre); pre.connect(cv); cv.connect(mokro); return { cv }; });
+  // eho
+  stepen('delay', (ul, mokro)=>{
+    const d = ac.createDelay(2), fb = gain(0.4), tone = filt('lowpass', 4500);
+    ul.connect(d); d.connect(tone); tone.connect(fb); fb.connect(d); tone.connect(mokro);
+    return { d, fb };
+  });
+  // topli analogni zvuk: blago zasićenje (meka kriva) + malo basa
+  stepen('warm', (ul, mokro)=>{
+    const sh = ac.createWaveShaper(), n = 1024, cu = new Float32Array(n);
+    for(let i=0; i<n; i++){ const x = i/(n-1)*2 - 1; cu[i] = Math.tanh(1.8*x) / Math.tanh(1.8); }
+    sh.curve = cu; sh.oversample = '2x';
+    const lo = filt('lowshelf', 180); lo.gain.value = 2.5; const hi = filt('highshelf', 8000); hi.gain.value = -2;
+    ul.connect(lo); lo.connect(sh); sh.connect(hi); hi.connect(mokro);
+    return {};
+  });
+  // širi stereo (sredina/strane): strane se pojačaju; mono snimak ostaje mono
+  stepen('width', (ul, mokro)=>{
+    const sp = ac.createChannelSplitter(2), mg = ac.createChannelMerger(2);
+    const lM = gain(0.5), rM = gain(0.5), lS = gain(0.5), rS = gain(-0.5), S = gain(1);
+    ul.connect(sp);
+    const M = gain(1);
+    sp.connect(lM, 0); sp.connect(rM, 1); lM.connect(M); rM.connect(M);
+    const Sx = gain(1); sp.connect(lS, 0); sp.connect(rS, 1); lS.connect(Sx); rS.connect(Sx); Sx.connect(S);
+    const Sneg = gain(-1); S.connect(Sneg);
+    M.connect(mg, 0, 0); S.connect(mg, 0, 0); M.connect(mg, 0, 1); Sneg.connect(mg, 0, 1);
+    mg.connect(mokro);
+    return { S };
+  });
+  // limiter: tvrda kompresija iznad praga + pojačanje = glasnije, a vrhovi ne prelaze 0 dB
+  stepen('limit', (ul, mokro)=>{
+    const comp = ac.createDynamicsCompressor(); comp.ratio.value = 20; comp.knee.value = 0; comp.attack.value = 0.001; comp.release.value = 0.08;
+    const mk = gain(1), klip = ac.createWaveShaper(), n = 2048, cu = new Float32Array(n);
+    // zaštita: nagli udari koje kompresor ne stigne da uhvati blago se zaoble ispod 0 dB (bez pucanja)
+    for(let i=0; i<n; i++){ const x = (i/(n-1)*2 - 1)*4; cu[i] = Math.abs(x) < 0.85 ? x : Math.sign(x)*(0.85 + 0.13*Math.tanh((Math.abs(x) - 0.85)/0.13)); }
+    klip.curve = cu;
+    const pre = gain(0.25), post = gain(1);                      // kriva pokriva ±4, pa se signal smanji pa vrati
+    ul.connect(comp); comp.connect(mk); mk.connect(pre); pre.connect(klip); klip.connect(mokro);
+    return { comp, mk };
+  });
+  cur.connect(output);
+  let reverbTip = null;
+  return {
+    input, output,
+    set(a, t){
+      const set = (p, v)=>{ if(t === undefined){ p.value = v; return; } try{ p.setTargetAtTime(v, t, 0.03); }catch(e){ p.value = v; } };
+      const S = k=> clamp((a[k]||0)/100, 0, 1);
+      const mesaj = (k, mokro, suvo)=>{ set(U[k].mokro.gain, mokro); set(U[k].suvo.gain, suvo); };
+      let s = S('govor'); mesaj('govor', s, 1 - s);
+      set(U.govor.mud.gain, -4*s); set(U.govor.pres.gain, 5*s); set(U.govor.air.gain, 2*s);
+      s = S('deess'); mesaj('deess', s ? 1 : 0, s ? 0 : 1);
+      set(U.deess.comp.threshold, -14 - 26*s); set(U.deess.comp.ratio, 3 + 12*s);
+      s = S('reverb'); mesaj('reverb', 0.65*s, 1);
+      const tip = CX_REVERB_TIP.find(x=> x[0] === a.reverbTip) || CX_REVERB_TIP[0];
+      if(s && reverbTip !== tip[0]){ U.reverb.cv.buffer = cxImpulse(ac, tip[2], tip[0] === 'crkva' ? 2.6 : 3.2); reverbTip = tip[0]; }
+      s = S('delay'); mesaj('delay', 0.55*s, 1); set(U.delay.d.delayTime, 0.22 + 0.25*(a.delayVreme ?? 0.4)); set(U.delay.fb.gain, 0.25 + 0.4*s);
+      s = S('warm'); mesaj('warm', s, 1 - s);
+      s = S('width'); mesaj('width', s ? 1/(1 + 0.45*s) : 0, s ? 0 : 1); set(U.width.S.gain, 1 + 1.3*s);
+      s = S('limit'); mesaj('limit', s ? 1 : 0, s ? 0 : 1);
+      const thr = -1 - 11*s; set(U.limit.comp.threshold, thr); set(U.limit.mk.gain, CX_DB(-thr*0.85));
+    }
+  };
+}
+/* uživo: stepen se ubaci ispred EQ lanca kad se lanac prvi put napravi */
+var __cxLiveP7 = __cxLiveV;
+__cxLiveV = function(c){
+  __cxLiveP7(c);
+  const el = c && c.el; if(!el || !el.__cxChain) return;
+  const ch = el.__cxChain;
+  if(!ch.__p7){
+    const st = cxAfx2Build(audioCtx);
+    const orig = ch.input;
+    st.output.connect(orig);
+    try{ el.__gainNode.disconnect(orig); }catch(e){ try{ el.__gainNode.disconnect(); }catch(e2){} }
+    el.__gainNode.connect(st.input);
+    ch.input = st.input; ch.__p7 = st;
+  }
+  ch.__p7.set(cxAfx2(c), audioCtx.currentTime);
+};
+/* export: isti stepen, posle promene glasa a pre EQ-a */
+var __cxConnOffP7 = __cxConnOffV;
+__cxConnOffV = function(octx, c, node, fadeGain){
+  if(!cxAfx2On(c)) return __cxConnOffP7(octx, c, node, fadeGain);
+  const st = cxAfx2Build(octx);
+  st.set(cxAfx2(c));
+  node.connect(st.input);
+  return __cxConnOffP7(octx, c, st.output, fadeGain);
+};
+function cxAfx2Html(c, media){
+  if(!media || media.kind === 'image' || (c.type !== 'video' && c.type !== 'audio')) return '';
+  const a = cxAfx2(c);
+  const ukl = CX_AFX2.filter(([k])=> (a[k]||0) > 0);
+  return `<div class="cx-sub2">Audio efekti</div>
+    <div class="cx-fx-grid">${CX_AFX2.map(([k, ic, n])=> `<button type="button" data-afx2="${k}" data-no-undo class="${(a[k]||0) > 0 ? 'on' : ''}"><span>${ic}</span>${n}</button>`).join('')}</div>
+    ${ukl.map(([k, ic, n])=> sliderRow('cx-afx2-' + k, ic + ' ' + n + ' – jačina', a[k], 1, 100)).join('')}
+    ${(a.reverb||0) > 0 ? `<div class="field"><label>Vrsta prostora</label><select id="cx-afx2-rtip">${CX_REVERB_TIP.map(([k, l])=> `<option value="${k}" ${a.reverbTip === k ? 'selected' : ''}>${l}</option>`).join('')}</select></div>` : ''}
+    ${(a.delay||0) > 0 ? sliderRow('cx-afx2-dvreme', '🔁 Razmak eha', Math.round((a.delayVreme ?? 0.4)*100), 0, 100) : ''}
+    <div style="font-size:10.5px;color:var(--muted);line-height:1.5;">„Pojačaj govor“ + „de-esser“ = čist glas za vlog i podcast. „Širi stereo“ radi samo na stereo snimcima (muzika). Sve se čuje odmah i ulazi u export.</div>`;
+}
+function cxAfx2Bind(c){
+  const a = cxAfx2(c);
+  const osvezi = ()=>{ if(c.el) cxLive(c); };
+  document.querySelectorAll('[data-afx2]').forEach(b=> b.addEventListener('click', ()=>{
+    pushUndoSnapshot();
+    const k = b.dataset.afx2; a[k] = (a[k]||0) > 0 ? 0 : 50;
+    if(k === 'reverb' && !a.reverbTip) a.reverbTip = 'soba';
+    osvezi(); renderProps();
+  }));
+  CX_AFX2.forEach(([k])=>{ const el = $('#cx-afx2-' + k); if(el){ el.oninput = e=>{ a[k] = +e.target.value; syncValLabel(e); osvezi(); }; el.onchange = ()=> pushUndoSnapshot(); } });
+  const rt = $('#cx-afx2-rtip'); if(rt) rt.onchange = e=>{ pushUndoSnapshot(); a.reverbTip = e.target.value; osvezi(); };
+  const dv = $('#cx-afx2-dvreme'); if(dv){ dv.oninput = e=>{ a.delayVreme = +e.target.value/100; syncValLabel(e); osvezi(); }; dv.onchange = ()=> pushUndoSnapshot(); }
+}
+
+/* ================= GOTOVI IZGLEDI (vrednosti po FilmCraft Lumetri Presets) ================= */
+var CX_LOOKS_FC = [
+  ['fc_teal', '🎥 Tirkizne senke, topla koža'], ['fc_noc', '🌃 Dan za noć'], ['fc_zlatni', '🌇 Zlatni sumrak'], ['fc_celik', '🔩 Čelično plavo'],
+  ['fc_sunce', '☀ Jako sunce (kontrast)'], ['fc_izbled', '🖼 Izbledela fotografija'], ['fc_srebro', '🥈 Srebrni film'], ['fc_unakrsno', '🧪 Unakrsno razvijanje'],
+  ['fc_negativ', '🎞 Topli negativ'], ['fc_sepija', '🟤 Sepija'], ['fc_hmono', '🔵 Hladno crno-belo'], ['fc_senke', '🔦 Otvori senke'],
+  ['fc_svetla', '🛡 Zaštiti svetla'], ['fc_zivost', '🎨 Više živosti (vibrance)'],
+];
+CX_LOOKS_FC.forEach(x=> CX_LOOKS.push(x));
+var __cxLookFnStari = cxLookFn;
+function cxKriva(tacke){ return x=>{ for(let i=0; i<tacke.length-1; i++){ const [x0, y0] = tacke[i], [x1, y1] = tacke[i+1]; if(x <= x1) return y0 + (y1 - y0)*clamp((x - x0)/((x1 - x0) || 1), 0, 1); } return tacke[tacke.length-1][1]; }; }
+cxLookFn = function(id){
+  if(!String(id).startsWith('fc_')) return __cxLookFnStari(id);
+  const f = cxLookFnFC(id);
+  return f ? (r, g, b)=> f(r, g, b).map(v=> Math.min(1, Math.max(0, v))) : null;     // uvek u opsegu 0..1
+};
+function cxLookFnFC(id){
+  const cl = v=> Math.min(1, Math.max(0, v));
+  const lin = v=> Math.pow(v, 2.2), gam = v=> Math.pow(cl(v), 1/2.2);
+  const temp = (r, g, b, t)=> [r*(1 + t*0.0045), g*(1 + t*0.0008), b*(1 - t*0.005)];        // t -100..100
+  const tint = (r, g, b, t)=> [r*(1 + t*0.002), g*(1 - t*0.004), b*(1 + t*0.002)];
+  const kontrast = (v, k)=> cl(0.5 + (v - 0.5)*(1 + k/100));
+  const ton = (r, g, b, senke, svetla, crne, bele)=>{                                           // -100..100
+    const y = cxLuma(r, g, b), ms = Math.pow(1 - y, 2), mh = Math.pow(y, 2);
+    const d = senke/100*0.25*ms + svetla/100*0.25*mh + crne/100*0.08*(1 - y) + bele/100*0.08*y;
+    return [cl(r + d), cl(g + d), cl(b + d)];
+  };
+  const zivost = (r, g, b, v)=>{ const mx = Math.max(r, g, b), mn = Math.min(r, g, b), s = mx - mn; return cxSat(r, g, b, 1 + v/100*(1 - s)); };
+  const nijansa = (r, g, b, senke, svetla)=>{                                                   // [r,g,b] ili null
+    const y = cxLuma(r, g, b);
+    if(senke){ const m = Math.pow(1 - y, 2)*0.6; r += (senke[0] - 0.5)*m; g += (senke[1] - 0.5)*m; b += (senke[2] - 0.5)*m; }
+    if(svetla){ const m = Math.pow(y, 2)*0.6; r += (svetla[0] - 0.5)*m; g += (svetla[1] - 0.5)*m; b += (svetla[2] - 0.5)*m; }
+    return [cl(r), cl(g), cl(b)];
+  };
+  const mono = (r, g, b)=>{ const y = cxLuma(r, g, b); return [y, y, y]; };
+  const toni = (r, g, b, deg, jac)=>{ const a = deg*Math.PI/180, y = cxLuma(r, g, b), m = 4*y*(1 - y); return [cl(r + Math.cos(a)*jac*0.35*m), cl(g + Math.cos(a - 2.094)*jac*0.35*m), cl(b + Math.cos(a + 2.094)*jac*0.35*m)]; };
+  switch(id){
+    case 'fc_teal': return (r, g, b)=>{ [r, g, b] = nijansa(r, g, b, [0.36, 0.52, 0.6], [0.64, 0.53, 0.42]); [r, g, b] = cxSat(r, g, b, 1.1); return [kontrast(r, 20), kontrast(g, 20), kontrast(b, 20)]; };
+    case 'fc_noc': return (r, g, b)=>{ const e = Math.pow(2, -0.9); [r, g, b] = [gam(lin(r)*e), gam(lin(g)*e), gam(lin(b)*e)]; [r, g, b] = temp(r, g, b, -45); [r, g, b] = cxSat(r, g, b, 0.7); [r, g, b] = nijansa(r, g, b, [0.4, 0.45, 0.62], null); return [kontrast(r, 15), kontrast(g, 15), kontrast(b, 15)]; };
+    case 'fc_zlatni': return (r, g, b)=>{ [r, g, b] = temp(r, g, b, 35); [r, g, b] = tint(r, g, b, 8); [r, g, b] = ton(r, g, b, 0, -15, 0, 0); [r, g, b] = zivost(r, g, b, 20); return nijansa(r, g, b, null, [0.66, 0.55, 0.4]); };
+    case 'fc_celik': return (r, g, b)=>{ [r, g, b] = temp(r, g, b, -25); [r, g, b] = cxSat(r, g, b, 0.8); return [kontrast(r, 25), kontrast(g, 25), kontrast(b, 25)]; };
+    case 'fc_sunce': return (r, g, b)=>{ [r, g, b] = [kontrast(r, 45), kontrast(g, 45), kontrast(b, 45)]; [r, g, b] = ton(r, g, b, -20, -25, 0, 0); return zivost(r, g, b, 15); };
+    case 'fc_izbled': return (r, g, b)=>{ [r, g, b] = cxSat(r, g, b, 0.85); [r, g, b] = [kontrast(r, -10), kontrast(g, -10), kontrast(b, -10)]; return [cl(0.09 + r*0.9), cl(0.09 + g*0.9), cl(0.1 + b*0.88)]; };
+    case 'fc_srebro': return (r, g, b)=>{ const y = cxLuma(r, g, b); [r, g, b] = [r*0.45 + y*0.55, g*0.45 + y*0.55, b*0.45 + y*0.55]; return [cxS(cl(r), 0.6), cxS(cl(g), 0.6), cxS(cl(b), 0.6)]; };
+    case 'fc_unakrsno': { const kr = cxKriva([[0, 0], [0.5, 0.56], [1, 1]]), kg = cxKriva([[0, 0.02], [0.5, 0.54], [1, 0.98]]), kb = cxKriva([[0, 0.12], [1, 0.82]]); return (r, g, b)=> [kr(r), kg(g), kb(b)]; }
+    case 'fc_negativ': return (r, g, b)=>{ [r, g, b] = temp(r, g, b, 18); return [cxS(cl(r*0.97 + 0.02), 0.2), cxS(cl(g*0.97 + 0.015), 0.2), cxS(cl(b*0.95 + 0.01), 0.2)]; };
+    case 'fc_sepija': return (r, g, b)=>{ [r, g, b] = mono(r, g, b); [r, g, b] = toni(r, g, b, 30, 0.35); return toni(r, g, b, 45, 0.2); };
+    case 'fc_hmono': return (r, g, b)=>{ [r, g, b] = mono(r, g, b); return toni(r, g, b, 210, 0.3); };
+    case 'fc_senke': return (r, g, b)=> ton(r, g, b, 40, 0, 10, 0);
+    case 'fc_svetla': return (r, g, b)=> ton(r, g, b, 0, -40, 0, -15);
+    case 'fc_zivost': return (r, g, b)=> zivost(r, g, b, 40);
+  }
+  return null;
+}
 
 /* CADRIA-ALATI-END */
 })();
