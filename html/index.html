@@ -11055,7 +11055,7 @@ async function exportVideo(opts = {}){
         if(!isVid){ finish(); return; }
         if(useRVFC){
           if(frameOk){ finish(); return; }
-          t2 = setTimeout(finish, 250); // kadar se nije promenio (isti sadržaj) - ne čekaj večno
+          t2 = setTimeout(finish, 3000); // kadar se nije promenio (isti sadržaj) - ne čekaj večno
           return;
         }
         // skriven tab: sačekaj da se slika promeni (ograničeno), pa nastavi
@@ -11068,11 +11068,17 @@ async function exportVideo(opts = {}){
         finish();
       };
       if(useRVFC){
-        try{ el.requestVideoFrameCallback(()=>{ frameOk = true; if(seekedOk) finish(); }); }catch(e){}
+        const __cxSeekTol = 0.5/Math.max(1, fps) + 0.004;
+        try{ el.requestVideoFrameCallback(function cb(now, meta){
+          if(done) return;
+          // kadar koji je pregledač pokazao mora biti baš traženi; ako nije (još dekodira), čekaj sledeći
+          if(meta && typeof meta.mediaTime === 'number' && Math.abs(meta.mediaTime - time) > __cxSeekTol){ try{ el.requestVideoFrameCallback(cb); }catch(e){} return; }
+          frameOk = true; if(seekedOk) finish();
+        }); }catch(e){}
       }
       el.addEventListener('seeked', onSeeked);
       try{ el.currentTime = time; }catch(e){ finish(); return; }
-      t1 = setTimeout(finish, 2000); // sigurnosni fallback
+      t1 = setTimeout(finish, 45000); // sigurnosni fallback (teški snimci: dekodiranje do sledećeg ključnog kadra traje)
     });
 
     // ---- AI za video: procena vremena pre početka ----
